@@ -1,4 +1,4 @@
-package game;
+package Game;
 
 import java.util.*;
 import java.util.stream.Stream;
