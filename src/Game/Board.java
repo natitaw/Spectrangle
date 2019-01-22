@@ -1,4 +1,4 @@
-package game;
+package Game;
 
 public class Board {
 
@@ -29,6 +29,8 @@ public class Board {
 			boardLocations[i] = new BoardLocation(i, bonusQuotient);
 		}
 		
+		//TODO: Make a method for it! 
+		
 		this.boardIsEmpty = true;
 	}
 	
@@ -55,6 +57,7 @@ public class Board {
 	}
 	
 	public boolean setMove(int location, Piece piece) {
+		
 		if(isValidLocation(location) && isEmptyLocation(location)) {
 			
 			this.boardLocations[location].movePiece(piece);
@@ -74,6 +77,8 @@ public class Board {
 	public boolean isEmptyLocation(int location) {
 		return (this.boardLocations[location].getPiece() == null);
 	}
+	
+	
 	
 	
 }
