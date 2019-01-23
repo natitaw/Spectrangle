@@ -13,6 +13,7 @@ import java.net.UnknownHostException;
  */
 public class Client {
     static Thread streamInputHandler;
+    static Thread terminalInputHandler;
 
     public static final CommandReader.State state = CommandReader.State.CLIENT;
     /**
@@ -46,27 +47,7 @@ public class Client {
         }
 
         // create Connection.Peer object and start the two-way communication
-        try {
-            Peer client = new Peer(sock, state);
-            Thread streamInputHandler = new Thread(client);
-            streamInputHandler.start();
-
-            // start game functionality somewhere here
-
-            while (client.running) {
-                client.handleTerminalInput();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-
-            try {
-                streamInputHandler.join();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
+        Peer client = new Peer(sock, state);
     }
 
 

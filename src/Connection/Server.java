@@ -8,6 +8,7 @@ import java.net.Socket;
 
 public class Server {
     static Thread streamInputHandler;
+    static Thread terminalInputHandler;
 
     public static final CommandReader.State state = CommandReader.State.SERVER;
 
@@ -34,24 +35,7 @@ public class Server {
         }
 
         // create Connection.Peer object and start the two-way communication
-        try {
-            Peer server = new Peer(sock, state);
-            Thread streamInputHandler = new Thread(server);
-            streamInputHandler.start();
-
-            while (server.running) {
-                server.handleTerminalInput();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-
-            try {
-                streamInputHandler.join();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
+        Peer server = new Peer(sock, state);
     }
 
 } // end of class Connection.Server

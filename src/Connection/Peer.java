@@ -15,14 +15,17 @@ public class Peer implements Runnable {
     protected PrintWriter out;
     public boolean running;
     private CommandReader reader;
+    static Thread streamInputHandler;
+    static Thread terminalInputHandler;
 
 
     /**
      * Constructor. creates a peer object based in the given parameters.
      * @param   sockArg Socket of the Connection.Peer-proces
      */
-    public Peer(Socket sockArg, CommandReader.State state) throws IOException
+    public Peer(Socket sockArg, CommandReader.State state)
     {
+        try {
         sock = sockArg;
 
         in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
@@ -31,7 +34,27 @@ public class Peer implements Runnable {
         // TODO fix constructor input here
         reader = new CommandReader(state);
 
+
+            PeerReader peerReader = new PeerReader(this);
+            streamInputHandler = new Thread(this);
+            terminalInputHandler = new Thread(peerReader);
+            streamInputHandler.start();
+            terminalInputHandler.start();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+            try {
+                streamInputHandler.join();
+                terminalInputHandler.join();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
     }
+
 
     /**
      * Reads strings of the stream of the socket-connection and
