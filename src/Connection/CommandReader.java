@@ -1,5 +1,8 @@
 package Connection;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class CommandReader {
 
     public enum State {
@@ -17,6 +20,7 @@ public class CommandReader {
         // get first command
         String[] seperateWords = inputString.split("\\s+");
         String command = seperateWords[0];
+        String [] args = Arrays.copyOfRange(seperateWords, 1, seperateWords.length);
 
         if (this.readerState==State.CLIENT){
             switch (command) {
@@ -25,6 +29,8 @@ public class CommandReader {
                     //
                     break;
                 case "start":
+                    //
+                    // THIS IS GOING TO HAVE "with"
                     //
                     break;
                 case "order":
@@ -49,7 +55,7 @@ public class CommandReader {
             switch (command) {
                 //TODO Make case for 4 or 8 whitespaces
                 case "connect":
-                    //
+                    ServerCommands.clientConnects(args);
                     break;
                 case "request":
                     //

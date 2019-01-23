@@ -14,11 +14,15 @@ import java.net.UnknownHostException;
 public class Client {
     static Thread streamInputHandler;
 
-    public CommandReader.State state = CommandReader.State.CLIENT;
+    public static final CommandReader.State state = CommandReader.State.CLIENT;
     /**
      * Starts a Connection.Client application.
      */
-    public  Client(String ip) {
+    public Client(String ip){
+        connect(ip);
+    }
+
+    public static void connect(String ip) {
         String name = "name";
         InetAddress addr = null;
         int port = 4000;

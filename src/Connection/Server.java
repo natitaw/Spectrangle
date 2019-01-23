@@ -9,10 +9,14 @@ import java.net.Socket;
 public class Server {
     static Thread streamInputHandler;
 
-    public CommandReader.State state = CommandReader.State.SERVER;
+    public static final CommandReader.State state = CommandReader.State.SERVER;
+
+    public Server(){
+        startHosting();
+    }
 
     /** Starts a Connection.Server-application. */
-    public Server() {
+    public void startHosting() {
 
         int port = 4000;
         String name = "name";
