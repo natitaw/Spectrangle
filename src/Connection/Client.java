@@ -7,42 +7,29 @@ import java.net.UnknownHostException;
 
 /**
  * Connection.Client class for a simple client-server application
- * @author  Theo Ruys
+ *
+ * @author Theo Ruys
  * @version 2005.02.21
  */
 public class Client {
-    private static final String USAGE  = "usage: java week7.cmdline.Connection.Client <name> <address> <port>";
-            static Thread streamInputHandler;
+    static Thread streamInputHandler;
 
-
-    /** Starts a Connection.Client application. */
-    public static void main(String[] args) {
-        if (args.length != 3) {
-            System.out.println(USAGE);
-            System.exit(0);
-        }
-
-        String name = args[0];
+    public CommandReader.State state = CommandReader.State.CLIENT;
+    /**
+     * Starts a Connection.Client application.
+     */
+    public  Client(String ip) {
+        String name = "name";
         InetAddress addr = null;
-        int port = 0;
+        int port = 4000;
         Socket sock = null;
 
         // check args[1] - the IP-adress
         try {
-            addr = InetAddress.getByName(args[1]);
+            addr = InetAddress.getByName(ip);
         } catch (UnknownHostException e) {
-            System.out.println(USAGE);
-            System.out.println("ERROR: host " + args[1] + " unknown");
-            System.exit(0);
-        }
 
-        // parse args[2] - the port
-        try {
-            port = Integer.parseInt(args[2]);
-        } catch (NumberFormatException e) {
-            System.out.println(USAGE);
-            System.out.println("ERROR: port " + args[2]
-                    + " is not an integer");
+            System.out.println("ERROR: host " + ip + " unknown");
             System.exit(0);
         }
 
@@ -51,12 +38,12 @@ public class Client {
             sock = new Socket(addr, port);
         } catch (IOException e) {
             System.out.println("ERROR: could not create a socket on " + addr
-                    + " and port " + port);
+                + " and port " + port);
         }
 
         // create Connection.Peer object and start the two-way communication
         try {
-            Peer client = new Peer(name, sock);
+            Peer client = new Peer(sock, state);
             Thread streamInputHandler = new Thread(client);
             streamInputHandler.start();
 

@@ -5,36 +5,31 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Scanner;
 
-/**
- * Connection.Peer for a simple client-server application
- * @author  Theo Ruys
- * @version 2005.02.21
- */
+//TODO fix exception on shutdown
+
 public class Peer implements Runnable {
     public static final String EXIT = "exit";
 
-    protected String name;
     protected Socket sock;
     protected BufferedReader in;
     protected PrintWriter out;
     public boolean running;
+    private CommandReader reader;
 
-    /*@
-       requires (nameArg != null) && (sockArg != null);
-     */
+
     /**
      * Constructor. creates a peer object based in the given parameters.
-     * @param   nameArg name of the Connection.Peer-proces
      * @param   sockArg Socket of the Connection.Peer-proces
      */
-    public Peer(String nameArg, Socket sockArg) throws IOException
+    public Peer(Socket sockArg, CommandReader.State state) throws IOException
     {
         sock = sockArg;
-        name = nameArg;
+
         in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         out = new PrintWriter(sock.getOutputStream(), true);
         running = true;
-
+        // TODO fix constructor input here
+        reader = new CommandReader(state);
 
     }
 
@@ -49,7 +44,7 @@ public class Peer implements Runnable {
             if (s1 == null || s1 == "") {
                 shutDown();
             } else {
-                System.out.println(s1);
+                reader.read(s1);
             }
 
         } catch (IOException e) {
@@ -88,11 +83,6 @@ public class Peer implements Runnable {
             running=false;
 
         }
-    }
-
-    /**  returns name of the peer object*/
-    public String getName() {
-        return name;
     }
 
     /** read a line from the default input */
