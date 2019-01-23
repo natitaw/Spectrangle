@@ -33,5 +33,9 @@ public class BoardLocation {
 	public boolean isBonusLocation() {
 		return this.scorePoint > 1;
 	}
+	
+	public boolean isEmptySpot() {
+		return (this.piece == null);
+	}
 
 }
