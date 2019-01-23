@@ -16,6 +16,11 @@ public class Piece {
 		this.point = point;
 	}
 	
+	
+	//TODO: add color check functionality 
+	
+	//TODO: add color rotation functionality
+	
 	public int getPoint() {
 		return this.point;
 	}

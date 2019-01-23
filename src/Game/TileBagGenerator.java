@@ -1,7 +1,6 @@
 package Game;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class TileBagGenerator {
 
@@ -11,14 +10,21 @@ public class TileBagGenerator {
 		this.pieces = new ArrayList<>();
 		populateBag();
 	}
-
+	
+	/*
+	 * Get a random piece from the list of Piece objects
+	 */
 	public Piece getRandomPiece() {
 		int random = (int) (Math.random() * 36 + 1);
 		Piece p = pieces.get(random);
 		pieces.remove(random);
 		return p;
 	}
-
+	
+	/*
+	 * Populate the bag with Piece objects according
+	 * to the rules of the game 
+	 */
 	public void populateBag() {
 
 		// 6 Points
@@ -102,9 +108,19 @@ public class TileBagGenerator {
 
 	}
 	
+	
+	/*
+	 * Get an ArrayList<Piece> of Piece objects 
+	 * that will be used everytime a Board is generated
+	 */
 	public ArrayList<Piece> getBag(){
 		return this.pieces;
 	}
+	
+	
+	/*
+	 * Test if implementation is correct
+	 */
 	public static void main(String[] args) {
 		TileBagGenerator a = new TileBagGenerator();
 		

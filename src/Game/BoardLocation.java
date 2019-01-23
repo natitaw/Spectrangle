@@ -2,6 +2,10 @@ package Game;
 
 public class BoardLocation {
 	
+	// BoardLocation class to represent information about
+	// a spot on a board
+	// a spot has: piece, location(id), and scorePoint(multiplier)
+	
 	private int location;
 	private int scorePoint;
 	private Piece piece;
