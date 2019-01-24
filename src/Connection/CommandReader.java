@@ -15,7 +15,7 @@ public class CommandReader {
         this.readerState = stateInput;
     }
 
-    public void read(String inputString) {
+    public void read(String inputString, Peer peer) {
         // seperate by spaces
         // get first command
         String[] seperateWords = inputString.split("\\s+");
@@ -47,15 +47,17 @@ public class CommandReader {
                     //S
                     break;
                 default:
-                    System.out.println("Server sent a command that was ignored:");
-                    System.out.println(inputString);
+                    if (Settings.debug) {
+                        System.out.println("Server sent a command that was ignored:");
+                        System.out.println(inputString);
+                    }
                     break;
             }
         } else if (this.readerState==State.SERVER) {
             switch (command) {
                 //TODO Make case for 4 or 8 whitespaces
                 case "connect":
-                    ServerCommands.clientConnects(args);
+                    ServerCommands.clientConnects(args,peer);
                     break;
                 case "request":
                     //
@@ -73,11 +75,13 @@ public class CommandReader {
                     //
                     break;
                 case "chat":
-                    //
+                    ServerCommands.sendChat(args, peer);
                     break;
                 default:
-                    System.out.println("Client sent a command that was ignored:");
-                    System.out.println(inputString);
+                    if (Settings.debug) {
+                        System.out.println(peer.getName() + " sent a command that was ignored:");
+                        System.out.println(inputString);
+                    }
                     break;
             }
         }

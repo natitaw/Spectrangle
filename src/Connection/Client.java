@@ -48,6 +48,7 @@ public class Client {
 
         // create Connection.Peer object and start the two-way communication
         Peer client = new Peer(sock, state);
+        System.out.println("Connected to server");
     }
 
 

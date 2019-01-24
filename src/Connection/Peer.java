@@ -17,6 +17,8 @@ public class Peer implements Runnable {
     private CommandReader reader;
     static Thread streamInputHandler;
     static Thread terminalInputHandler;
+    private String name;
+    private boolean chatEnabled;
 
 
     /**
@@ -31,7 +33,6 @@ public class Peer implements Runnable {
         in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         out = new PrintWriter(sock.getOutputStream(), true);
         running = true;
-        // TODO fix constructor input here
         reader = new CommandReader(state);
 
 
@@ -42,6 +43,11 @@ public class Peer implements Runnable {
             if (state== CommandReader.State.CLIENT) {
                 terminalInputHandler = new Thread(peerReader);
                 terminalInputHandler.start();
+                name="Server";
+                chatEnabled=true;
+            } else {
+                name="Unknown client";
+                chatEnabled=false;
             }
 
         } catch (IOException e) {
@@ -49,6 +55,13 @@ public class Peer implements Runnable {
         }
     }
 
+    public boolean getChatEnabled(){
+        return this.chatEnabled;
+    }
+
+    public void setChatEnabled(boolean b){
+        this.chatEnabled=b;
+    }
 
     /**
      * Reads strings of the stream of the socket-connection and
@@ -61,7 +74,7 @@ public class Peer implements Runnable {
             if (s1 == null || s1 == "") {
                 shutDown();
             } else {
-                reader.read(s1);
+                reader.read(s1, this);
             }
 
         } catch (IOException e) {
@@ -71,6 +84,13 @@ public class Peer implements Runnable {
     }
     } }
 
+    public String getName(){
+        return this.name;
+    }
+
+    public void setName(String newName) {
+        this.name = newName;
+    }
 
     /**
      * Reads a string from the console and sends this string over

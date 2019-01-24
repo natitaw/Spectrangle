@@ -43,13 +43,11 @@ public class Server implements Runnable {
         // try to open a Socket to the server
         while (running) {
             Socket sock;
-            System.out.println("waiting");
             try {
 
                 sock = serverSock.accept();
-                System.out.println("new client connected");
+                System.out.println("New unknown client connected");
                 peerList.add(new Peer(sock, state));
-                System.out.println("done establishing connection");
 
             } catch (IOException e) {
                 System.out.println("ERROR: could not create a socket on " + port);
@@ -66,7 +64,6 @@ public class Server implements Runnable {
     }
 
     public void shutDown() {
-        // TODO actually call this at some point
         running = false;
         try {
             terminalInputHandler.join();
