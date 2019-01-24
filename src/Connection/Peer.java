@@ -37,21 +37,15 @@ public class Peer implements Runnable {
 
             PeerReader peerReader = new PeerReader(this);
             streamInputHandler = new Thread(this);
-            terminalInputHandler = new Thread(peerReader);
             streamInputHandler.start();
-            terminalInputHandler.start();
 
+            if (state== CommandReader.State.CLIENT) {
+                terminalInputHandler = new Thread(peerReader);
+                terminalInputHandler.start();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-
-            try {
-                streamInputHandler.join();
-                terminalInputHandler.join();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
         }
     }
 
@@ -88,9 +82,13 @@ public class Peer implements Runnable {
             if (s.equals("EXIT")){
                 shutDown();
             } else {
-                out.println(s);
+                sendMessage(s);
             }
 
+    }
+
+    public void sendMessage(String s){
+        out.println(s);
     }
 
     /**

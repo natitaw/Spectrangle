@@ -9,5 +9,8 @@ public class ClientMain {
         Scanner scanner = new Scanner(System. in);
         String ip = scanner. nextLine();
         Client clientObject = new Client(ip);
+
+        // Todo add shutdown message?
+        // TODO make disconnect not shut down game
     }
 }

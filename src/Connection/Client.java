@@ -12,14 +12,14 @@ import java.net.UnknownHostException;
  * @version 2005.02.21
  */
 public class Client {
+    public static final CommandReader.State state = CommandReader.State.CLIENT;
     static Thread streamInputHandler;
     static Thread terminalInputHandler;
 
-    public static final CommandReader.State state = CommandReader.State.CLIENT;
     /**
      * Starts a Connection.Client application.
      */
-    public Client(String ip){
+    public Client(String ip) {
         connect(ip);
     }
 
