@@ -3,7 +3,7 @@ package Game;
 public enum ColorDefinition {
 	
 	/**
-	 * Color definitions for the pieces
+	 * Color definition for the pieces
 	 * Joker is represented by WHITE
 	 */
 	
