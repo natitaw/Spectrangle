@@ -3,65 +3,76 @@ package Connection;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Connection.Server.
- * @author  Theo Ruys
- * @version 2005.02.21
- */
-public class Server {
+public class Server implements Runnable {
+    public static final CommandReader.State state = CommandReader.State.SERVER;
     static Thread streamInputHandler;
-    private static final String USAGE
-        = "usage: " + Server.class.getName() + " <name> <port>";
+    static Thread terminalInputHandler;
+    int port;
+    String name;
+    ServerSocket serverSock;
+    List<Peer> peerList;
+    private boolean running;
 
-    /** Starts a Connection.Server-application. */
-    public static void main(String[] args) {
-        if (args.length != 2) {
-            System.out.println(USAGE);
-            System.exit(0);
-        }
+    public boolean getRunning(){
+        return this.running;
+    }
 
-        String name = args[0];
-        int port = 0;
-       Socket sock = null;
-       ServerSocket serverSock = null;
-
-        // parse args[1] - the port
-        try {
-            port = Integer.parseInt(args[1]);
-        } catch (NumberFormatException e) {
-            System.out.println(USAGE);
-            System.out.println("ERROR: port " + args[2]
-                    + " is not an integer");
-            System.exit(0);
-        }
-
-        // try to open a Socket to the server
-        // TODO Connection.Server socket
+    public Server() {
+        port = 4000;
+        name = "name";
+        serverSock = null;
+        peerList = new ArrayList<>();
+        running = true;
         try {
             serverSock = new ServerSocket(port);
-            sock = serverSock.accept();
-            System.out.println("new client connected");
-
-        } catch (IOException e) {
-            System.out.println("ERROR: could not create a socket on " + port);
-        }
-
-        // create Connection.Peer object and start the two-way communication
-        try {
-            Peer server = new Peer(name, sock);
-            Thread streamInputHandler = new Thread(server);
-            streamInputHandler.start();
-
-            while (server.running) {
-                server.handleTerminalInput();
-            }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
+        }
+        terminalInputHandler = new Thread(new TerminalInputHandler(this));
+        terminalInputHandler.start();
+    }
 
+    /**
+     * Starts a Connection.Server-application.
+     */
+    public void run() {
+
+        // try to open a Socket to the server
+        while (running) {
+            Socket sock;
             try {
-                streamInputHandler.join();
+
+                sock = serverSock.accept();
+                System.out.println("New unknown client connected");
+                peerList.add(new Peer(sock, state));
+
+            } catch (IOException e) {
+                System.out.println("ERROR: could not create a socket on " + port);
+            }
+
+
+        }
+    }
+
+    public void sendMessages(String s){
+        for (Peer p : peerList) {
+            p.sendMessage(s);
+        }
+    }
+
+    public void shutDown() {
+        running = false;
+        try {
+            terminalInputHandler.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        for (Peer p : peerList) {
+            try {
+                p.streamInputHandler.join();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

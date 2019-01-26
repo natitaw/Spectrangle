@@ -5,37 +5,62 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Scanner;
 
-/**
- * Connection.Peer for a simple client-server application
- * @author  Theo Ruys
- * @version 2005.02.21
- */
+//TODO fix exception on shutdown
+
 public class Peer implements Runnable {
     public static final String EXIT = "exit";
 
-    protected String name;
     protected Socket sock;
     protected BufferedReader in;
     protected PrintWriter out;
     public boolean running;
+    private CommandReader reader;
+    static Thread streamInputHandler;
+    static Thread terminalInputHandler;
+    private String name;
+    private boolean chatEnabled;
 
-    /*@
-       requires (nameArg != null) && (sockArg != null);
-     */
+
     /**
      * Constructor. creates a peer object based in the given parameters.
-     * @param   nameArg name of the Connection.Peer-proces
      * @param   sockArg Socket of the Connection.Peer-proces
      */
-    public Peer(String nameArg, Socket sockArg) throws IOException
+    public Peer(Socket sockArg, CommandReader.State state)
     {
+        try {
         sock = sockArg;
-        name = nameArg;
+
         in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         out = new PrintWriter(sock.getOutputStream(), true);
         running = true;
+        reader = new CommandReader(state);
 
 
+            PeerReader peerReader = new PeerReader(this);
+            streamInputHandler = new Thread(this);
+            streamInputHandler.start();
+
+            if (state== CommandReader.State.CLIENT) {
+                terminalInputHandler = new Thread(peerReader);
+                terminalInputHandler.start();
+                name="Server";
+                chatEnabled=true;
+            } else {
+                name="Unknown client";
+                chatEnabled=false;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean getChatEnabled(){
+        return this.chatEnabled;
+    }
+
+    public void setChatEnabled(boolean b){
+        this.chatEnabled=b;
     }
 
     /**
@@ -49,7 +74,7 @@ public class Peer implements Runnable {
             if (s1 == null || s1 == "") {
                 shutDown();
             } else {
-                System.out.println(s1);
+                reader.read(s1, this);
             }
 
         } catch (IOException e) {
@@ -59,6 +84,13 @@ public class Peer implements Runnable {
     }
     } }
 
+    public String getName(){
+        return this.name;
+    }
+
+    public void setName(String newName) {
+        this.name = newName;
+    }
 
     /**
      * Reads a string from the console and sends this string over
@@ -70,9 +102,13 @@ public class Peer implements Runnable {
             if (s.equals("EXIT")){
                 shutDown();
             } else {
-                out.println(s);
+                sendMessage(s);
             }
 
+    }
+
+    public void sendMessage(String s){
+        out.println(s);
     }
 
     /**
@@ -88,11 +124,6 @@ public class Peer implements Runnable {
             running=false;
 
         }
-    }
-
-    /**  returns name of the peer object*/
-    public String getName() {
-        return name;
     }
 
     /** read a line from the default input */
