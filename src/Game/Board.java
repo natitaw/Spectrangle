@@ -2,8 +2,11 @@ package Game;
 
 import java.util.ArrayList;
 
-// Board Class to represent the Spectrangle Board
-
+/**
+ * Board Class representing a Spectrangle board
+ * @author Group4
+ *
+ */
 public class Board {
 
 	public static final int DIM = 36; // loop t/m 35

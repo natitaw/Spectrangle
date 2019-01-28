@@ -6,13 +6,19 @@ public class TileBagGenerator {
 
 	private ArrayList<Piece> pieces;
 
+	/**
+	 * TileBagGenerator This class generates a bag with 36 tiles according to the
+	 * rules of Spectrangle
+	 */
 	public TileBagGenerator() {
 		this.pieces = new ArrayList<>();
 		populateBag();
 	}
-	
-	/*
-	 * Get a random piece from the list of Piece objects
+
+	/**
+	 * getRandomPiece() returns a random tile from the tile bag generated
+	 * 
+	 * @return
 	 */
 	public Piece getRandomPiece() {
 		int random = (int) (Math.random() * 36 + 1);
@@ -20,10 +26,10 @@ public class TileBagGenerator {
 		pieces.remove(random);
 		return p;
 	}
-	
-	/*
-	 * Populate the bag with Piece objects according
-	 * to the rules of the game 
+
+	/**
+	 * This function will be called in the constructor and it will populate the bag
+	 * according to the rules of Spectrangle and includes Joker
 	 */
 	public void populateBag() {
 
@@ -65,9 +71,9 @@ public class TileBagGenerator {
 				pieces.add(new Piece(color, color, ColorDefinition.GREEN, 5));
 			}
 		}
-		
+
 		// 4 Points
-		
+
 		for (ColorDefinition c : ColorDefinition.values()) {
 			ColorDefinition color = c;
 
@@ -89,41 +95,41 @@ public class TileBagGenerator {
 				pieces.add(new Piece(color, color, ColorDefinition.BLUE, 4));
 			}
 		}
-		
-        // 3 Points
-        pieces.add(new Piece(ColorDefinition.YELLOW, ColorDefinition.BLUE, ColorDefinition.PURPLE, 3));
-        pieces.add(new Piece(ColorDefinition.RED, ColorDefinition.GREEN, ColorDefinition.YELLOW, 3));
-        pieces.add(new Piece(ColorDefinition.BLUE, ColorDefinition.GREEN, ColorDefinition.PURPLE, 3));
-        pieces.add(new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.BLUE, 3));
 
-        // 2 Points
-        pieces.add(new Piece(ColorDefinition.BLUE, ColorDefinition.RED, ColorDefinition.PURPLE, 2));
-        pieces.add(new Piece(ColorDefinition.YELLOW, ColorDefinition.PURPLE, ColorDefinition.RED, 2));
-        pieces.add(new Piece(ColorDefinition.YELLOW, ColorDefinition.PURPLE, ColorDefinition.GREEN, 2));
+		// 3 Points
+		pieces.add(new Piece(ColorDefinition.YELLOW, ColorDefinition.BLUE, ColorDefinition.PURPLE, 3));
+		pieces.add(new Piece(ColorDefinition.RED, ColorDefinition.GREEN, ColorDefinition.YELLOW, 3));
+		pieces.add(new Piece(ColorDefinition.BLUE, ColorDefinition.GREEN, ColorDefinition.PURPLE, 3));
+		pieces.add(new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.BLUE, 3));
 
-        // 1 Point
-        pieces.add(new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.PURPLE, 1));
-        pieces.add(new Piece(ColorDefinition.BLUE, ColorDefinition.YELLOW, ColorDefinition.GREEN, 1));
-        pieces.add(new Piece(ColorDefinition.RED, ColorDefinition.YELLOW, ColorDefinition.BLUE, 1));
+		// 2 Points
+		pieces.add(new Piece(ColorDefinition.BLUE, ColorDefinition.RED, ColorDefinition.PURPLE, 2));
+		pieces.add(new Piece(ColorDefinition.YELLOW, ColorDefinition.PURPLE, ColorDefinition.RED, 2));
+		pieces.add(new Piece(ColorDefinition.YELLOW, ColorDefinition.PURPLE, ColorDefinition.GREEN, 2));
+
+		// 1 Point
+		pieces.add(new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.PURPLE, 1));
+		pieces.add(new Piece(ColorDefinition.BLUE, ColorDefinition.YELLOW, ColorDefinition.GREEN, 1));
+		pieces.add(new Piece(ColorDefinition.RED, ColorDefinition.YELLOW, ColorDefinition.BLUE, 1));
 
 	}
-	
-	
-	/*
-	 * Get an ArrayList<Piece> of Piece objects 
-	 * that will be used everytime a Board is generated
+
+	/**
+	 * Get an ArrayList<Piece> of Piece objects that will be used everytime a Board
+	 * is generated
+	 * 
+	 * @return
 	 */
-	public ArrayList<Piece> getBag(){
+	public ArrayList<Piece> getBag() {
 		return this.pieces;
 	}
-	
-	
-	/*
-	 * Test if implementation is correct
+
+	/**
+	 * Method to get the number of peices at anypoint in the game
+	 * 
+	 * @return
 	 */
-	public static void main(String[] args) {
-		TileBagGenerator a = new TileBagGenerator();
-		
-		System.out.println(a.getRandomPiece().getPoint());
+	public int getNumberOfPieces() {
+		return getBag().size();
 	}
 }

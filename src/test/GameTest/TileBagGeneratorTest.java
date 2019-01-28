@@ -12,6 +12,7 @@ import Game.Board;
 class TileBagGeneratorTest {
 	
 	private TileBagGenerator tg;
+	private Board b;
 	
 	@BeforeEach
 	public void setup() {
@@ -36,6 +37,13 @@ class TileBagGeneratorTest {
 	@Test
 	void testGetBag() {
 		assertNotNull(tg.getBag());
+	}
+	
+	@Test
+	void testGetNumberOfPieces() {
+		assertEquals(36, tg.getBag().size());
+		tg.getRandomPiece();
+		assertEquals(35,tg.getBag().size());
 	}
 
 }

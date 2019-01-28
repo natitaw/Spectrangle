@@ -3,6 +3,8 @@ package test.GameTest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -65,5 +67,32 @@ class PieceTest {
 		assertTrue(p5.isJoker());
 		assertFalse(p6.isJoker());
 	}
-
+	
+	@Test
+	void testIsSamePiece() {
+		assertTrue(p.isSamePiece(p));
+		assertFalse(p.isSamePiece(p2));
+		
+		assertTrue(p.isSamePiece(p.rotate()));
+		assertTrue(p.isSamePiece(p.rotate2x()));
+		
+		assertFalse(p.isSamePiece(p2.rotate2x()));	
+		
+	}
+	
+	@Test
+	void testGetOrientaiton() {
+		ArrayList<ColorDefinition> o = new ArrayList<>();
+		o.add(ColorDefinition.BLUE);
+		o.add(ColorDefinition.GREEN);
+		o.add(ColorDefinition.YELLOW);
+		
+		Piece p7 = new Piece(ColorDefinition.BLUE,
+				ColorDefinition.GREEN, ColorDefinition.YELLOW, 1);
+		
+		assertEquals(o.get(0), p7.getOrientation().get(0));
+		assertEquals(o.get(1), p7.getOrientation().get(1));
+		assertEquals(o.get(2), p7.getOrientation().get(2));
+		
+	}
 }

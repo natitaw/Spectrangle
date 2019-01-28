@@ -33,7 +33,7 @@ public class Piece {
 	 * into account
 	 */
 
-	public void rotate() {
+	public Piece rotate() {
 
 		Collections.swap(orientation, 0, 2);
 		Collections.swap(orientation, 1, 2);
@@ -43,6 +43,8 @@ public class Piece {
 		this.left = orientation.get(0);
 		this.right = orientation.get(1);
 		this.bottom = orientation.get(2);
+		
+		return this;
 
 	}
 
@@ -50,7 +52,7 @@ public class Piece {
 	 * Function that rotates tile twice might be useful
 	 */
 
-	public void rotate2x() {
+	public Piece rotate2x() {
 		
 		rotate();
 		rotate();
@@ -60,6 +62,8 @@ public class Piece {
 		this.left = orientation.get(0);
 		this.right = orientation.get(1);
 		this.bottom = orientation.get(2);
+		
+		return this;
 
 	}
 
@@ -67,30 +71,29 @@ public class Piece {
 		return this.orientation;
 	}
 
-	/*
-	 * Return the number of points attributed to this Piece object
+	/**
+	 * Return the number of points of given tile
+	 * @return
 	 */
 	public int getPoint() {
 		return point;
 	}
 
-	/*
-	 * Check if this Piece object is a Joker
+	/**
+	 * Function to check if tile is joker
+	 * @return
 	 */
 	public boolean isJoker() {
 		return (orientation.get(0).equals(ColorDefinition.WHITE));
 	}
 
-
-	public static void main(String[] args) {
-		Piece p = new Piece(ColorDefinition.RED, ColorDefinition.GREEN, ColorDefinition.PURPLE, 5);
-
-		System.out.println(p.orientation);
-		System.out.println(p.isJoker());
-		p.rotate();
-		System.out.println(p.orientation);
-		p.rotate2x();
-		System.out.println(p.orientation);
+	/**
+	 * Check if given Piece is the same as this Piece
+	 * @param p
+	 * @return
+	 */
+	public boolean isSamePiece(Piece p) {
+		return (this.equals(p) || this.equals(p.rotate())
+				|| this.equals(p.rotate2x()));
 	}
-
 }
