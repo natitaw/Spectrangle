@@ -18,7 +18,7 @@ public class BoardLocation {
 	// Queries
 	
 	public int getScorePoint() {
-		return this.scorePoint;
+		return scorePoint;
 	}
 	
 	public int getLocation() {

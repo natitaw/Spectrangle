@@ -81,19 +81,6 @@ public class Piece {
 		return (orientation.get(0).equals(ColorDefinition.WHITE));
 	}
 
-	/*
-	 * 
-	 * public String toString() { String template = "\n" + "     ʌ\n" + "    / \\\n"
-	 * + "   / %i \\\n" + "  /%s   %s\\\n" + " /   %s   \\\n" + "/---------\\\n";
-	 * 
-	 * template = String.format(template, point, left.toString(), right.toString(),
-	 * bottom.toString());
-	 * 
-	 * return template;
-	 * 
-	 * }
-	 * 
-	 */
 
 	public static void main(String[] args) {
 		Piece p = new Piece(ColorDefinition.RED, ColorDefinition.GREEN, ColorDefinition.PURPLE, 5);
