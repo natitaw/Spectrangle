@@ -148,8 +148,12 @@ public class Board {
 		return point;
 	}
 
-	/*
-	 * TODO: Add color validity checker
+	/**
+	 * Check color validity against neighbor
+	 * 
+	 * @param location
+	 * @param piece
+	 * @return
 	 */
 
 	public boolean isValidColor(int location, Piece piece) {
