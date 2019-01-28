@@ -86,18 +86,29 @@ public class Board {
 
 	/*
 	 * Check validity of the move
+	 * Move is valid if location is valid AND:
+	 * 	color matches at least on one side (except for Joker)
+	 * 	board is empty then everywhere except for bonus spots
+	 * 	board is not empty then move is valid if isValidColor 
 	 */
-	public boolean isValidMove(int location) {
+	
+	//TODO: make sure that a piece can only be put next to another piece
+	
+	public boolean isValidMove(int location, Piece piece) {
+		
 		boolean result = false;
 
 		if (isValidLocation(location)) {
-
+			
 			if (boardIsEmpty()) {
 
-				return (boardLocations[location].isBonusLocation());
+				result = !boardLocations[location].isBonusLocation();
 
-			} else if (isEmptyLocation(location)) {
-				result = true;
+			} else if (this.isValidColor(location, piece) 
+					
+					&& isEmptyLocation(location)) {
+				
+					result = true;
 			}
 		}
 		return result;
@@ -109,8 +120,14 @@ public class Board {
 	 * r^2 + r + c
 	 */
 	public int getIndex(int r, int c) {
-		return (int) (Math.pow(r, 2) + r + c);
+		return ((int) (Math.pow(r, 2) + r + c));
 	}
+	
+	/*
+	 * TODO: Implement a converter from index to coordinates
+	 */
+	
+	
 	
 	/*
 	 * Move a piece on the boardLocation
@@ -118,13 +135,46 @@ public class Board {
 	 */
 	public int movePiece(int location, Piece piece) {
 		int point = 0;
-		if (isValidLocation(location) && isValidMove(location)) {
+		if (isValidLocation(location) && isValidMove(location, piece)) {
 
 			boardLocations[location].movePiece(piece);
 			point = boardLocations[location].getScorePoint() * piece.getPoint();
 
 		}
 		return point;
+	}
+	
+	/*
+	 * TODO: Add color validity checker
+	 */
+	
+	public boolean isValidColor(int location, Piece piece) {
+		
+		//TODO: implement
+		boolean result = false;
+		
+		// Joker fits at all locations
+		
+		if (isValidLocation(location) && piece.isJoker()) {
+			
+			result = true;
+		}
+		
+		//TODO: check for matching colors
+		
+		return result;
+	}
+	
+	
+	
+	//TODO: Check for left, right and bottom neighbors
+	
+	/*
+	 * Get Left Neighbor, to be used when checking if colors match
+	 */
+	
+	public Piece getLeftPiece(Piece piece) {
+		return null;
 	}
 	
 	/*
