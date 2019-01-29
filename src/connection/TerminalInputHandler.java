@@ -6,7 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import static connection.TerminalInputHandler.InputState.NAME;
+import static connection.TerminalInputHandler.InputState.*;
 
 public class TerminalInputHandler implements Runnable{
     ClientOrServer parent;
@@ -21,6 +21,9 @@ public class TerminalInputHandler implements Runnable{
         this.parent=inputParent;
         name = null;
         wantsChat = false;
+        if (parent.getType()== ClientOrServer.Type.CLIENT) {
+            state=NAME;
+        }
     }
 
     public enum InputState {
@@ -57,8 +60,6 @@ public class TerminalInputHandler implements Runnable{
      */
     @Override
     public void run() {
-
-        // TODO change states somewhere else
         while (parent.getRunning() && running) {
             String s = "";
             switch (state) {
@@ -67,6 +68,7 @@ public class TerminalInputHandler implements Runnable{
                     System.out.println("Please enter your desired name");
                     s = readString();
                     this.name = s;
+                    state=CHAT_PREFERENCE;
                     break;
                 case CHAT_PREFERENCE:
                     boolean hasChosen = false;
@@ -94,6 +96,7 @@ public class TerminalInputHandler implements Runnable{
                             parent.sendMessageToAll("connect " + name);
                         }
                     }
+                    state=NUMBER_OF_PLAYERS;
 
                     break;
                 case NUMBER_OF_PLAYERS:
@@ -107,6 +110,8 @@ public class TerminalInputHandler implements Runnable{
                     if (!s.equals("EXIT")) {
                         parent.sendMessageToAll(s);
                     }
+                    state=COMMAND;
+
                     break;
                 default:
                        s = readString();
