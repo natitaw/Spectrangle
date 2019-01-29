@@ -78,12 +78,14 @@ public class Server implements Runnable, ClientOrServer {
                 sock = serverSock.accept();
                 System.out.println("New unknown client connected");
                 newPeer = new Peer(sock, type, this);
-
-                newPeer.moveToRoom(lobby); // TODO Move this to room class
                 peerList.add(newPeer);
+                newPeer.moveToRoom(lobby);
+
 
             } catch (IOException e) {
-                System.out.println("Thread was unable to create socket.");
+                if (running) {
+                System.out.println("Thread was unable to create socket on port " + port);
+                }
             }
 
 

@@ -102,7 +102,11 @@ public class Peer implements Runnable {
             }
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            if (running && parent.getRunning()){
+                System.out.println("Error in reading data from " + name);
+                e.printStackTrace();
+            }
+
     }
     } }
 
@@ -114,34 +118,9 @@ public class Peer implements Runnable {
         this.name = newName;
     }
 
-    /**
-     * Reads a string from the console and sends this string over
-     * the socket-connection to the connection.Peer process.
-     * On connection.Peer.EXIT the method ends
-     */
-
 
     public void sendMessage(String s){
         out.println(s);
-    }
-
-    /**
-     * Closes the connection, the sockets will be terminated
-     */
-    public void close() {
-        this.running=false;
-
-        streamInputHandler.interrupt(); // todo ERROR HAPPENS HERE
-        System.out.println("Connection reading thread for " + name + " closed");
-        try {
-            sock.close();
-            System.out.println("Socket for connection " + name + " closed");
-        } catch (IOException e) {
-            System.out.println("Error in closing socket for " + name);
-
-        }
-
-
     }
 
     public void moveToRoom(Room room) {
@@ -152,7 +131,26 @@ public class Peer implements Runnable {
         currentRoom=room;
     }
 
-    /** read a line from the default input */
+
+    /**
+     * Closes the connection, the sockets will be terminated
+     */
+    public void close() {
+        this.running=false;
+
+        streamInputHandler.interrupt();
+        System.out.println("Connection reading thread for " + name + " closed");
+        try {
+            sock.close();
+            System.out.println("Socket for connection " + name + " closed");
+        } catch (IOException e) {
+            System.out.println("Error in closing socket for " + name);
+
+        }
+        // TODO if server, remove peer from lists, rooms and such. Close any game rooms it is in
+
+    }
+
 
 
     }

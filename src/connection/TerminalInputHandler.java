@@ -12,26 +12,36 @@ public class TerminalInputHandler implements Runnable{
     }
 
 
+    /**
+     * Uses readers to read string from console
+     */
+    public String readString() {
 
-    public String readString(String tekst) {
-        System.out.print(tekst);
         String antw = null;
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(
                 System.in));
             antw = in.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            if (running && parent.getRunning()){
+                System.out.println("Error in reading message from terminal");
+                e.printStackTrace();
+            }
         }
 
 
         return (antw == null) ? "" : antw;
     }
 
+    /**
+     * Reads a string from the console and sends this string over
+     * the socket-connection to the peer.
+     * On connection.Peer.EXIT the process ends
+     */
     @Override
     public void run() {
         while (parent.getRunning() && running) {
-            String s = readString("");
+            String s = readString();
             if (s.equals("EXIT")) {
                 parent.shutDown();
                 running=false;
