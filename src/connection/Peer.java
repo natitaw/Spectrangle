@@ -14,7 +14,7 @@ public class Peer implements Runnable {
     private BufferedReader in;
     private PrintWriter out;
     private volatile boolean running;
-    private CommandReader reader;
+    private CommandInterpreter reader;
     private Thread streamInputHandler;
     private String name;
     private boolean chatEnabled;
@@ -38,7 +38,7 @@ public class Peer implements Runnable {
             in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             out = new PrintWriter(sock.getOutputStream(), true);
             this.running = true;
-            reader = new CommandReader(parent);
+            reader = new CommandInterpreter(parent);
 
 
 

@@ -5,12 +5,12 @@ import connection.server.ServerCommands;
 
 import java.util.Arrays;
 
-public class CommandReader {
+public class CommandInterpreter {
 
     public ClientOrServer parent;
     public ClientOrServer.Type parentType;
 
-    public CommandReader(ClientOrServer parentInput){
+    public CommandInterpreter(ClientOrServer parentInput){
         this.parent = parentInput;
         this.parentType=parent.getType();
         if (parentType== ClientOrServer.Type.SERVER){
@@ -36,6 +36,7 @@ public class CommandReader {
                 case "start":
                     if (args[0].equals("with")){
                         String[] newargs = Arrays.copyOfRange(args, 1, args.length);
+
                         System.out.println("Starting new game with: " + String.join(", ", newargs));
                     }
                     break;
