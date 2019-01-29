@@ -1,12 +1,15 @@
 package Game;
 
 public enum ColorDefinition {
-	
+
 	/**
-	 * Color definition for the pieces
-	 * Joker is represented by WHITE
+	 * Color definition for the Pieces Joker is represented by WHITE
 	 */
-	
+
+	/**
+	 * Each Definition has its own toString() method	
+	 */
+
 	RED {
 		@Override
 		public String toString() {
@@ -42,6 +45,6 @@ public enum ColorDefinition {
 		public String toString() {
 			return "WHITE";
 		}
-	}; //joker
+	}; 
 
 }
