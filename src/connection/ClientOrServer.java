@@ -12,4 +12,8 @@ public interface ClientOrServer {
     }
 
     Type getType();
+
+    void setName(String s);
+
+    String getName();
 }

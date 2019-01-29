@@ -1,5 +1,6 @@
 package connection;
 
+import connection.client.Client;
 import jdk.internal.util.xml.impl.Input;
 
 import java.io.BufferedReader;
@@ -68,6 +69,7 @@ public class TerminalInputHandler implements Runnable{
                     System.out.println("Please enter your desired name");
                     s = readString();
                     this.name = s;
+                    ((Client) parent).setName(s);
                     state=CHAT_PREFERENCE;
                     break;
                 case CHAT_PREFERENCE:

@@ -27,11 +27,11 @@ public class PiecePrinter {
 
         // All lists should have exactly 36 items.
         String template =
-            "     ^\n" +
-                "    / \\\n" +
-                "   /   \\\n" +
-                "  /{f0} {fv} {f1}\\\n" +
-                " /   {f2}   \\\n" +
+                "     ^     \n" +
+                "    / \\    \n" +
+                "   /   \\   \n" +
+                "  /{f0} {fv} {f1}\\  \n" +
+                " /   {f2}   \\ \n" +
                 "/---------\\\n";
 
         // Fill in value

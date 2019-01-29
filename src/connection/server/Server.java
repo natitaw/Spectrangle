@@ -25,6 +25,7 @@ public class Server implements Runnable, ClientOrServer {
     public Room lobby;
     private List<Room> roomList;
 
+
     public synchronized boolean getRunning(){
         return this.running;
     }
@@ -32,7 +33,7 @@ public class Server implements Runnable, ClientOrServer {
 
     public Server() {
         port = 4000;
-        name = "name";
+        name = "server";
         serverSock = null;
         peerList = new ArrayList<>();
         this.running = true;
@@ -130,6 +131,16 @@ public class Server implements Runnable, ClientOrServer {
 
     public Type getType(){
         return this.type;
+    }
+
+    @Override
+    public void setName(String s) {
+        this.name = s;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
     }
 
     public void shutDown() {

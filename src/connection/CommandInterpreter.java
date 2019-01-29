@@ -1,5 +1,6 @@
 package connection;
 
+import connection.client.ClientCommands;
 import connection.server.GameRoom;
 import connection.server.Server;
 import connection.server.ServerCommands;
@@ -11,12 +12,14 @@ public class CommandInterpreter {
     public ClientOrServer parent;
     public ClientOrServer.Type parentType;
 
+
     public CommandInterpreter(ClientOrServer parentInput){
         this.parent = parentInput;
         this.parentType=parent.getType();
         if (parentType== ClientOrServer.Type.SERVER){
             ServerCommands.setServerObject((Server) parent);
         }
+
     }
 
     public void read(String inputString, Peer peer) {
@@ -29,6 +32,7 @@ public class CommandInterpreter {
         if (this.parentType== ClientOrServer.Type.CLIENT){
             switch (command) {
                 //TODO Make case for 4 or 8 whitespaces
+                // TODO maybe give client a way to see other peoples tiles
                 case "welcome":
                     System.out.print("Name change acknowledged");
                     if (args.length > 1 && args[1].equals("chat")){
@@ -55,7 +59,16 @@ public class CommandInterpreter {
                 case "tiles":
                     // TODO change terminalinput state to NOT_YOUR_TURN or to YOUR_TURN
                     // TODO if terminalinputhandler is waiting on something else, interrupt with YourTurnException and switch state to YOUR_TURN
-                    // TODO print tiles
+                    if (args[args.length-1].equals(parent.getName()) ) {
+                        // it's our turn
+                        if (args[args.length-2].equals("skip") ) {
+                            ClientCommands.askTurn(args);
+                        } else {
+                            ClientCommands.askSkip(args);
+                        }
+
+
+                    }
                     break;
                 case "replace":
                     // sent if a player exchanged one of their tiles for one in the bag

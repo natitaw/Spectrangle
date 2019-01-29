@@ -35,9 +35,33 @@ public class Piece {
 		this.orientation.add(this.right);
 	}
 
-	public Piece(List<ColorDefinition> orientationInput, int value) {
-	    this(orientationInput.get(0), orientationInput.get(1), orientationInput.get(2), value);
+    public Piece(List<ColorDefinition> orientationInput, int value) {
+        this(orientationInput.get(0), orientationInput.get(1), orientationInput.get(2), value);
     }
+
+	public Piece(String s) {
+	    List<ColorDefinition> tempColors = new ArrayList<>();
+        for (int i=0; i<3; i++) {
+
+
+	    for (ColorDefinition tempColor : ColorDefinition.values()){
+            if ( Character.toString(s.charAt(i)).equals(Character.toString(tempColor.toString().charAt(0)))){
+                    tempColors.add(tempColor);
+                }
+            }
+        }
+
+        orientation  = new ArrayList<>();
+        this.bottom = tempColors.get(0);
+        this.left = tempColors.get(1);
+        this.right = tempColors.get(2);
+        this.value = s.charAt(3);
+        this.orientation.add(this.bottom);
+        this.orientation.add(this.left);
+        this.orientation.add(this.right);
+    }
+
+
 
     // TODO: add color check functionality
 

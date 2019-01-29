@@ -21,12 +21,14 @@ public class Client implements ClientOrServer {
     private Thread terminalInputHandlerThread;
     private Peer clientPeer;
     private volatile boolean running;
+    private String name;
 
     /**
      * Starts a connection.client.Client application.
      */
     public Client(String ip) {
         connect(ip);
+        ClientCommands.setClientObject(this);
     }
 
     public void connect(String ip) {
@@ -34,6 +36,7 @@ public class Client implements ClientOrServer {
         InetAddress addr = null;
         int port = 4000;
         Socket sock = null;
+        name="default";
 
         // check args[1] - the IP-adress
         try {
@@ -69,6 +72,14 @@ public class Client implements ClientOrServer {
 
     public void sendMessageToAll(String s) {
         clientPeer.sendMessage(s);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
