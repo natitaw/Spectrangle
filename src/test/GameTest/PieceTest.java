@@ -28,9 +28,9 @@ class PieceTest {
 		this.b = new Board();
 		this.p = b.getTileBag().takeRandomPiece();
 		
-		left = p.getOrientation().get(0);
-		right = p.getOrientation().get(1);
-		bottom = p.getOrientation().get(2);
+		left = p.getColors().get(0);
+		right = p.getColors().get(1);
+		bottom = p.getColors().get(2);
 		
 		this.p2 = new Piece(left, bottom, right, p.getValue());
 
@@ -39,19 +39,19 @@ class PieceTest {
 	@Test
 	void testRotate() {
 		p.rotate();
-		assertEquals(p.getOrientation(), p2.getOrientation());
+		assertEquals(p.getColors(), p2.getColors());
 	}
 	
 	@Test
 	void testRotate2x() {
 		p.rotate2x();
 		p2.rotate();
-		assertEquals(p.getOrientation(), p2.getOrientation());
+		assertEquals(p.getColors(), p2.getColors());
 	}
 	
 	@Test
 	void testGetOrientation() {
-		assertNotNull(p.getOrientation());
+		assertNotNull(p.getColors());
 		//TODO: check
 	}
 	
@@ -91,9 +91,9 @@ class PieceTest {
 		Piece p7 = new Piece(ColorDefinition.BLUE,
 				ColorDefinition.GREEN, ColorDefinition.YELLOW, 1);
 		
-		assertEquals(o.get(0), p7.getOrientation().get(0));
-		assertEquals(o.get(1), p7.getOrientation().get(1));
-		assertEquals(o.get(2), p7.getOrientation().get(2));
+		assertEquals(o.get(0), p7.getColors().get(0));
+		assertEquals(o.get(1), p7.getColors().get(1));
+		assertEquals(o.get(2), p7.getColors().get(2));
 		
 	}
 }

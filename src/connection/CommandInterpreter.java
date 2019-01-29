@@ -49,21 +49,25 @@ public class CommandInterpreter {
                     }
                     break;
                 case "order":
-                    // TODO print order nicely
-                    // TODO change terminalinput state to NOT_YOUR_TURN
+                    System.out.println("Order of turns: " + String.join(", ", args));
+                    break;
+                case "tiles":
+                    // TODO change terminalinput state to NOT_YOUR_TURN or to YOUR_TURN
+                    // TODO if terminalinputhandler is waiting on something else, interrupt with YourTurnException and switch state to YOUR_TURN
+                    // TODO print tiles
                     break;
                 case "replace":
-                    //
-                    break;
-                case "move":
-                    //
+                    // sent if a player exchanged one of their tiles for one in the bag
                     break;
                 case "skip":
-                    // sent if player is allowed to skip?
+                    // sent if player is allowed to skip? maybe just include in tiles
                     break;
                 case "player":
                     // player left
                     // player skipped
+                    break;
+                case "move":
+                    // sent if player did a move
                     break;
                 case "game":
                     // game finished
@@ -99,9 +103,6 @@ public class CommandInterpreter {
                     //
                     break;
                 case "exchange":
-                    //
-                    break;
-                case "move":
                     //
                     break;
                 case "chat":

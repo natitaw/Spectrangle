@@ -58,12 +58,45 @@ public class GameRoom extends Room{
     }
 
     private void newTurn(Peer startingPlayer) {
-        // TODO if terminalinputhandler is waiting on something else, interrupt with YourTurnException and switch state to YOUR_TURN
+        // determine if player must skip
+        boolean mustSkip = false; // TODO implement this
+        sendTilesCommand(startingPlayer, mustSkip);
+        // maybe send skip command
+
+        // let player announce move (skip, place or exchange)
+
+        // announce move with move command
 
 
-        // TODO change terminalinputstate to NOT_YOUR_TURN
+
 
         // check if game ended? then run game ended method
+        // else start new turn with next player
+
+    }
+
+    private void sendTilesCommand(Peer startingPlayer, boolean mustSkip) {
+        String command = "tiles";
+        String middleArgs = "";
+        String lastArg = "";
+
+        for (Peer p : peerList) {
+            String name = p.getName();
+            for (int peerPieceIndex = 1; peerPieceIndex<= p.getTileBag().getNumberOfPieces(); peerPieceIndex++){
+                // TODO this is bottom, left right. Convert to left,bottom,right
+                for (int pieceColorIndex = 0; pieceColorIndex <= 2; pieceColorIndex++){
+
+                }
+            }
+            p.getTileBag().viewPiece(0).getColor(0)
+
+        if (mustSkip) {
+            // change lastArg
+        } else {
+
+            }
+        }
+        // tiles name t1 t2 t3 t4 name2 t1 t2 t3 t4 turn playername
     }
 
 

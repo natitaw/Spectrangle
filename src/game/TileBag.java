@@ -37,6 +37,10 @@ public class TileBag {
 		return p;
 	}
 
+	public Piece viewPiece(int i) {
+		return pieces.get(i);
+	}
+
 	public Piece takePiece(int index){
 		Piece p = pieces.get(index);
 		pieces.remove(index);

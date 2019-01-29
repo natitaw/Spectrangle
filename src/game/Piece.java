@@ -2,6 +2,7 @@ package game;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Java Class representing a Piece (tile) of a Spectrangle game
@@ -11,48 +12,56 @@ import java.util.Collections;
  */
 public class Piece {
 
-	private int point;
+	private int value;
 
 	// TODO: These fields might not be needed
-	private ColorDefinition left;
+    private ColorDefinition bottom;
+    private ColorDefinition left;
 	private ColorDefinition right;
-	private ColorDefinition bottom;
+
 	/*
 	 * Orientation is as follows: Left, Right, Bottom
 	 */
-	private ArrayList<ColorDefinition> orientation = new ArrayList<>();
+	private ArrayList<ColorDefinition> orientation;
 
-	public Piece(ColorDefinition left, ColorDefinition right, ColorDefinition bottom, int point) {
-		this.left = left;
+	public Piece(ColorDefinition bottom, ColorDefinition left, ColorDefinition right, int value) {
+		orientation  = new ArrayList<>();
+        this.bottom = bottom;
+        this.left = left;
 		this.right = right;
-		this.bottom = bottom;
-		this.point = point;
+		this.value = value;
+        this.orientation.add(this.bottom);
 		this.orientation.add(this.left);
 		this.orientation.add(this.right);
-		this.orientation.add(this.bottom);
 	}
 
-	// TODO: add color check functionality
+	public Piece(List<ColorDefinition> orientationInput, int value) {
+	    this(orientationInput.get(0), orientationInput.get(1), orientationInput.get(2), value);
+    }
 
+    // TODO: add color check functionality
+
+
+    public Piece getRotated() {
+        List<ColorDefinition> tempOrientation = new ArrayList<>(orientation);
+        Collections.rotate(tempOrientation, 1);
+        return new Piece(tempOrientation, value);
+    }
+
+    public Piece getRotated2x() {
+        List<ColorDefinition> tempOrientation = new ArrayList<>(orientation);
+        Collections.rotate(tempOrientation, 2);
+        return new Piece(tempOrientation, value);
+    }
 	/**
 	 * rotate() This function rotates the Piece object Note: flipping is not taken
 	 * into account
 	 * 
 	 * @return
 	 */
-	public Piece rotate() {
+	public void rotate() {
 
-		Collections.swap(orientation, 0, 2);
-		Collections.swap(orientation, 1, 2);
-
-		// TODO: This might not be needed
-
-		this.left = orientation.get(0);
-		this.right = orientation.get(1);
-		this.bottom = orientation.get(2);
-
-		return this;
-
+	    this.orientation=getRotated().getColors();
 	}
 
 	/**
@@ -60,27 +69,23 @@ public class Piece {
 	 * @return
 	 */
 
-	public Piece rotate2x() {
+	public void rotate2x() {
 
-		rotate();
-		rotate();
-
-		// TODO: This might not be needed
-
-		this.left = orientation.get(0);
-		this.right = orientation.get(1);
-		this.bottom = orientation.get(2);
-
-		return this;
+        this.orientation=getRotated2x().getColors();
 
 	}
 	/**
 	 * Return the orientaiton of this piece
 	 * @return
 	 */
-	public ArrayList<ColorDefinition> getOrientation() {
+	public ArrayList<ColorDefinition> getColors() {
 		return this.orientation;
 	}
+
+	// TODO Make javadoc
+    public ColorDefinition getColor(int index) {
+        return orientation.get(index);
+    }
 
 	/**
 	 * Return the number of points of given tile
@@ -88,7 +93,7 @@ public class Piece {
 	 * @return
 	 */
 	public int getValue() {
-		return point;
+		return value;
 	}
 
 	/**
@@ -107,11 +112,11 @@ public class Piece {
 	 * @return
 	 */
 	public boolean isSamePiece(Piece p) {
-		return (this.equals(p) || this.equals(p.rotate()) || this.equals(p.rotate2x()));
+		return (this.equals(p) || this.equals(p.getRotated()) || this.equals(p.getRotated2x()));
 	}
 
 	@Override
 	public String toString(){
-		return PiecePrinter.printPiece(point,this.bottom.toString().charAt(0),this.left.toString().charAt(0),this.right.toString().charAt(0));
+		return PiecePrinter.printPiece(value,this.bottom.toString().charAt(0),this.left.toString().charAt(0),this.right.toString().charAt(0));
 	}
 }
