@@ -1,4 +1,4 @@
-package Connection;
+package connection;
 
 public interface ClientOrServer {
     void shutDown();

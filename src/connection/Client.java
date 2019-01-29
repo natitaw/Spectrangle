@@ -1,4 +1,4 @@
-package Connection;
+package connection;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- * Connection.Client class for a simple client-server application
+ * connection.Client class for a simple client-server application
  *
  * @author Theo Ruys
  * @version 2005.02.21
@@ -19,7 +19,7 @@ public class Client implements ClientOrServer {
     private volatile boolean running;
 
     /**
-     * Starts a Connection.Client application.
+     * Starts a connection.Client application.
      */
     public Client(String ip) {
         connect(ip);
@@ -51,7 +51,7 @@ public class Client implements ClientOrServer {
 
         this.running = true;
 
-        // create Connection.Peer object and start the two-way communication
+        // create connection.Peer object and start the two-way communication
         clientPeer = new Peer(sock, type, this);
         terminalInputHandlerThread = new Thread(new TerminalInputHandler(this));
         terminalInputHandlerThread.start();
@@ -95,4 +95,4 @@ public class Client implements ClientOrServer {
 
 
     }
-} // end of class Connection.Client
+} // end of class connection.Client

@@ -4,9 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 
-import Game.BoardLocation;
-import Game.Piece;
-import Game.Board;
+import game.BoardLocation;
+import game.Board;
 
 import org.junit.jupiter.api.Test;
 

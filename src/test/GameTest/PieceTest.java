@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import Game.ColorDefinition;
-import Game.Piece;
-import Game.Board;
+import game.ColorDefinition;
+import game.Piece;
+import game.Board;
 
 
 class PieceTest {

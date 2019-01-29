@@ -1,4 +1,4 @@
-package Connection;
+package connection;
 
 import java.io.*;
 import java.net.Socket;
@@ -26,7 +26,7 @@ public class Peer implements Runnable {
 
     /**
      * Constructor. creates a peer object based in the given parameters.
-     * @param   sockArg Socket of the Connection.Peer-proces
+     * @param   sockArg Socket of the connection.Peer-proces
      */
     public Peer(Socket sockArg, ClientOrServer.Type type, ClientOrServer parentInput)
     {
@@ -114,8 +114,8 @@ public class Peer implements Runnable {
 
     /**
      * Reads a string from the console and sends this string over
-     * the socket-connection to the Connection.Peer process.
-     * On Connection.Peer.EXIT the method ends
+     * the socket-connection to the connection.Peer process.
+     * On connection.Peer.EXIT the method ends
      */
 
 

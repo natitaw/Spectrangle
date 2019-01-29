@@ -1,6 +1,5 @@
-import Connection.Client;
+import connection.Client;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class ClientMain {

@@ -2,11 +2,10 @@ package test.GameTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import Game.Board;
+import game.Board;
 
 class BoardTest {
 	

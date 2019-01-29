@@ -1,4 +1,4 @@
-package Connection;
+package connection;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -49,7 +49,7 @@ public class Server implements Runnable,ClientOrServer {
     }
 
     /**
-     * Starts a Connection.Server-application.
+     * Starts a connection.Server-application.
      */
     public void run() {
 
@@ -127,4 +127,4 @@ public class Server implements Runnable,ClientOrServer {
 
     }
 
-} // end of class Connection.Server
+} // end of class connection.Server

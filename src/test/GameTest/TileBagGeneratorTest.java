@@ -6,8 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-import Game.TileBagGenerator;
-import Game.Board;
+import game.TileBagGenerator;
+import game.Board;
 
 class TileBagGeneratorTest {
 	
