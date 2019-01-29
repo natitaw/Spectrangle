@@ -1,6 +1,7 @@
 package connection.server;
 
 import connection.Peer;
+import game.Board;
 import game.Piece;
 import game.TileBag;
 
@@ -14,7 +15,8 @@ public class GameRoom extends Room{
     public boolean hasFinished = false;
     private Server serverObject;
     private TileBag roomBag;
-
+    private Board board;
+    private boolean waitingforMove;
 
 
     public GameRoom (int nr, Server inputServer) {
@@ -24,6 +26,7 @@ public class GameRoom extends Room{
     public GameRoom(int nr, List<Peer> peers, Server inputServer) {
         super(nr, peers);
         this.serverObject = inputServer;
+        this.waitingforMove=false;
 
     }
 
@@ -31,8 +34,10 @@ public class GameRoom extends Room{
         determineOrder();
         checkIfAllPeersAreRunning();
 
+
         roomBag = new TileBag(36);
         roomBag.populateBag();
+        board = new Board(roomBag);
 
         int highestValue = 0;
         Peer startingPlayer = null;
@@ -57,44 +62,70 @@ public class GameRoom extends Room{
 
     }
 
+    public boolean isWaitingforMove() {
+        return waitingforMove;
+    }
+
+    public void setWaitingforMove(boolean waitingforMove) {
+        this.waitingforMove = waitingforMove;
+    }
+
     private void newTurn(Peer startingPlayer) {
+        this.waitingforMove=true;
         // determine if player must skip
         boolean mustSkip = false; // TODO implement this
         sendTilesCommand(startingPlayer, mustSkip);
-        // maybe send skip command
 
-        // let player announce move (skip, place or exchange)
-
-        // announce move with move command
-
-
-
+        waitforMove(startingPlayer);
 
         // check if game ended? then run game ended method
         // else start new turn with next player
 
     }
 
-    private void sendTilesCommand(Peer startingPlayer, boolean mustSkip) {
-        String command = "tiles";
-        String middleArgs = "";
-        String lastArg = "";
-
-        for (Peer p : peerList) {
-            String name = p.getName();
-            for (int peerPieceIndex = 1; peerPieceIndex<= p.getTileBag().getNumberOfPieces(); peerPieceIndex++){
-
-                // piecestring is done here
-            }
-            p.getTileBag().viewPiece(0).getColor(0);
-
-        if (mustSkip) {
-            // change lastArg
-        } else {
-
+    private void waitforMove(Peer startingPlayer) {
+        while (waitingforMove) {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
-        // tiles name t1 t2 t3 t4 name2 t1 t2 t3 t4 turn playername
+
+
+        // let player announce move (skip, place or exchange)
+
+        // announce move
+    }
+
+    private void sendTilesCommand(Peer startingPlayer, boolean mustSkip) {
+        String command = "tiles";
+        List<String> middleArgs = new ArrayList<>();
+        String lastString = null;
+
+        for (Peer p : peerList) {
+            List<String> peerArgs = new ArrayList<>();
+            peerArgs.add(p.getName());
+            for (int peerPieceIndex = 1; peerPieceIndex <= p.getTileBag().getNumberOfPieces(); peerPieceIndex++) {
+                String pieceString = p.getTileBag().viewPiece(peerPieceIndex).toString();
+                peerArgs.add(pieceString);
+            }
+            // concatenate all peerargs to one peerString
+            middleArgs.addAll(peerArgs);
+        }
+        String middleString = String.join(" ", middleArgs);
+
+
+        if (mustSkip) {
+            lastString = "skip " + startingPlayer.getName();
+        } else {
+            lastString = "turn " + startingPlayer.getName();
+        }
+
+        String fullCommand = command + " " + middleString + " " + lastString;
+        for (Peer p : peerList){
+            p.sendMessage(fullCommand);
+        }
     }
 
 
@@ -136,4 +167,26 @@ public class GameRoom extends Room{
         hasFinished=true;
     }
 
+
+
+    public void checkPlace(Peer peer, String arg, int parseInt) {
+        // check it, if valid:
+        // do move
+        // announce it
+        // update waitingformove
+    }
+
+    public void checkSkip(Peer peer) {
+        // check it, if valid:
+        // do move
+        // announce it
+        // update waitingformove
+    }
+
+    public void checkExchange(Peer peer, String arg) {
+        // check it, if valid:
+        // do move
+        // announce it
+        // update waitingformove
+    }
 }

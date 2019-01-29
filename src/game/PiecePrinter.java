@@ -9,7 +9,7 @@ public class PiecePrinter {
 
     public static void main(String[] args) {
         // This is an example of how to use the function below.
-        System.out.println(printPiece("WWW1"));
+        System.out.println(printPiece("RGB3"));
     }
     
     // TODO add method for WWW1 input

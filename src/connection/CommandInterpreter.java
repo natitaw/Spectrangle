@@ -1,5 +1,6 @@
 package connection;
 
+import connection.server.GameRoom;
 import connection.server.Server;
 import connection.server.ServerCommands;
 
@@ -97,13 +98,24 @@ public class CommandInterpreter {
                     ServerCommands.clientRequests(args,peer);
                     break;
                 case "place":
-                    //
+                        if (args[1].equals("on")) {
+                            if (peer.getCurrentRoom() instanceof GameRoom) {
+                                ((GameRoom) peer.getCurrentRoom()).checkPlace(peer,args[1],Integer.parseInt(args[3]));
+                            }
+                        }
+
                     break;
                 case "skip":
-                    //
+                            if (peer.getCurrentRoom() instanceof GameRoom) {
+                                ((GameRoom) peer.getCurrentRoom()).checkSkip(peer);
+                            }
                     break;
                 case "exchange":
-                    //
+                    if (args.length > 0) {
+                        if (peer.getCurrentRoom() instanceof GameRoom) {
+                            ((GameRoom) peer.getCurrentRoom()).checkExchange(peer,args[0]);
+                        }
+                    }
                     break;
                 case "chat":
                     ServerCommands.sendChat(args, peer);
