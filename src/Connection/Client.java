@@ -11,10 +11,11 @@ import java.net.UnknownHostException;
  * @author Theo Ruys
  * @version 2005.02.21
  */
-public class Client {
+public class Client implements ClientOrServer{
     public static final CommandReader.State state = CommandReader.State.CLIENT;
     static Thread streamInputHandler;
     static Thread terminalInputHandler;
+    private Peer clientPeer;
 
     /**
      * Starts a Connection.Client application.
@@ -23,7 +24,7 @@ public class Client {
         connect(ip);
     }
 
-    public static void connect(String ip) {
+    public void connect(String ip) {
         String name = "name";
         InetAddress addr = null;
         int port = 4000;
@@ -47,9 +48,15 @@ public class Client {
         }
 
         // create Connection.Peer object and start the two-way communication
-        Peer client = new Peer(sock, state);
+        clientPeer = new Peer(sock, state);
         System.out.println("Connected to server");
     }
 
+    // TODO fix null pointer passing
+    public Peer getPeer(){
+        return clientPeer;
+    }
+
+    public void
 
 } // end of class Connection.Client

@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Server implements Runnable {
+public class Server implements Runnable,ClientOrServer {
     public static final CommandReader.State state = CommandReader.State.SERVER;
     static Thread streamInputHandler;
     static Thread terminalInputHandler;
@@ -57,6 +57,7 @@ public class Server implements Runnable {
         }
     }
 
+    // TODO A
     public void sendMessages(String s){
         for (Peer p : peerList) {
             p.sendMessage(s);
