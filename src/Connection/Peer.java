@@ -6,18 +6,22 @@ import java.net.Socket;
 //TODO fix exception on shutdown
 
 public class Peer implements Runnable {
-    public static final String EXIT = "exit";
+    public static final String EXIT = "EXIT";
 
-    protected Socket sock;
-    protected BufferedReader in;
-    protected PrintWriter out;
-    public boolean running;
+    private Socket sock;
+    private BufferedReader in;
+    private PrintWriter out;
+    boolean running;
     private CommandReader reader;
-    static Thread streamInputHandler;
-    static Thread terminalInputHandler;
+    private Thread streamInputHandler;
+    Thread terminalInputHandler;
     private String name;
     private boolean chatEnabled;
+    private int currentRoom;
 
+    public Thread getStreamInputHandler() {
+        return streamInputHandler;
+    }
 
     /**
      * Constructor. creates a peer object based in the given parameters.
@@ -27,20 +31,18 @@ public class Peer implements Runnable {
     {
         try {
         sock = sockArg;
-
+        currentRoom=0; // set current "room" to lobby = all communication gets sent
         in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         out = new PrintWriter(sock.getOutputStream(), true);
         running = true;
         reader = new CommandReader(state);
 
 
-            PeerReader peerReader = new PeerReader(this);
+
             streamInputHandler = new Thread(this);
             streamInputHandler.start();
 
             if (state== CommandReader.Type.CLIENT) {
-                //terminalInputHandler = new Thread(peerReader);
-                //terminalInputHandler.start();
                 name="Server";
                 chatEnabled=true; // Client leaves all communication with its "Peer", the server, enabled by default
             } else {
@@ -61,6 +63,14 @@ public class Peer implements Runnable {
         this.chatEnabled=b;
     }
 
+    public int getCurrentRoom() {
+        return currentRoom;
+    }
+
+    public void setCurrentRoom(int currentRoom) {
+        this.currentRoom = currentRoom;
+    }
+
     /**
      * Reads strings of the stream of the socket-connection and
      * writes the characters to the default output.
@@ -70,7 +80,7 @@ public class Peer implements Runnable {
         try {
             String s1 = in.readLine();
             if (s1 == null || s1 == "") {
-                shutDown();
+                close();
             } else {
                 reader.read(s1, this);
             }
@@ -78,7 +88,7 @@ public class Peer implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
             running=false;
-            shutDown();
+            close();
     }
     } }
 
@@ -95,15 +105,7 @@ public class Peer implements Runnable {
      * the socket-connection to the Connection.Peer process.
      * On Connection.Peer.EXIT the method ends
      */
-    public void handleTerminalInput() {
-            String s = readString("");
-            if (s.equals("EXIT")){
-                shutDown();
-            } else {
-                sendMessage(s);
-            }
 
-    }
 
     public void sendMessage(String s){
         out.println(s);
@@ -112,32 +114,28 @@ public class Peer implements Runnable {
     /**
      * Closes the connection, the sockets will be terminated
      */
-    public void shutDown() {
+    public void close() {
+        running=false;
         try {
-            System.out.println("Shutting down");
-            running=false;
-            sock.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            running=false;
+            streamInputHandler.join();
+            System.out.println("Connection reading thread for " + name + "closed");
+        } catch (InterruptedException e) {
+            System.out.println("Error in closing connection thread for " + name);
 
         }
+
+        try {
+            sock.close();
+            System.out.println("Socket for connection " + name + "closed");
+        } catch (IOException e) {
+            System.out.println("Error in closing socket for " + name);
+
+        }
+
     }
 
     /** read a line from the default input */
-    static public String readString(String tekst) {
-        System.out.print(tekst);
-        String antw = null;
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    System.in));
-            antw = in.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        return (antw == null) ? "" : antw;
-    }
 
     }
 

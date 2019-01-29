@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
  * @author Theo Ruys
  * @version 2005.02.21
  */
-public class Client implements ClientOrServer{
+public class Client implements ClientOrServer {
     public static final CommandReader.Type state = CommandReader.Type.CLIENT;
     static Thread streamInputHandler;
     private Thread terminalInputHandler;
@@ -59,11 +59,11 @@ public class Client implements ClientOrServer{
     }
 
     // TODO fix null pointer passing
-    public Peer getPeer(){
+    public Peer getPeer() {
         return clientPeer;
     }
 
-    public void sendMessages(String  s){
+    public void sendMessages(String s) {
         clientPeer.sendMessage(s);
     }
 
@@ -75,13 +75,16 @@ public class Client implements ClientOrServer{
     // TODO Implement
     @Override
     public void shutDown() {
-        running = false;
+
+        clientPeer.close();
+
         try {
             terminalInputHandler.join();
-            clientPeer.streamInputHandler.join();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            System.out.println("Error in closing terminal input thread");
         }
+        running = false;
 
     }
 } // end of class Connection.Client

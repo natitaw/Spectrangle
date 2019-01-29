@@ -57,7 +57,7 @@ public class Server implements Runnable,ClientOrServer {
         }
     }
 
-    // TODO A
+    // TODO sort
     public void sendMessages(String s){
         for (Peer p : peerList) {
             p.sendMessage(s);
@@ -65,19 +65,16 @@ public class Server implements Runnable,ClientOrServer {
     }
 
     public void shutDown() {
-        running = false;
+        for (Peer p : peerList) {
+            p.close();
+        }
         try {
             terminalInputHandler.join();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            System.out.println("Error in closing terminal input thread");
         }
-        for (Peer p : peerList) {
-            try {
-                p.streamInputHandler.join();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
+        running = false;
     }
 
 } // end of class Connection.Server
