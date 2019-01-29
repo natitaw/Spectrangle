@@ -1,4 +1,8 @@
-package connection;
+package connection.server;
+
+import connection.ClientOrServer;
+import connection.Peer;
+import connection.TerminalInputHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -6,7 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Server implements Runnable,ClientOrServer {
+public class Server implements Runnable, ClientOrServer {
     public static final Type type = ClientOrServer.Type.SERVER;
 
     // TODO encapsulate
@@ -19,6 +23,7 @@ public class Server implements Runnable,ClientOrServer {
     private volatile boolean running;
     Thread newConnectionThread;
     public Room lobby;
+    public List<Room> roomList;
 
     public synchronized boolean getRunning(){
         return this.running;
@@ -40,7 +45,12 @@ public class Server implements Runnable,ClientOrServer {
         newConnectionThread.start();
         terminalInputHandlerThread = new Thread(new TerminalInputHandler(this));
         terminalInputHandlerThread.start();
-        lobby = new Room(0);
+
+        // zero index of roomlist should always have lobby
+        roomList = new ArrayList<>();
+
+        lobby = newRoom();
+
         System.out.println("Server successfully started on port " + port);
     }
 
@@ -48,8 +58,14 @@ public class Server implements Runnable,ClientOrServer {
         return peerList;
     }
 
+    public Room newRoom(){
+        Room tempRoom = new Room(roomList.size());
+        roomList.add(tempRoom);
+        return tempRoom;
+    }
+
     /**
-     * Starts a connection.Server-application.
+     * Starts a connection.server.Server-application.
      */
     public void run() {
 
@@ -127,4 +143,4 @@ public class Server implements Runnable,ClientOrServer {
 
     }
 
-} // end of class connection.Server
+} // end of class connection.server.Server

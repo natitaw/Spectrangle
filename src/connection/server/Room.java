@@ -1,11 +1,13 @@
-package connection;
+package connection.server;
+
+import connection.Peer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Room {
 
-    private int roomNumber;
+    private final int roomNumber;
     private List<Peer> peerList;
 
     public Room(int nr, List<Peer> peers) {
@@ -15,7 +17,7 @@ public class Room {
     }
 
     public Room(int nr) {
-        this(nr, new ArrayList<Peer>());
+        this(nr, new ArrayList<>());
     }
 
     public List<Peer> getPeerList() {
@@ -36,9 +38,5 @@ public class Room {
 
     public int getRoomNumber() {
         return roomNumber;
-    }
-
-    public void setRoomNumber(int roomNumber) {
-        this.roomNumber = roomNumber;
     }
 }

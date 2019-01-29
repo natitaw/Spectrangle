@@ -1,4 +1,4 @@
-import connection.Client;
+import connection.client.Client;
 
 import java.util.Scanner;
 

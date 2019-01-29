@@ -1,5 +1,7 @@
 package connection;
 
+import connection.server.Room;
+
 import java.io.*;
 import java.net.Socket;
 

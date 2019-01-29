@@ -1,5 +1,8 @@
 package connection;
 
+import connection.server.Server;
+import connection.server.ServerCommands;
+
 import java.util.Arrays;
 
 public class CommandReader {

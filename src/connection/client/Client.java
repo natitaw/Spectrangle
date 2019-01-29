@@ -1,4 +1,8 @@
-package connection;
+package connection.client;
+
+import connection.ClientOrServer;
+import connection.Peer;
+import connection.TerminalInputHandler;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -6,7 +10,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- * connection.Client class for a simple client-server application
+ * connection.client.Client class for a simple client-server application
  *
  * @author Theo Ruys
  * @version 2005.02.21
@@ -19,7 +23,7 @@ public class Client implements ClientOrServer {
     private volatile boolean running;
 
     /**
-     * Starts a connection.Client application.
+     * Starts a connection.client.Client application.
      */
     public Client(String ip) {
         connect(ip);
@@ -95,4 +99,4 @@ public class Client implements ClientOrServer {
 
 
     }
-} // end of class connection.Client
+} // end of class connection.client.Client
