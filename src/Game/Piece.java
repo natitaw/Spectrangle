@@ -3,6 +3,12 @@ package Game;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Java Class representing a Piece (tile) of a Spectrangle game
+ * 
+ * @author Group4
+ *
+ */
 public class Piece {
 
 	private int point;
@@ -28,11 +34,12 @@ public class Piece {
 
 	// TODO: add color check functionality
 
-	/*
+	/**
 	 * rotate() This function rotates the Piece object Note: flipping is not taken
 	 * into account
+	 * 
+	 * @return
 	 */
-
 	public Piece rotate() {
 
 		Collections.swap(orientation, 0, 2);
@@ -43,17 +50,18 @@ public class Piece {
 		this.left = orientation.get(0);
 		this.right = orientation.get(1);
 		this.bottom = orientation.get(2);
-		
+
 		return this;
 
 	}
 
-	/*
-	 * Function that rotates tile twice might be useful
+	/**
+	 * Rotate twice
+	 * @return
 	 */
 
 	public Piece rotate2x() {
-		
+
 		rotate();
 		rotate();
 
@@ -62,17 +70,21 @@ public class Piece {
 		this.left = orientation.get(0);
 		this.right = orientation.get(1);
 		this.bottom = orientation.get(2);
-		
+
 		return this;
 
 	}
-
+	/**
+	 * Return the orientaiton of this piece
+	 * @return
+	 */
 	public ArrayList<ColorDefinition> getOrientation() {
 		return this.orientation;
 	}
 
 	/**
 	 * Return the number of points of given tile
+	 * 
 	 * @return
 	 */
 	public int getPoint() {
@@ -81,6 +93,7 @@ public class Piece {
 
 	/**
 	 * Function to check if tile is joker
+	 * 
 	 * @return
 	 */
 	public boolean isJoker() {
@@ -89,11 +102,11 @@ public class Piece {
 
 	/**
 	 * Check if given Piece is the same as this Piece
+	 * 
 	 * @param p
 	 * @return
 	 */
 	public boolean isSamePiece(Piece p) {
-		return (this.equals(p) || this.equals(p.rotate())
-				|| this.equals(p.rotate2x()));
+		return (this.equals(p) || this.equals(p.rotate()) || this.equals(p.rotate2x()));
 	}
 }

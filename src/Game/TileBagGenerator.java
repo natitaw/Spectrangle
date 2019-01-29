@@ -2,6 +2,13 @@ package Game;
 
 import java.util.ArrayList;
 
+/**
+ * Tile Bag Generator. Generates a bag of Piece(tile)
+ * 
+ * @author User
+ *
+ */
+
 public class TileBagGenerator {
 
 	private ArrayList<Piece> pieces;
