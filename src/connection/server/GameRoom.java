@@ -26,7 +26,11 @@ public class GameRoom extends Room{
 
     public void startGame() {
         determineOrder();
+
+        // TODO implement game logic
+        // TODO change terminalinput state
     }
+
 
     public void determineOrder(){
         List<String> nameList = peerList.stream().map(Peer::getName).collect(Collectors.toList());
@@ -34,6 +38,11 @@ public class GameRoom extends Room{
 
         // Determine order
         // send chat message
+    }
+
+    // TODO make sure this gets called
+    public void peerDisconnected(){
+        // TODO Implement what happens here
     }
 
 }
