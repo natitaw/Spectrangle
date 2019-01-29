@@ -6,18 +6,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-import game.TileBagGenerator;
+import game.TileBag;
 import game.Board;
 
-class TileBagGeneratorTest {
+class TileBagTest {
 	
-	private TileBagGenerator tg;
+	private TileBag tg;
 	private Board b;
 	
 	@BeforeEach
 	public void setup() {
 		this.b = new Board();
-		this.tg = new TileBagGenerator();
+		this.tg = new TileBag();
 	
 	}
 

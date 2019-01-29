@@ -12,7 +12,7 @@ public class Board {
 
 	public static final int DIM = 36; // loop t/m 35
 	private BoardLocation[] boardLocations;
-	private TileBagGenerator bag;
+	private TileBag bag;
 	private ArrayList<Piece> pieces;
 
 	/*
@@ -42,7 +42,7 @@ public class Board {
 			boardLocations[i] = new BoardLocation(i, bonusQuotient);
 		}
 
-		bag = new TileBagGenerator();
+		bag = new TileBag();
 		pieces = bag.getBag();
 
 	}
@@ -139,7 +139,7 @@ public class Board {
 	 * 
 	 * @return
 	 */
-	public TileBagGenerator getTileBag() {
+	public TileBag getTileBag() {
 		return this.bag;
 	}
 

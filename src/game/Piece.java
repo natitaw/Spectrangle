@@ -109,4 +109,9 @@ public class Piece {
 	public boolean isSamePiece(Piece p) {
 		return (this.equals(p) || this.equals(p.rotate()) || this.equals(p.rotate2x()));
 	}
+
+	@Override
+	public String toString(){
+		return PiecePrinter.printPiece(point,this.bottom.toString().charAt(0),this.left.toString().charAt(0),this.right.toString().charAt(0));
+	}
 }

@@ -1,11 +1,5 @@
 package game;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
-
 public class PiecePrinter {
     public static Integer value = 5;
 
@@ -15,11 +9,10 @@ public class PiecePrinter {
 
     public static void main(String[] args) {
         // This is an example of how to use the function below.
-        System.out.println(getBoardString(value, vertical, left, right));
+        System.out.println(printPiece(value, vertical, left, right));
     }
 
-
-    public static String getBoardString(Integer value, Character verticalIn, Character leftIn, Character rightIn) {
+    public static String printPiece(Integer value, Character verticalIn, Character leftIn, Character rightIn) {
         String right = rightIn.toString();
         String left = leftIn.toString();
         String vertical = verticalIn.toString();

@@ -9,15 +9,15 @@ import java.util.ArrayList;
  *
  */
 
-public class TileBagGenerator {
+public class TileBag {
 
 	private ArrayList<Piece> pieces;
 
 	/**
-	 * TileBagGenerator This class generates a bag with 36 tiles according to the
+	 * TileBag This class generates a bag with 36 tiles according to the
 	 * rules of Spectrangle
 	 */
-	public TileBagGenerator() {
+	public TileBag() {
 		this.pieces = new ArrayList<>();
 		populateBag();
 	}
@@ -28,7 +28,7 @@ public class TileBagGenerator {
 	 * @return
 	 */
 	public Piece getRandomPiece() {
-		int random = (int) (Math.random() * 36 + 1);
+		int random = (int) (Math.random() * this.pieces.size() - 1);
 		Piece p = pieces.get(random);
 		pieces.remove(random);
 		return p;
