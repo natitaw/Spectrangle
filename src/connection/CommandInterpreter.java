@@ -57,9 +57,17 @@ public class CommandInterpreter {
                 case "move":
                     //
                     break;
+                case "skip":
+                    // sent if player is allowed to skip?
+                    break;
+                case "player":
+                    // player left
+                    // player skipped
+                    break;
+                case "game":
+                    // game finished
+                    break;
                 case "chat":
-                    //
-                    //
                     String sender = args[0];
                     String[] messageArray = Arrays.copyOfRange(args, 1, args.length);
                     String message = String.join(" ", messageArray);

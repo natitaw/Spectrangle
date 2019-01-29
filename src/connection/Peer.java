@@ -84,6 +84,10 @@ public class Peer implements Runnable {
         this.preferredNrOfPlayers = preferredNrOfPlayers;
     }
 
+    public boolean isRunning() {
+        return running;
+    }
+
     /**
      * Reads strings of the stream of the socket-connection and
      * writes the characters to the default output.
