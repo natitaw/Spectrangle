@@ -8,7 +8,7 @@ public class ClientMain {
         System.out.println("Welcome to our Spectrangle client. ");
         System.out.println("");
         System.out.println("What would you like to do? Type one of the numbers below to continue.");
-        System.out.println("[1] Play Multiplayer    [2] Play Singleplayer   [3] Change Settings     [4] Quit");
+        System.out.println("[1] Play Multiplayer    [2] Play Singleplayer   [3] Connect AI to server     [4] Quit");
         Scanner scanner = new Scanner(System.in);
         boolean choiceMade = false;
         while (!choiceMade) {
@@ -23,7 +23,7 @@ public class ClientMain {
                     choiceMade=true;
                     break;
                 case 3:
-                    settings();
+                    playAsAI();
                     choiceMade=true;
                     break;
                 case 4:
@@ -36,11 +36,9 @@ public class ClientMain {
         }
     }
 
-    private static void settings() {
-        // TODO Implement settings
-        // preferred name
-        // enable chat
-        // preferred game size
+    private static void playAsAI() {
+        // TODO Implement AI
+
     }
 
 
@@ -59,6 +57,7 @@ public class ClientMain {
 
         String ip = scanner.nextLine();
         Client clientObject = new Client(ip);
+
         while (clientObject.getRunning()){
             try {
                 Thread.sleep(1000);
@@ -67,8 +66,11 @@ public class ClientMain {
             }
         }
 
+
         // go back to main menu on disconnect
         clearScreen();
+
+        System.out.println("The server has disconnected. Returned to main menu.");
 
         String[] mainArgs = {""};
         main(mainArgs);

@@ -69,8 +69,7 @@ public class CommandReader {
                     break;
                 default:
                     if (Settings.debug) {
-                        System.out.println("Server sent a command that was ignored:");
-                        System.out.println(inputString);
+                        System.out.println(peer.getName() + " sent an unknown command that was ignored: " + inputString);
                     }
                     break;
             }
@@ -100,8 +99,7 @@ public class CommandReader {
                     break;
                 default:
                     if (Settings.debug) {
-                        System.out.println(peer.getName() + " sent a command that was ignored:");
-                        System.out.println(inputString);
+                        System.out.println(peer.getName() + " sent an unknown command that was ignored: " + inputString);
                     }
                     break;
             }
