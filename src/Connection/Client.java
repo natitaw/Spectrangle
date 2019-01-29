@@ -14,9 +14,9 @@ import java.net.UnknownHostException;
 public class Client implements ClientOrServer {
     public static final Type type = ClientOrServer.Type.CLIENT;
     static Thread streamInputHandler;
-    private Thread terminalInputHandler;
+    private Thread terminalInputHandlerThread;
     private Peer clientPeer;
-    private boolean running = false;
+    private volatile boolean running;
 
     /**
      * Starts a Connection.Client application.
@@ -49,12 +49,12 @@ public class Client implements ClientOrServer {
                 + " and port " + port);
         }
 
-        running = true;
+        this.running = true;
 
         // create Connection.Peer object and start the two-way communication
-        clientPeer = new Peer(sock, type);
-        terminalInputHandler = new Thread(new TerminalInputHandler(this));
-        terminalInputHandler.start();
+        clientPeer = new Peer(sock, type, this);
+        terminalInputHandlerThread = new Thread(new TerminalInputHandler(this));
+        terminalInputHandlerThread.start();
         System.out.println("Connected to server");
     }
 
@@ -68,23 +68,27 @@ public class Client implements ClientOrServer {
     }
 
     @Override
-    public boolean getRunning() {
+    public synchronized boolean getRunning() {
         return this.running;
     }
 
     // TODO Implement
     @Override
     public void shutDown() {
+        this.running = false;
+        clientPeer.setRunning(false);
 
-        clientPeer.close();
-
+        System.out.println("Trying to shut down");
         try {
-            terminalInputHandler.join();
-        } catch (InterruptedException e) {
+            terminalInputHandlerThread.interrupt(); // TODO this is not a very neat way of doing it
+            System.out.println("Closed terminal input handling thread");
+        } catch (Exception e) {
             Thread.currentThread().interrupt();
             System.out.println("Error in closing terminal input thread");
         }
-        running = false;
+        clientPeer.close();
+
+
 
     }
 } // end of class Connection.Client

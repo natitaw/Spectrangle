@@ -11,12 +11,13 @@ public class Peer implements Runnable {
     private Socket sock;
     private BufferedReader in;
     private PrintWriter out;
-    boolean running;
+    private volatile boolean running;
     private CommandReader reader;
     private Thread streamInputHandler;
     private String name;
     private boolean chatEnabled;
     private int currentRoom;
+    private ClientOrServer parent;
 
     public Thread getStreamInputHandler() {
         return streamInputHandler;
@@ -26,15 +27,16 @@ public class Peer implements Runnable {
      * Constructor. creates a peer object based in the given parameters.
      * @param   sockArg Socket of the Connection.Peer-proces
      */
-    public Peer(Socket sockArg, ClientOrServer.Type type)
+    public Peer(Socket sockArg, ClientOrServer.Type type, ClientOrServer parentInput)
     {
         try {
-        sock = sockArg;
-        currentRoom=0; // set current "room" to lobby = all communication gets sent
-        in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-        out = new PrintWriter(sock.getOutputStream(), true);
-        running = true;
-        reader = new CommandReader(type);
+            parent=parentInput;
+            sock = sockArg;
+            currentRoom=0; // set current "room" to lobby = all communication gets sent
+            in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+            out = new PrintWriter(sock.getOutputStream(), true);
+            this.running = true;
+            reader = new CommandReader(type);
 
 
 
@@ -50,6 +52,7 @@ public class Peer implements Runnable {
             }
 
         } catch (IOException e) {
+            System.out.println("Error in starting peer");
             e.printStackTrace();
         }
     }
@@ -70,12 +73,19 @@ public class Peer implements Runnable {
         this.currentRoom = currentRoom;
     }
 
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
     /**
      * Reads strings of the stream of the socket-connection and
      * writes the characters to the default output.
      */
+
+
+
     public void run() {
-        while (running) {
+        while (running && parent.getRunning()) {
         try {
             String s1 = in.readLine();
             if (s1 == null || s1 == "") {
@@ -85,9 +95,7 @@ public class Peer implements Runnable {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
-            running=false;
-            close();
+            System.out.println(e.getMessage());
     }
     } }
 
@@ -114,22 +122,18 @@ public class Peer implements Runnable {
      * Closes the connection, the sockets will be terminated
      */
     public void close() {
-        running=false;
-        try {
-            streamInputHandler.join();
-            System.out.println("Connection reading thread for " + name + "closed");
-        } catch (InterruptedException e) {
-            System.out.println("Error in closing connection thread for " + name);
+        this.running=false;
 
-        }
-
+        streamInputHandler.interrupt(); // todo ERROR HAPPENS HERE
+        System.out.println("Connection reading thread for " + name + " closed");
         try {
             sock.close();
-            System.out.println("Socket for connection " + name + "closed");
+            System.out.println("Socket for connection " + name + " closed");
         } catch (IOException e) {
             System.out.println("Error in closing socket for " + name);
 
         }
+
 
     }
 

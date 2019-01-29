@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 
 public class TerminalInputHandler implements Runnable{
     ClientOrServer parent;
+    private boolean running = true;
     public TerminalInputHandler(ClientOrServer inputParent) {
         this.parent=inputParent;
     }
@@ -29,10 +30,11 @@ public class TerminalInputHandler implements Runnable{
 
     @Override
     public void run() {
-        while (parent.getRunning()) {
+        while (parent.getRunning() && running) {
             String s = readString("");
             if (s.equals("EXIT")) {
                 parent.shutDown();
+                running=false;
             } else {
                 parent.sendMessages(s);
             }

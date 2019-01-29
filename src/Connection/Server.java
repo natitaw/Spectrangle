@@ -16,9 +16,10 @@ public class Server implements Runnable,ClientOrServer {
     String name;
     ServerSocket serverSock;
     List<Peer> peerList;
-    private boolean running;
+    private volatile boolean running;
+    Thread newConnectionThread;
 
-    public boolean getRunning(){
+    public synchronized boolean getRunning(){
         return this.running;
     }
 
@@ -27,12 +28,14 @@ public class Server implements Runnable,ClientOrServer {
         name = "name";
         serverSock = null;
         peerList = new ArrayList<>();
-        running = true;
+        this.running = true;
         try {
             serverSock = new ServerSocket(port);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        newConnectionThread = new Thread(this);
+        newConnectionThread.start();
         terminalInputHandlerThread = new Thread(new TerminalInputHandler(this));
         terminalInputHandlerThread.start();
     }
@@ -49,10 +52,10 @@ public class Server implements Runnable,ClientOrServer {
 
                 sock = serverSock.accept();
                 System.out.println("New unknown client connected");
-                peerList.add(new Peer(sock, state));
+                peerList.add(new Peer(sock, state, this));
 
             } catch (IOException e) {
-                System.out.println("ERROR: could not create a socket on " + port);
+                System.out.println("Thread was unable to create socket.");
             }
 
 
@@ -67,16 +70,30 @@ public class Server implements Runnable,ClientOrServer {
     }
 
     public void shutDown() {
+        this.running = false;
         for (Peer p : peerList) {
+            p.setRunning(false);
             p.close();
         }
+
+        newConnectionThread.interrupt();
+
         try {
-            terminalInputHandlerThread.join();
-        } catch (InterruptedException e) {
+            serverSock.close();
+            System.out.println("Server socket closed");
+        } catch (IOException e) {
+            System.out.println("Error in closing server socket. Printing error");
+            e.printStackTrace();
+        }
+
+        try {
+            terminalInputHandlerThread.interrupt();
+            System.out.println("Terminal input handling thread closed");
+        } catch (Exception e) {
             Thread.currentThread().interrupt();
             System.out.println("Error in closing terminal input thread");
         }
-        running = false;
+
     }
 
 } // end of class Connection.Server
