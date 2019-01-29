@@ -5,6 +5,7 @@ import connection.Peer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ServerCommands {
 
@@ -72,11 +73,17 @@ public class ServerCommands {
 
     public static void clientRequests(String[] args, Peer peer) {
         int preferredNrOfPlayers = Integer.parseInt(args[0]);
-        peer.setPreferredNrOfPlayers(preferredNrOfPlayers);
+
         if (preferredNrOfPlayers >= 1 && preferredNrOfPlayers <= 4) {
+            peer.setPreferredNrOfPlayers(preferredNrOfPlayers);
+
+            sendWaiting(peer);
+
+
+
             List<Peer> peerList = serverObject.getPeerList();
 
-
+            //Find other matching players and maybe start some games
             boolean endOfList = false;
             int nrOfMatchingPlayers = 0;
             List<Peer> matchingPeerList = new ArrayList<>();
@@ -100,17 +107,35 @@ public class ServerCommands {
             peer.sendMessage("invalid command");
         }
 
-        // check how many other players are also waiting for this amount in lobby (room 0)
-        // if amount==amount, execute "start with"
+    }
+
+    private static void sendWaiting(Peer peer) {
+        Room lobby = serverObject.getRoomList().get(0);
+        List<Peer> lobbyPeers = lobby.getPeerList();
+        List<String> waitingList = new ArrayList<>();
+        for (Peer otherPeer : lobbyPeers) {
+            if (otherPeer.getPreferredNrOfPlayers()==peer.getPreferredNrOfPlayers()) {
+                waitingList.add(otherPeer.getName());
+            }
+        }
+        String arg = String.join(" ", waitingList);
+        peer.sendMessage("waiting " + arg);
     }
 
     public static void startGame(List<Peer> peerList) {
+
         Room gameRoom = serverObject.newGameRoom();
         for (Peer p : peerList) {
             p.setPreferredNrOfPlayers(0);
             p.moveToRoom(gameRoom);
         }
-    }
 
+        // send start with message
+        List<String> nameList = peerList.stream().map(Peer::getName).collect(Collectors.toList());  // used some java 8 lambda / list comprehension magic here
+        String arg = String.join(" ", nameList);
+        String command = "start with " + arg;
+        serverObject.sendMessageToRoom(command, gameRoom, "start with");
+
+    }
 
 }

@@ -29,12 +29,14 @@ public class CommandReader {
             switch (command) {
                 //TODO Make case for 4 or 8 whitespaces
                 case "waiting":
-                    //
+                    // TODO implement
+                    System.out.println(inputString);
                     break;
                 case "start":
-                    //
-                    // THIS IS GOING TO HAVE "with"
-                    //
+                    if (args[0].equals("with")){
+                        // TODO implement
+                        System.out.println(inputString);
+                    }
                     break;
                 case "order":
                     //
