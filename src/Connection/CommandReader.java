@@ -4,13 +4,9 @@ import java.util.Arrays;
 
 public class CommandReader {
 
-    public enum Type {
-        CLIENT, SERVER
-    }
+    public ClientOrServer.Type readerState;
 
-    public Type readerState;
-
-    public CommandReader(Type stateInput){
+    public CommandReader(ClientOrServer.Type stateInput){
         this.readerState = stateInput;
     }
 
@@ -21,7 +17,7 @@ public class CommandReader {
         String command = seperateWords[0];
         String [] args = Arrays.copyOfRange(seperateWords, 1, seperateWords.length);
 
-        if (this.readerState== Type.CLIENT){
+        if (this.readerState== ClientOrServer.Type.CLIENT){
             switch (command) {
                 //TODO Make case for 4 or 8 whitespaces
                 case "waiting":
@@ -52,7 +48,7 @@ public class CommandReader {
                     }
                     break;
             }
-        } else if (this.readerState== Type.SERVER) {
+        } else if (this.readerState== ClientOrServer.Type.SERVER) {
             switch (command) {
                 //TODO Make case for 4 or 8 whitespaces
                 case "connect":

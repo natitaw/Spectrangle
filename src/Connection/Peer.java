@@ -14,7 +14,6 @@ public class Peer implements Runnable {
     boolean running;
     private CommandReader reader;
     private Thread streamInputHandler;
-    Thread terminalInputHandler;
     private String name;
     private boolean chatEnabled;
     private int currentRoom;
@@ -27,7 +26,7 @@ public class Peer implements Runnable {
      * Constructor. creates a peer object based in the given parameters.
      * @param   sockArg Socket of the Connection.Peer-proces
      */
-    public Peer(Socket sockArg, CommandReader.Type state)
+    public Peer(Socket sockArg, ClientOrServer.Type type)
     {
         try {
         sock = sockArg;
@@ -35,14 +34,14 @@ public class Peer implements Runnable {
         in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         out = new PrintWriter(sock.getOutputStream(), true);
         running = true;
-        reader = new CommandReader(state);
+        reader = new CommandReader(type);
 
 
 
             streamInputHandler = new Thread(this);
             streamInputHandler.start();
 
-            if (state== CommandReader.Type.CLIENT) {
+            if (type== ClientOrServer.Type.CLIENT) {
                 name="Server";
                 chatEnabled=true; // Client leaves all communication with its "Peer", the server, enabled by default
             } else {

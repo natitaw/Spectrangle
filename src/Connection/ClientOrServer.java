@@ -1,9 +1,13 @@
 package Connection;
 
 public interface ClientOrServer {
-    public void shutDown();
+    void shutDown();
 
-    public void sendMessages(String s);
+    void sendMessages(String s);
 
-    public boolean getRunning();
+    boolean getRunning();
+
+    enum Type {
+        CLIENT, SERVER
+    }
 }

@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Server implements Runnable,ClientOrServer {
-    public static final CommandReader.Type state = CommandReader.Type.SERVER;
-    static Thread streamInputHandler;
-    static Thread terminalInputHandler;
+    public static final Type state = ClientOrServer.Type.SERVER;
+
+    // TODO encapsulate
+    Thread streamInputHandler;
+    Thread terminalInputHandlerThread;
     int port;
     String name;
     ServerSocket serverSock;
@@ -31,8 +33,8 @@ public class Server implements Runnable,ClientOrServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        terminalInputHandler = new Thread(new TerminalInputHandler(this));
-        terminalInputHandler.start();
+        terminalInputHandlerThread = new Thread(new TerminalInputHandler(this));
+        terminalInputHandlerThread.start();
     }
 
     /**
@@ -69,7 +71,7 @@ public class Server implements Runnable,ClientOrServer {
             p.close();
         }
         try {
-            terminalInputHandler.join();
+            terminalInputHandlerThread.join();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             System.out.println("Error in closing terminal input thread");

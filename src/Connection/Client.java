@@ -12,7 +12,7 @@ import java.net.UnknownHostException;
  * @version 2005.02.21
  */
 public class Client implements ClientOrServer {
-    public static final CommandReader.Type state = CommandReader.Type.CLIENT;
+    public static final Type type = ClientOrServer.Type.CLIENT;
     static Thread streamInputHandler;
     private Thread terminalInputHandler;
     private Peer clientPeer;
@@ -52,7 +52,7 @@ public class Client implements ClientOrServer {
         running = true;
 
         // create Connection.Peer object and start the two-way communication
-        clientPeer = new Peer(sock, state);
+        clientPeer = new Peer(sock, type);
         terminalInputHandler = new Thread(new TerminalInputHandler(this));
         terminalInputHandler.start();
         System.out.println("Connected to server");
