@@ -16,9 +16,9 @@ public class Peer implements Runnable {
     private Thread streamInputHandler;
     private String name;
     private boolean chatEnabled;
-    private int currentRoom;
     private ClientOrServer parent;
     private int preferredNrOfPlayers;
+    private Room currentRoom;
 
     public Thread getStreamInputHandler() {
         return streamInputHandler;
@@ -33,7 +33,6 @@ public class Peer implements Runnable {
         try {
             parent=parentInput;
             sock = sockArg;
-            currentRoom=0; // set current "room" to lobby = all communication gets sent
             in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             out = new PrintWriter(sock.getOutputStream(), true);
             this.running = true;
@@ -59,20 +58,16 @@ public class Peer implements Runnable {
         }
     }
 
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
+
     public boolean getChatEnabled(){
         return this.chatEnabled;
     }
 
     public void setChatEnabled(boolean b){
         this.chatEnabled=b;
-    }
-
-    public int getCurrentRoom() {
-        return currentRoom;
-    }
-
-    public void setCurrentRoom(int currentRoom) {
-        this.currentRoom = currentRoom;
     }
 
     public void setRunning(boolean running) {
@@ -145,6 +140,14 @@ public class Peer implements Runnable {
         }
 
 
+    }
+
+    public void moveToRoom(Room room) {
+        if (this.currentRoom != null) {
+            currentRoom.removePeer(this);
+        }
+        room.addPeer(this);
+        currentRoom=room;
     }
 
     /** read a line from the default input */

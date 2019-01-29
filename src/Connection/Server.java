@@ -18,6 +18,7 @@ public class Server implements Runnable,ClientOrServer {
     private List<Peer> peerList;
     private volatile boolean running;
     Thread newConnectionThread;
+    public Room lobby;
 
     public synchronized boolean getRunning(){
         return this.running;
@@ -39,6 +40,7 @@ public class Server implements Runnable,ClientOrServer {
         newConnectionThread.start();
         terminalInputHandlerThread = new Thread(new TerminalInputHandler(this));
         terminalInputHandlerThread.start();
+        lobby = new Room(0);
         System.out.println("Server successfully started on port " + port);
     }
 
@@ -54,11 +56,15 @@ public class Server implements Runnable,ClientOrServer {
         // try to open a Socket to the server
         while (running) {
             Socket sock;
+            Peer newPeer;
             try {
 
                 sock = serverSock.accept();
                 System.out.println("New unknown client connected");
-                peerList.add(new Peer(sock, type, this));
+                newPeer = new Peer(sock, type, this);
+
+                newPeer.moveToRoom(lobby); // TODO Move this to room class
+                peerList.add(newPeer);
 
             } catch (IOException e) {
                 System.out.println("Thread was unable to create socket.");
@@ -75,9 +81,9 @@ public class Server implements Runnable,ClientOrServer {
         }
     }
 
-    public void sendMessageToRoom(String command, int room, String commandType){
-        for (Peer p : peerList) {
-            if (p.getCurrentRoom()==room){
+    public void sendMessageToRoom(String command, Room room, String commandType){
+        for (Peer p : room.getPeerList()) {
+
                 if (commandType.equals("chat")){
                     if (p.getChatEnabled()){
                         p.sendMessage(command);
@@ -85,7 +91,7 @@ public class Server implements Runnable,ClientOrServer {
                 } else {
                     p.sendMessage(command);
                 }
-            }
+
 
         }
     }

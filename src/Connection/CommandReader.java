@@ -36,7 +36,10 @@ public class CommandReader {
                 case "order":
                     //
                     break;
-
+                case "welcome":
+                    // TODO implement
+                    System.out.println(inputString);
+                    break;
                 case "replace":
                     //
                     break;
