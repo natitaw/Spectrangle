@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Server implements Runnable,ClientOrServer {
-    public static final Type state = ClientOrServer.Type.SERVER;
+    public static final Type type = ClientOrServer.Type.SERVER;
 
     // TODO encapsulate
     Thread streamInputHandler;
@@ -38,6 +38,7 @@ public class Server implements Runnable,ClientOrServer {
         newConnectionThread.start();
         terminalInputHandlerThread = new Thread(new TerminalInputHandler(this));
         terminalInputHandlerThread.start();
+        System.out.println("Server successfully started on port " + port);
     }
 
     /**
@@ -52,7 +53,7 @@ public class Server implements Runnable,ClientOrServer {
 
                 sock = serverSock.accept();
                 System.out.println("New unknown client connected");
-                peerList.add(new Peer(sock, state, this));
+                peerList.add(new Peer(sock, type, this));
 
             } catch (IOException e) {
                 System.out.println("Thread was unable to create socket.");
@@ -63,10 +64,14 @@ public class Server implements Runnable,ClientOrServer {
     }
 
     // TODO sort
-    public void sendMessages(String s){
+    public void sendMessageToAll(String s){
         for (Peer p : peerList) {
             p.sendMessage(s);
         }
+    }
+
+    public Type getType(){
+        return this.type;
     }
 
     public void shutDown() {

@@ -4,10 +4,12 @@ import java.util.Arrays;
 
 public class CommandReader {
 
-    public ClientOrServer.Type readerState;
+    public ClientOrServer parent;
+    public ClientOrServer.Type parentType;
 
-    public CommandReader(ClientOrServer.Type stateInput){
-        this.readerState = stateInput;
+    public CommandReader(ClientOrServer parentInput){
+        this.parent = parentInput;
+        this.parentType=parent.getType();
     }
 
     public void read(String inputString, Peer peer) {
@@ -17,7 +19,7 @@ public class CommandReader {
         String command = seperateWords[0];
         String [] args = Arrays.copyOfRange(seperateWords, 1, seperateWords.length);
 
-        if (this.readerState== ClientOrServer.Type.CLIENT){
+        if (this.parentType== ClientOrServer.Type.CLIENT){
             switch (command) {
                 //TODO Make case for 4 or 8 whitespaces
                 case "waiting":
@@ -48,7 +50,7 @@ public class CommandReader {
                     }
                     break;
             }
-        } else if (this.readerState== ClientOrServer.Type.SERVER) {
+        } else if (this.parentType== ClientOrServer.Type.SERVER) {
             switch (command) {
                 //TODO Make case for 4 or 8 whitespaces
                 case "connect":

@@ -45,6 +45,6 @@ public enum ColorDefinition {
 		public String toString() {
 			return "WHITE";
 		}
-	}; 
+	}
 
 }

@@ -36,7 +36,7 @@ public class TerminalInputHandler implements Runnable{
                 parent.shutDown();
                 running=false;
             } else {
-                parent.sendMessages(s);
+                parent.sendMessageToAll(s);
             }
         }
     }

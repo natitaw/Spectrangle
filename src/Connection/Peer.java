@@ -88,7 +88,7 @@ public class Peer implements Runnable {
         while (running && parent.getRunning()) {
         try {
             String s1 = in.readLine();
-            if (s1 == null || s1 == "") {
+            if (s1 == null || s1.equals("")) {
                 close();
             } else {
                 reader.read(s1, this);

@@ -32,7 +32,8 @@ class PieceTest {
 		right = p.getOrientation().get(1);
 		bottom = p.getOrientation().get(2);
 		
-		this.p2 = new Piece(bottom, left, right, p.getPoint());
+		this.p2 = new Piece(left, right, bottom, p.getPoint());
+
 		}
 
 	@Test

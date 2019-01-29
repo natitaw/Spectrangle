@@ -63,13 +63,17 @@ public class Client implements ClientOrServer {
         return clientPeer;
     }
 
-    public void sendMessages(String s) {
+    public void sendMessageToAll(String s) {
         clientPeer.sendMessage(s);
     }
 
     @Override
     public synchronized boolean getRunning() {
         return this.running;
+    }
+
+    public Type getType(){
+        return this.type;
     }
 
     // TODO Implement
