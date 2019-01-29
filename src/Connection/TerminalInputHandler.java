@@ -1,19 +1,19 @@
 package Connection;
 
 public class TerminalInputHandler implements Runnable{
-    Server server;
-    public TerminalInputHandler(Server inputServer) {
-        this.server=inputServer;
+    ClientOrServer parent;
+    public TerminalInputHandler(ClientOrServer inputParent) {
+        this.parent=inputParent;
     }
 
     @Override
     public void run() {
-        while (server.getRunning()) {
+        while (parent.getRunning()) {
             String s = Peer.readString("");
             if (s.equals("EXIT")) {
-                server.shutDown();
+                parent.shutDown();
             } else {
-                server.sendMessages(s);
+                parent.sendMessages(s);
             }
         }
     }

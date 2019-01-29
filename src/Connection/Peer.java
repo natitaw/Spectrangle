@@ -2,8 +2,6 @@ package Connection;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketException;
-import java.util.Scanner;
 
 //TODO fix exception on shutdown
 
@@ -25,7 +23,7 @@ public class Peer implements Runnable {
      * Constructor. creates a peer object based in the given parameters.
      * @param   sockArg Socket of the Connection.Peer-proces
      */
-    public Peer(Socket sockArg, CommandReader.State state)
+    public Peer(Socket sockArg, CommandReader.Type state)
     {
         try {
         sock = sockArg;
@@ -40,11 +38,11 @@ public class Peer implements Runnable {
             streamInputHandler = new Thread(this);
             streamInputHandler.start();
 
-            if (state== CommandReader.State.CLIENT) {
-                terminalInputHandler = new Thread(peerReader);
-                terminalInputHandler.start();
+            if (state== CommandReader.Type.CLIENT) {
+                //terminalInputHandler = new Thread(peerReader);
+                //terminalInputHandler.start();
                 name="Server";
-                chatEnabled=true;
+                chatEnabled=true; // Client leaves all communication with its "Peer", the server, enabled by default
             } else {
                 name="Unknown client";
                 chatEnabled=false;

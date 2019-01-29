@@ -12,10 +12,11 @@ import java.net.UnknownHostException;
  * @version 2005.02.21
  */
 public class Client implements ClientOrServer{
-    public static final CommandReader.State state = CommandReader.State.CLIENT;
+    public static final CommandReader.Type state = CommandReader.Type.CLIENT;
     static Thread streamInputHandler;
-    static Thread terminalInputHandler;
+    private Thread terminalInputHandler;
     private Peer clientPeer;
+    private boolean running = false;
 
     /**
      * Starts a Connection.Client application.
@@ -39,6 +40,7 @@ public class Client implements ClientOrServer{
             System.exit(0);
         }
 
+
         // try to open a Socket to the server
         try {
             sock = new Socket(addr, port);
@@ -47,8 +49,12 @@ public class Client implements ClientOrServer{
                 + " and port " + port);
         }
 
+        running = true;
+
         // create Connection.Peer object and start the two-way communication
         clientPeer = new Peer(sock, state);
+        terminalInputHandler = new Thread(new TerminalInputHandler(this));
+        terminalInputHandler.start();
         System.out.println("Connected to server");
     }
 
@@ -57,6 +63,25 @@ public class Client implements ClientOrServer{
         return clientPeer;
     }
 
-    public void
+    public void sendMessages(String  s){
+        clientPeer.sendMessage(s);
+    }
 
+    @Override
+    public boolean getRunning() {
+        return this.running;
+    }
+
+    // TODO Implement
+    @Override
+    public void shutDown() {
+        running = false;
+        try {
+            terminalInputHandler.join();
+            clientPeer.streamInputHandler.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+    }
 } // end of class Connection.Client

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Server implements Runnable,ClientOrServer {
-    public static final CommandReader.State state = CommandReader.State.SERVER;
+    public static final CommandReader.Type state = CommandReader.Type.SERVER;
     static Thread streamInputHandler;
     static Thread terminalInputHandler;
     int port;
