@@ -18,6 +18,7 @@ public class Peer implements Runnable {
     private boolean chatEnabled;
     private int currentRoom;
     private ClientOrServer parent;
+    private int preferredNrOfPlayers;
 
     public Thread getStreamInputHandler() {
         return streamInputHandler;
@@ -49,6 +50,7 @@ public class Peer implements Runnable {
             } else {
                 name="Unknown client";
                 chatEnabled=false;
+                preferredNrOfPlayers =0;
             }
 
         } catch (IOException e) {
@@ -75,6 +77,14 @@ public class Peer implements Runnable {
 
     public void setRunning(boolean running) {
         this.running = running;
+    }
+
+    public int getPreferredNrOfPlayers() {
+        return preferredNrOfPlayers;
+    }
+
+    public void setPreferredNrOfPlayers(int preferredNrOfPlayers) {
+        this.preferredNrOfPlayers = preferredNrOfPlayers;
     }
 
     /**

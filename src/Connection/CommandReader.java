@@ -10,6 +10,9 @@ public class CommandReader {
     public CommandReader(ClientOrServer parentInput){
         this.parent = parentInput;
         this.parentType=parent.getType();
+        if (parentType== ClientOrServer.Type.SERVER){
+            ServerCommands.setServerObject((Server) parent);
+        }
     }
 
     public void read(String inputString, Peer peer) {
@@ -62,7 +65,7 @@ public class CommandReader {
                     ServerCommands.clientConnects(args,peer);
                     break;
                 case "request":
-                    //
+                    ServerCommands.clientRequests(args,peer);
                     break;
                 case "place":
                     //
@@ -77,7 +80,7 @@ public class CommandReader {
                     //
                     break;
                 case "chat":
-                    ServerCommands.sendChat(args, peer, (Server) parent);
+                    ServerCommands.sendChat(args, peer);
                     break;
                 default:
                     if (Settings.debug) {

@@ -1,9 +1,16 @@
 package Connection;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ServerCommands {
 
+    private static Server serverObject;
+
+    public static void setServerObject(Server inputServerObject) {
+        serverObject = inputServerObject;
+    }
 
     public static void clientConnects(String[] args, Peer peer){
         if (args.length > 2) {
@@ -38,7 +45,7 @@ public class ServerCommands {
 
     }
 
-    public static void sendChat(String[] args, Peer sendingPeer, Server serverObject) {
+    public static void sendChat(String[] args, Peer sendingPeer) {
         if (sendingPeer.getChatEnabled()) {
             int room=sendingPeer.getCurrentRoom();
             String content = String.join(" ", args);
@@ -48,4 +55,49 @@ public class ServerCommands {
             sendingPeer.sendMessage("You do not have chat enabled");
         }
     }
+
+    public static void clientRequests(String[] args, Peer peer) {
+        int preferredNrOfPlayers = Integer.parseInt(args[0]);
+        peer.setPreferredNrOfPlayers(preferredNrOfPlayers);
+        if (preferredNrOfPlayers >= 1 && preferredNrOfPlayers <= 4){
+            List<Peer> peerList = serverObject.getPeerList();
+
+
+            boolean endOfList=false;
+            int nrOfMatchingPlayers = 0;
+            List<Peer> matchingPeerList = new ArrayList<>();
+            while (!endOfList) {
+                for (Peer p : peerList) {
+                    if (p==peerList.get(peerList.size() - 1)){
+                        endOfList = true;
+                    }
+                    if (p.getCurrentRoom() == 0 && p.getPreferredNrOfPlayers() == preferredNrOfPlayers) {
+                        nrOfMatchingPlayers++;
+                        matchingPeerList.add(p);
+                        if (nrOfMatchingPlayers == preferredNrOfPlayers) {
+                            startGame(matchingPeerList);
+                            break;
+                        }
+                    }
+                }
+
+            }
+        } else {
+            peer.sendMessage("invalid command");
+        }
+
+        // check how many other players are also waiting for this amount in lobby (room 0)
+        // if amount==amount, execute "start with"
+    }
+
+    public static void startGame(List<Peer> peerList){
+        for (Peer p : peerList){
+            p.setPreferredNrOfPlayers(0);
+            // TODO set current room one higher than what is currently used
+            p.setCurrentRoom();
+
+        }
+    }
+
+
 }

@@ -15,13 +15,14 @@ public class Server implements Runnable,ClientOrServer {
     int port;
     String name;
     ServerSocket serverSock;
-    List<Peer> peerList;
+    private List<Peer> peerList;
     private volatile boolean running;
     Thread newConnectionThread;
 
     public synchronized boolean getRunning(){
         return this.running;
     }
+
 
     public Server() {
         port = 4000;
@@ -39,6 +40,10 @@ public class Server implements Runnable,ClientOrServer {
         terminalInputHandlerThread = new Thread(new TerminalInputHandler(this));
         terminalInputHandlerThread.start();
         System.out.println("Server successfully started on port " + port);
+    }
+
+    public List<Peer> getPeerList() {
+        return peerList;
     }
 
     /**
