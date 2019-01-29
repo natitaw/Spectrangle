@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 
+import game.TileBag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,13 +26,15 @@ class PieceTest {
 	
 	@BeforeEach
 	public void setup() {
-		this.b = new Board();
+		this.b = new Board(new TileBag(36));
+		b.getTileBag().populateBag();
 		this.p = b.getTileBag().takeRandomPiece();
 		
 		left = p.getColors().get(0);
 		right = p.getColors().get(1);
 		bottom = p.getColors().get(2);
-		
+
+		// TODO Change order of bottom,left,right in all these tests
 		this.p2 = new Piece(left, bottom, right, p.getValue());
 
 		}
@@ -74,10 +77,10 @@ class PieceTest {
 		assertTrue(p.isSamePiece(p));
 		assertFalse(p.isSamePiece(p2));
 		
-		assertTrue(p.isSamePiece(p.rotate()));
-		assertTrue(p.isSamePiece(p.rotate2x()));
+		assertTrue(p.isSamePiece(p.getRotated()));
+		assertTrue(p.isSamePiece(p.getRotated2x()));
 		
-		assertFalse(p.isSamePiece(p2.rotate2x()));	
+		assertFalse(p.isSamePiece(p2.getRotated2x()));
 		
 	}
 	

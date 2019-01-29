@@ -117,6 +117,16 @@ public class Piece {
 
 	@Override
 	public String toString(){
-		return PiecePrinter.printPiece(value,this.bottom.toString().charAt(0),this.left.toString().charAt(0),this.right.toString().charAt(0));
+        String result = "";
+        for (int pieceColorIndex = 0; pieceColorIndex <= 2; pieceColorIndex++){
+            Character letter = orientation.get(pieceColorIndex).toString().charAt(0);
+            result.concat(letter.toString());
+        }
+        result.concat(Integer.toString(value));
+        return result;
 	}
+
+	public String print(){
+        return PiecePrinter.printPiece(value,this.bottom.toString().charAt(0),this.left.toString().charAt(0),this.right.toString().charAt(0));
+    }
 }

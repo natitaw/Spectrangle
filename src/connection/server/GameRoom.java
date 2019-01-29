@@ -83,12 +83,10 @@ public class GameRoom extends Room{
         for (Peer p : peerList) {
             String name = p.getName();
             for (int peerPieceIndex = 1; peerPieceIndex<= p.getTileBag().getNumberOfPieces(); peerPieceIndex++){
-                // TODO this is bottom, left right. Convert to left,bottom,right
-                for (int pieceColorIndex = 0; pieceColorIndex <= 2; pieceColorIndex++){
 
-                }
+                // piecestring is done here
             }
-            p.getTileBag().viewPiece(0).getColor(0)
+            p.getTileBag().viewPiece(0).getColor(0);
 
         if (mustSkip) {
             // change lastArg

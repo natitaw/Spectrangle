@@ -2,6 +2,7 @@ package test.GameTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import game.TileBag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,8 @@ class BoardTest {
 	
 	@BeforeEach
 	public void setup() {
-		this.b = new Board();
+		this.b = new Board(new TileBag(36));
+		b.getTileBag().populateBag();
 	}
 	
 	/**

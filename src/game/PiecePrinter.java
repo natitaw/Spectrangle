@@ -9,7 +9,14 @@ public class PiecePrinter {
 
     public static void main(String[] args) {
         // This is an example of how to use the function below.
-        System.out.println(printPiece(value, vertical, left, right));
+        System.out.println(printPiece("WWW1"));
+    }
+    
+    // TODO add method for WWW1 input
+    
+    public static String printPiece(String s){
+        int val = Integer.parseInt(String.valueOf(s.charAt(3)));
+        return printPiece(val, s.charAt(0), s.charAt(1), s.charAt(2));
     }
 
     public static String printPiece(Integer value, Character verticalIn, Character leftIn, Character rightIn) {

@@ -2,6 +2,7 @@ package test.GameTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import game.TileBag;
 import org.junit.jupiter.api.BeforeEach;
 
 import game.BoardLocation;
@@ -15,10 +16,11 @@ class BoardLocationTest {
 	private BoardLocation b2;
 	private Board b;
 	
-	
+
 	@BeforeEach
 	public void setup() {
-		this.b = new Board();
+		this.b = new Board(new TileBag(36));
+		b.getTileBag().populateBag();
 		//Normal Location
 		b.movePiece(0, b.getTileBag().takeRandomPiece());
 		b1 = b.getBoardLocation(0);
@@ -46,14 +48,14 @@ class BoardLocationTest {
 		b3.movePiece(b.getTileBag().takeRandomPiece());
 		assertNotNull(b3.getPiece());
 	}
-	
+
 	@Test
 	void testIsBonusLocation() {
 		assertTrue(b2.isBonusLocation());
 		assertFalse(b1.isBonusLocation());
 	}
 	
-	@Test 
+	@Test
 	void testIsEmptySpot() {
 		BoardLocation b4 = new BoardLocation(11, 1);
 		assertTrue(b4.isEmptySpot());

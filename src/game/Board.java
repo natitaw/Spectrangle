@@ -13,13 +13,15 @@ public class Board {
 	public static final int DIM = 36; // loop t/m 35
 	private BoardLocation[] boardLocations;
 	private ArrayList<Piece> pieces;
+	private TileBag tileBag;
 
 	/*
 	 * Generate a Board with the following attributes: an
 	 * ArrayList of pieces List of board locations with bonusQuotients
 	 */
 
-	public Board() {
+	public Board(TileBag t) {
+		this.tileBag = t;
 		this.boardLocations = new BoardLocation[DIM];
 
 		// populate the board
@@ -41,6 +43,14 @@ public class Board {
 			boardLocations[i] = new BoardLocation(i, bonusQuotient);
 		}
 
+	}
+
+	public TileBag getTileBag() {
+		return tileBag;
+	}
+
+	public void setTileBag(TileBag tileBag) {
+		this.tileBag = tileBag;
 	}
 
 	/**

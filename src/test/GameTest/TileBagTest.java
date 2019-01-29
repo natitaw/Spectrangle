@@ -16,8 +16,9 @@ class TileBagTest {
 	
 	@BeforeEach
 	public void setup() {
-		this.b = new Board();
-		this.tg = new TileBag();
+		this.b = new Board(new TileBag(36));
+		b.getTileBag().populateBag();
+		this.tg = b.getTileBag();
 	
 	}
 
