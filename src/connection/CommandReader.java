@@ -28,22 +28,27 @@ public class CommandReader {
         if (this.parentType== ClientOrServer.Type.CLIENT){
             switch (command) {
                 //TODO Make case for 4 or 8 whitespaces
+                //TODO Make case for wrong command
                 case "waiting":
-                    // TODO implement
-                    System.out.println(inputString);
+                    System.out.println("Waiting for game with requested amount of players.");
+                    System.out.println("Players in queue: " + String.join(", ", args));
                     break;
                 case "start":
                     if (args[0].equals("with")){
-                        // TODO implement
-                        System.out.println(inputString);
+                        String[] newargs = Arrays.copyOfRange(args, 1, args.length);
+                        System.out.println("Starting new game with: " + String.join(", ", newargs));
                     }
                     break;
                 case "order":
                     //
                     break;
                 case "welcome":
-                    // TODO implement
-                    System.out.println(inputString);
+                    System.out.print("Name change acknowledged");
+                    if (args.length > 1 && args[1].equals("chat")){
+                        System.out.print(", and chat has been enabled.\n");
+                    } else {
+                        System.out.print(".\n");
+                    }
                     break;
                 case "replace":
                     //
@@ -58,6 +63,9 @@ public class CommandReader {
                     String[] messageArray = Arrays.copyOfRange(args, 1, args.length);
                     String message = String.join(" ", messageArray);
                     System.out.println(sender + ": " + message);
+                    break;
+                case "invalid":
+                    //
                     break;
                 default:
                     if (Settings.debug) {
