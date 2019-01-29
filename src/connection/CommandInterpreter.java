@@ -28,6 +28,14 @@ public class CommandInterpreter {
         if (this.parentType== ClientOrServer.Type.CLIENT){
             switch (command) {
                 //TODO Make case for 4 or 8 whitespaces
+                case "welcome":
+                    System.out.print("Name change acknowledged");
+                    if (args.length > 1 && args[1].equals("chat")){
+                        System.out.print(", and chat has been enabled.\n");
+                    } else {
+                        System.out.print(".\n");
+                    }
+                    break;
                 case "waiting":
                     System.out.println("Waiting for game with requested amount of players.");
                     System.out.println("Players in queue: " + String.join(", ", args));
@@ -41,15 +49,8 @@ public class CommandInterpreter {
                     }
                     break;
                 case "order":
-                    // TODO NEXT
-                    break;
-                case "welcome":
-                    System.out.print("Name change acknowledged");
-                    if (args.length > 1 && args[1].equals("chat")){
-                        System.out.print(", and chat has been enabled.\n");
-                    } else {
-                        System.out.print(".\n");
-                    }
+                    // TODO print order nicely
+                    // TODO change terminalinput state to NOT_YOUR_TURN
                     break;
                 case "replace":
                     //

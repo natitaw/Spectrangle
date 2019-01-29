@@ -25,7 +25,7 @@ class TileBagTest {
 	void testGetRandomPiece() {
 		int a = tg.getBag().size();
 		assertEquals(a, tg.getBag().size());
-		assertNotNull(tg.getRandomPiece());
+		assertNotNull(tg.takeRandomPiece());
 		assertEquals(a - 1, tg.getBag().size());
 	}
 	
@@ -42,7 +42,7 @@ class TileBagTest {
 	@Test
 	void testGetNumberOfPieces() {
 		assertEquals(36, tg.getBag().size());
-		tg.getRandomPiece();
+		tg.takeRandomPiece();
 		assertEquals(35,tg.getBag().size());
 	}
 

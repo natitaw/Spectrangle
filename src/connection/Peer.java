@@ -1,13 +1,14 @@
 package connection;
 
 import connection.server.Room;
+import game.TileBag;
 
 import java.io.*;
 import java.net.Socket;
 
 //TODO fix exception on shutdown
 
-public class Peer implements Runnable {
+public class Peer implements Runnable, Comparable<Peer> {
     public static final String EXIT = "EXIT";
 
     private Socket sock;
@@ -21,6 +22,7 @@ public class Peer implements Runnable {
     private ClientOrServer parent;
     private int preferredNrOfPlayers;
     private Room currentRoom;
+    private TileBag tileBag;
 
     public Thread getStreamInputHandler() {
         return streamInputHandler;
@@ -86,6 +88,14 @@ public class Peer implements Runnable {
 
     public boolean isRunning() {
         return running;
+    }
+
+    public TileBag getTileBag() {
+        return tileBag;
+    }
+
+    public void setTileBag(TileBag tileBag) {
+        this.tileBag = tileBag;
     }
 
     /**
@@ -155,7 +165,10 @@ public class Peer implements Runnable {
 
     }
 
-
-
+    // used for sorting reasons in game logic
+    @Override
+    public int compareTo(Peer p) {
+        return this.name.compareTo(p.getName());
     }
+}
 

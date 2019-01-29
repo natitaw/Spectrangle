@@ -26,13 +26,13 @@ class PieceTest {
 	@BeforeEach
 	public void setup() {
 		this.b = new Board();
-		this.p = b.getTileBag().getRandomPiece();
+		this.p = b.getTileBag().takeRandomPiece();
 		
 		left = p.getOrientation().get(0);
 		right = p.getOrientation().get(1);
 		bottom = p.getOrientation().get(2);
 		
-		this.p2 = new Piece(left, bottom, right, p.getPoint());
+		this.p2 = new Piece(left, bottom, right, p.getValue());
 
 		}
 
@@ -58,7 +58,7 @@ class PieceTest {
 	@Test
 	void testGetPoint() {
 		Piece p4 = new Piece(left,right,bottom,4);
-		assertEquals(4, p4.getPoint());
+		assertEquals(4, p4.getValue());
 	}
 	
 	@Test

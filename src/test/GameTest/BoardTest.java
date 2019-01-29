@@ -32,7 +32,7 @@ class BoardTest {
 	@Test
 	void testIsEmptyLocation() {
 		assertTrue(b.isEmptyLocation(1));
-		b.movePiece(1, b.getTileBag().getRandomPiece());
+		b.movePiece(1, b.getTileBag().takeRandomPiece());
 		assertFalse(b.isEmptyLocation(1));
 	}
 	
@@ -49,11 +49,11 @@ class BoardTest {
 	}
 	
 	/**
-	 * Test if getPiece() method of Board works
+	 * Test if takePiece() method of Board works
 	 */
 	@Test
 	void testGetPiece() {
-		b.movePiece(1, b.getTileBag().getRandomPiece());
+		b.movePiece(1, b.getTileBag().takeRandomPiece());
 		assertNotNull(b.getPiece(1));
 	}
 	
@@ -62,7 +62,7 @@ class BoardTest {
 	 */
 	@Test
 	void testSetMove() {
-		b.setMove(1, b.getTileBag().getRandomPiece());
+		b.setMove(1, b.getTileBag().takeRandomPiece());
 		assertEquals(b.getPiece(1), b.getBoardLocation(1).getPiece());
 	}
 	
@@ -72,8 +72,8 @@ class BoardTest {
 	 */
 	@Test
 	void testIsValidMove() {
-		assertFalse(b.isValidMove(10, b.getTileBag().getRandomPiece()));
-		assertTrue(b.isValidMove(0, b.getTileBag().getRandomPiece()));
+		assertFalse(b.isValidMove(10, b.getTileBag().takeRandomPiece()));
+		assertTrue(b.isValidMove(0, b.getTileBag().takeRandomPiece()));
 		
 	}
 	
@@ -85,7 +85,7 @@ class BoardTest {
 	
 	@Test
 	void testMovePiece() {
-		b.movePiece(10, b.getTileBag().getRandomPiece());
+		b.movePiece(10, b.getTileBag().takeRandomPiece());
 		assertEquals(b.getPiece(10), b.getBoardLocation(10).getPiece());
 	}
 	
@@ -102,7 +102,7 @@ class BoardTest {
 	@Test
 	void testBoardIsEmpty() {
 		assertTrue(b.boardIsEmpty());
-		b.movePiece(0, b.getTileBag().getRandomPiece());
+		b.movePiece(0, b.getTileBag().takeRandomPiece());
 		assertFalse(b.boardIsEmpty());
 	}
 

@@ -11,27 +11,40 @@ import java.util.ArrayList;
 
 public class TileBag {
 
+	private int maxSize;
+
 	private ArrayList<Piece> pieces;
 
 	/**
-	 * TileBag This class generates a bag with 36 tiles according to the
+	 * TileBag This class generates a bag of size with 36 tiles according to the
 	 * rules of Spectrangle
 	 */
-	public TileBag() {
-		this.pieces = new ArrayList<>();
-		populateBag();
+	// TODO update javadoc here
+	public TileBag(int sizeInput) {
+		this.pieces = new ArrayList<>(sizeInput);
+		this.maxSize=sizeInput;
 	}
 
 	/**
-	 * getRandomPiece() returns a random tile from the tile bag generated
+	 * takeRandomPiece() returns a random tile from the tile bag generated
 	 * 
 	 * @return
 	 */
-	public Piece getRandomPiece() {
+	public Piece takeRandomPiece() {
 		int random = (int) (Math.random() * this.pieces.size() - 1);
 		Piece p = pieces.get(random);
 		pieces.remove(random);
 		return p;
+	}
+
+	public Piece takePiece(int index){
+		Piece p = pieces.get(index);
+		pieces.remove(index);
+		return p;
+	}
+
+	public void addPiece(Piece p){
+		pieces.add(p);
 	}
 
 	/**

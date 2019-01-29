@@ -87,7 +87,7 @@ public class Piece {
 	 * 
 	 * @return
 	 */
-	public int getPoint() {
+	public int getValue() {
 		return point;
 	}
 

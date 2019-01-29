@@ -155,7 +155,7 @@ public class Board {
 		if (isValidLocation(location) && isValidMove(location, piece)) {
 
 			boardLocations[location].movePiece(piece);
-			point = boardLocations[location].getScorePoint() * piece.getPoint();
+			point = boardLocations[location].getScorePoint() * piece.getValue();
 
 		}
 		return point;

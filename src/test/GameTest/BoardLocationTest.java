@@ -20,10 +20,10 @@ class BoardLocationTest {
 	public void setup() {
 		this.b = new Board();
 		//Normal Location
-		b.movePiece(0, b.getTileBag().getRandomPiece());
+		b.movePiece(0, b.getTileBag().takeRandomPiece());
 		b1 = b.getBoardLocation(0);
 		//Bonus Location
-		b.movePiece(10, b.getTileBag().getRandomPiece());
+		b.movePiece(10, b.getTileBag().takeRandomPiece());
 		b2 = b.getBoardLocation(10);
 	}
 
@@ -43,7 +43,7 @@ class BoardLocationTest {
 	void testMovePiece() {
 		BoardLocation b3 = new BoardLocation(11, 1);
 		assertNull(b3.getPiece());
-		b3.movePiece(b.getTileBag().getRandomPiece());
+		b3.movePiece(b.getTileBag().takeRandomPiece());
 		assertNotNull(b3.getPiece());
 	}
 	
@@ -57,7 +57,7 @@ class BoardLocationTest {
 	void testIsEmptySpot() {
 		BoardLocation b4 = new BoardLocation(11, 1);
 		assertTrue(b4.isEmptySpot());
-		b4.movePiece(b.getTileBag().getRandomPiece());
+		b4.movePiece(b.getTileBag().takeRandomPiece());
 		assertFalse(b4.isEmptySpot());
 	}
 
