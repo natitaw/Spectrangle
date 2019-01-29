@@ -70,6 +70,21 @@ public class Server implements Runnable,ClientOrServer {
         }
     }
 
+    public void sendMessageToRoom(String command, int room, String commandType){
+        for (Peer p : peerList) {
+            if (p.getCurrentRoom()==room){
+                if (commandType.equals("chat")){
+                    if (p.getChatEnabled()){
+                        p.sendMessage(command);
+                    }
+                } else {
+                    p.sendMessage(command);
+                }
+            }
+
+        }
+    }
+
     public Type getType(){
         return this.type;
     }

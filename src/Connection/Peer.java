@@ -36,7 +36,7 @@ public class Peer implements Runnable {
             in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             out = new PrintWriter(sock.getOutputStream(), true);
             this.running = true;
-            reader = new CommandReader(type);
+            reader = new CommandReader(parent);
 
 
 

@@ -17,7 +17,7 @@ public class CommandReader {
         // get first command
         String[] seperateWords = inputString.split("\\s+");
         String command = seperateWords[0];
-        String [] args = Arrays.copyOfRange(seperateWords, 1, seperateWords.length);
+        String[] args = Arrays.copyOfRange(seperateWords, 1, seperateWords.length);
 
         if (this.parentType== ClientOrServer.Type.CLIENT){
             switch (command) {
@@ -41,7 +41,12 @@ public class CommandReader {
                     //
                     break;
                 case "chat":
-                    //S
+                    //
+                    //
+                    String sender = args[0];
+                    String[] messageArray = Arrays.copyOfRange(args, 1, args.length);
+                    String message = String.join(" ", messageArray);
+                    System.out.println(sender + ": " + message);
                     break;
                 default:
                     if (Settings.debug) {
@@ -72,7 +77,7 @@ public class CommandReader {
                     //
                     break;
                 case "chat":
-                    ServerCommands.sendChat(args, peer);
+                    ServerCommands.sendChat(args, peer, (Server) parent);
                     break;
                 default:
                     if (Settings.debug) {
