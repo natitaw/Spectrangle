@@ -28,7 +28,6 @@ public class CommandInterpreter {
         if (this.parentType== ClientOrServer.Type.CLIENT){
             switch (command) {
                 //TODO Make case for 4 or 8 whitespaces
-                //TODO Make case for wrong command
                 case "waiting":
                     System.out.println("Waiting for game with requested amount of players.");
                     System.out.println("Players in queue: " + String.join(", ", args));
@@ -37,11 +36,12 @@ public class CommandInterpreter {
                     if (args[0].equals("with")){
                         String[] newargs = Arrays.copyOfRange(args, 1, args.length);
 
+                        TerminalInputHandler.clearScreen();
                         System.out.println("Starting new game with: " + String.join(", ", newargs));
                     }
                     break;
                 case "order":
-                    //
+                    // TODO NEXT
                     break;
                 case "welcome":
                     System.out.print("Name change acknowledged");

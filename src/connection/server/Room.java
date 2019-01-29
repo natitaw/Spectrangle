@@ -8,7 +8,7 @@ import java.util.List;
 public class Room {
 
     private final int roomNumber;
-    private List<Peer> peerList;
+    protected List<Peer> peerList;
 
     public Room(int nr, List<Peer> peers) {
         this.roomNumber = nr;

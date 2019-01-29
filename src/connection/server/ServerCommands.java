@@ -96,7 +96,7 @@ public class ServerCommands {
                         nrOfMatchingPlayers++;
                         matchingPeerList.add(p);
                         if (nrOfMatchingPlayers == preferredNrOfPlayers) {
-                            startGame(matchingPeerList);
+                            createGame(matchingPeerList);
                             break;
                         }
                     }
@@ -122,9 +122,9 @@ public class ServerCommands {
         peer.sendMessage("waiting " + arg);
     }
 
-    public static void startGame(List<Peer> peerList) {
+    public static void createGame(List<Peer> peerList) {
 
-        Room gameRoom = serverObject.newGameRoom();
+        GameRoom gameRoom = serverObject.newGameRoom();
         for (Peer p : peerList) {
             p.setPreferredNrOfPlayers(0);
             p.moveToRoom(gameRoom);
@@ -135,7 +135,7 @@ public class ServerCommands {
         String arg = String.join(" ", nameList);
         String command = "start with " + arg;
         serverObject.sendMessageToRoom(command, gameRoom, "start with");
-
+        gameRoom.startGame();
     }
 
 }

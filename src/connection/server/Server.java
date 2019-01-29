@@ -70,7 +70,7 @@ public class Server implements Runnable, ClientOrServer {
     }
 
     public GameRoom newGameRoom(){
-        GameRoom tempGameRoom = new GameRoom(roomList.size());
+        GameRoom tempGameRoom = new GameRoom(roomList.size(), this);
         roomList.add(tempGameRoom);
         return tempGameRoom;
     }
