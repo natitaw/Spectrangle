@@ -3,6 +3,7 @@ package connection.server;
 import connection.Peer;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ServerCommands {
@@ -20,27 +21,39 @@ public class ServerCommands {
             String name = args[0];
 
 
-            // TODO Check if name is duplicate of existing name
+            // Check if name is duplicate of existing name
+            boolean nameIsStillUnique = true;
+            Iterator itr = serverObject.getPeerList().iterator();
+            Peer p;
+            while (itr.hasNext() && nameIsStillUnique) {
+                p = (Peer) itr.next();
+                String otherPeerName = p.getName();
+                if (otherPeerName.equals(name)) {
+                    nameIsStillUnique = false;
+                }
+            }
 
             // Set name
+            if (nameIsStillUnique) {
+                System.out.println(peer.getName() + " changed name to " + name);
+                peer.setName(name);
 
-            System.out.println(peer.getName() + " changed name to " + name);
-            peer.setName(name);
-
-            //Check the second argument, if it exists
-            if (args.length == 2) {
-                if (args[1].equals("chat")) {
-                    peer.setChatEnabled(true);
-                    peer.sendMessage("welcome chat");
-                    System.out.println(name + " enabled chat");
+                //Check the second argument, if it exists
+                if (args.length == 2) {
+                    if (args[1].equals("chat")) {
+                        peer.setChatEnabled(true);
+                        peer.sendMessage("welcome chat");
+                        System.out.println(name + " enabled chat");
+                    } else {
+                        peer.sendMessage("invalid name");
+                    }
                 } else {
-                    peer.sendMessage("invalid name");
+                    peer.sendMessage("welcome");
                 }
             } else {
-                peer.sendMessage("welcome");
+                peer.sendMessage("invalid name");
             }
         }
-
         // Put client in lobby
 
 
@@ -92,11 +105,10 @@ public class ServerCommands {
     }
 
     public static void startGame(List<Peer> peerList) {
+        Room gameRoom = serverObject.newGameRoom();
         for (Peer p : peerList) {
             p.setPreferredNrOfPlayers(0);
-            // TODO create server RoomList somewhere else?
-            // TODO create new room with a number one higher than already used
-
+            p.moveToRoom(gameRoom);
         }
     }
 

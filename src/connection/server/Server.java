@@ -23,7 +23,7 @@ public class Server implements Runnable, ClientOrServer {
     private volatile boolean running;
     Thread newConnectionThread;
     public Room lobby;
-    public List<Room> roomList;
+    private List<Room> roomList;
 
     public synchronized boolean getRunning(){
         return this.running;
@@ -58,10 +58,21 @@ public class Server implements Runnable, ClientOrServer {
         return peerList;
     }
 
+
+    public List<Room> getRoomList() {
+        return roomList;
+    }
+
     public Room newRoom(){
         Room tempRoom = new Room(roomList.size());
         roomList.add(tempRoom);
         return tempRoom;
+    }
+
+    public GameRoom newGameRoom(){
+        GameRoom tempGameRoom = new GameRoom(roomList.size());
+        roomList.add(tempGameRoom);
+        return tempGameRoom;
     }
 
     /**
@@ -76,10 +87,13 @@ public class Server implements Runnable, ClientOrServer {
             try {
 
                 sock = serverSock.accept();
-                System.out.println("New unknown client connected");
+
                 newPeer = new Peer(sock, type, this);
                 peerList.add(newPeer);
+
+                newPeer.setName("Unknown client " + peerList.size());
                 newPeer.moveToRoom(lobby);
+                System.out.println(newPeer.getName() + " connected");
 
 
             } catch (IOException e) {
