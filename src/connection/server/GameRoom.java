@@ -106,13 +106,14 @@ public class GameRoom extends Room{
         for (Peer p : peerList) {
             List<String> peerArgs = new ArrayList<>();
             peerArgs.add(p.getName());
-            for (int peerPieceIndex = 1; peerPieceIndex <= p.getTileBag().getNumberOfPieces(); peerPieceIndex++) {
+            for (int peerPieceIndex = 0; peerPieceIndex < p.getTileBag().getNumberOfPieces(); peerPieceIndex++) {
                 String pieceString = p.getTileBag().viewPiece(peerPieceIndex).toString();
                 peerArgs.add(pieceString);
             }
             // concatenate all peerargs to one peerString
             middleArgs.addAll(peerArgs);
         }
+
         String middleString = String.join(" ", middleArgs);
 
 
@@ -137,7 +138,6 @@ public class GameRoom extends Room{
         for (Peer p : peerList) {
             p.sendMessage("order " + arg);
         }
-        // send chat message
     }
 
     // TODO make sure this gets called at the start of each turn

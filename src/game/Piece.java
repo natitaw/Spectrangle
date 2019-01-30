@@ -40,25 +40,33 @@ public class Piece {
     }
 
 	public Piece(String s) {
-	    List<ColorDefinition> tempColors = new ArrayList<>();
-        for (int i=0; i<3; i++) {
+	    if (s.equals("null")){
+            orientation  = new ArrayList<>();
+            this.value = 0;
+        } else {
+
+            List<ColorDefinition> tempColors = new ArrayList<>();
+            for (int i=0; i<3; i++) {
 
 
-	    for (ColorDefinition tempColor : ColorDefinition.values()){
-            if ( Character.toString(s.charAt(i)).equals(Character.toString(tempColor.toString().charAt(0)))){
-                    tempColors.add(tempColor);
+            for (ColorDefinition tempColor : ColorDefinition.values()){
+                if ( Character.toString(s.charAt(i)).equals(Character.toString(tempColor.toString().charAt(0)))){
+                        tempColors.add(tempColor);
+                    }
                 }
             }
-        }
 
-        orientation  = new ArrayList<>();
-        this.bottom = tempColors.get(0);
-        this.left = tempColors.get(1);
-        this.right = tempColors.get(2);
-        this.value = s.charAt(3);
-        this.orientation.add(this.bottom);
-        this.orientation.add(this.left);
-        this.orientation.add(this.right);
+
+
+            orientation  = new ArrayList<>();
+            this.bottom = tempColors.get(0);
+            this.left = tempColors.get(1);
+            this.right = tempColors.get(2);
+            this.value =  Character.getNumericValue(s.charAt(3));
+            this.orientation.add(this.bottom);
+            this.orientation.add(this.left);
+            this.orientation.add(this.right);
+	    }
     }
 
 
@@ -144,13 +152,17 @@ public class Piece {
         String result = "";
         for (int pieceColorIndex = 0; pieceColorIndex <= 2; pieceColorIndex++){
             Character letter = orientation.get(pieceColorIndex).toString().charAt(0);
-            result.concat(letter.toString());
+            result = result.concat(letter.toString());
         }
-        result.concat(Integer.toString(value));
+        result = result.concat(Integer.toString(value));
         return result;
 	}
 
 	public String toPrinterString(){
-        return PiecePrinter.printPiece(value,this.bottom.toString().charAt(0),this.left.toString().charAt(0),this.right.toString().charAt(0));
+	    if (value==0) {
+            return PiecePrinter.printEmptyPiece();
+        } else {
+            return PiecePrinter.printPiece(value, this.bottom.toString().charAt(0), this.left.toString().charAt(0), this.right.toString().charAt(0));
+        }
     }
 }

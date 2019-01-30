@@ -45,6 +45,17 @@ public class PiecePrinter {
 
         return template;
     }
+
+    public static String printEmptyPiece() {
+        String template =
+                    "           \n" +
+                    "           \n" +
+                    "           \n" +
+                    "           \n" +
+                    "           \n" +
+                    "           \n";
+        return template;
+    }
 }
 
 

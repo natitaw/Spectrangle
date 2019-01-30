@@ -57,14 +57,13 @@ public class CommandInterpreter {
                     System.out.println("Order of turns: " + String.join(", ", args));
                     break;
                 case "tiles":
-                    // TODO change terminalinput state to NOT_YOUR_TURN or to YOUR_TURN
                     // TODO if terminalinputhandler is waiting on something else, interrupt with YourTurnException and switch state to YOUR_TURN
                     if (args[args.length-1].equals(parent.getName()) ) {
                         // it's our turn
                         if (args[args.length-2].equals("skip") ) {
-                            ClientCommands.askTurn(args);
-                        } else {
                             ClientCommands.askSkip(args);
+                        } else {
+                            ClientCommands.askTurn(args);
                         }
 
 

@@ -31,17 +31,20 @@ public class ClientCommands {
                     pieceLineList.add(pieceLines);
                 }
                 resultArray=pieceLineList.get(0);
-                for (int lineNr=1; lineNr< resultArray.length; lineNr++) {
+                for (int lineNr=0; lineNr< resultArray.length; lineNr++) {
                     for (String[] tempPieceLines : pieceLineList) {
-                        resultArray[lineNr].concat(tempPieceLines[lineNr]);
+                        resultArray[lineNr]=resultArray[lineNr].concat(" ").concat(tempPieceLines[lineNr]);
                     }
                 }
-                System.out.println(resultArray);
+                String tilesPrinted = String.join("\n", resultArray);
+                System.out.println(tilesPrinted);
+                // ask for move
             }
         }
     }
 
     public static void askSkip(String[] args) {
-        String[] middleArgs = Arrays.copyOfRange(args, 0, args.length-2);
+        askTurn(args);
+
     }
 }
