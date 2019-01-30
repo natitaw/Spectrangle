@@ -84,25 +84,6 @@ public class Board {
 		return this.boardLocations[location].getPiece();
 	}
 
-	/**
-	 * Make a move on the location and return the success state This gives the
-	 * BoardLocation a Piece object
-	 * 
-	 * @param location
-	 * @param piece
-	 * @return
-	 */
-	public boolean setMove(int location, Piece piece) {
-
-		if (isValidLocation(location) && isEmptyLocation(location)) {
-
-			this.boardLocations[location].movePiece(piece);
-
-			return true;
-		}
-		return false;
-	}
-
 	// Queries
 
 	// TODO: make sure that a piece can only be put next to another piece

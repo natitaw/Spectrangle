@@ -78,7 +78,7 @@ public class GameRoom extends Room{
 
         waitforMove(startingPlayer);
 
-        // check if game ended? then run game ended method
+        // check if game ended? then run game ended method (SORT BY SCORE)
         // else start new turn with next player
 
     }

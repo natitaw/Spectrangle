@@ -39,6 +39,22 @@ public class Client implements ClientOrServer {
 
     }
 
+    public TerminalInputHandler getTerminalInputHandler() {
+        return terminalInputHandler;
+    }
+
+    public void setTerminalInputHandler(TerminalInputHandler terminalInputHandler) {
+        this.terminalInputHandler = terminalInputHandler;
+    }
+
+    public Thread getTerminalInputHandlerThread() {
+        return terminalInputHandlerThread;
+    }
+
+    public void setTerminalInputHandlerThread(Thread terminalInputHandlerThread) {
+        this.terminalInputHandlerThread = terminalInputHandlerThread;
+    }
+
     public void connect(String ip) {
         String name = "name";
         InetAddress addr = null;

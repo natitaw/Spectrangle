@@ -17,6 +17,7 @@ public class ClientCommands {
     }
 
     public static void printTiles(String[] args){
+        System.out.println("You have tiles:");
         String[] middleArgs = Arrays.copyOfRange(args, 0, args.length-2);
         for (int peerNr=0; peerNr < middleArgs.length/5; peerNr++) {
             String name = middleArgs[peerNr * 5];
@@ -48,8 +49,7 @@ public class ClientCommands {
 
         printTiles(args);
 
-        System.out.println("Type the number of the tile you would like to place");
-        System.out.println("Type the index of the board where you would like to place the tile");
+;
         // TODO actually handle input here
     }
 
@@ -58,8 +58,7 @@ public class ClientCommands {
 
         printTiles(args);
 
-        System.out.println("You have no valid moves.");
-        System.out.println("Type S to skip turn, or type a number above to exchange one of your tiles");
+
         // TODO actually handle input here
     }
 
@@ -69,5 +68,20 @@ public class ClientCommands {
 
     public static void printBoard() {
         System.out.println(clientObject.getBoard().toPrinterString());
+    }
+
+    // prints other people's tiles in a shortened way
+    public static void otherTiles(String[] args) {
+        System.out.println("Other players have tiles:");
+        String[] middleArgs = Arrays.copyOfRange(args, 0, args.length - 2);
+        for (int peerNr = 0; peerNr < middleArgs.length / 5; peerNr++) {
+            String name = middleArgs[peerNr * 5];
+            if (!name.equals(clientObject.getName())) {
+                String[] printArgs = Arrays.copyOfRange(args, peerNr * 5 + 1, peerNr * 5 + 4);
+                String printString = String.join(" ", printArgs);
+                System.out.println(name + ": " + printArgs);
+            }
+        }
+
     }
 }

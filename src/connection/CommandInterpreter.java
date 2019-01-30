@@ -1,9 +1,11 @@
 package connection;
 
+import connection.client.Client;
 import connection.client.ClientCommands;
 import connection.server.GameRoom;
 import connection.server.Server;
 import connection.server.ServerCommands;
+import game.Piece;
 
 import java.util.Arrays;
 
@@ -31,8 +33,6 @@ public class CommandInterpreter {
 
         if (this.parentType== ClientOrServer.Type.CLIENT){
             switch (command) {
-                //TODO Make case for 4 or 8 whitespaces
-                // TODO maybe give client a way to see other peoples tiles
                 case "welcome":
                     System.out.print("Name change acknowledged");
                     if (args.length > 1 && args[1].equals("chat")){
@@ -58,34 +58,52 @@ public class CommandInterpreter {
                     System.out.println("Order of turns: " + String.join(", ", args));
                     break;
                 case "tiles":
-                    // TODO if terminalinputhandler is waiting on something else, interrupt with YourTurnException and switch state to YOUR_TURN
+
                     if (args[args.length-1].equals(parent.getName()) ) {
-                        // it's our turn
+
                         if (args[args.length-2].equals("skip") ) {
-                            ClientCommands.askSkip(args);
+                            ((Client) parent).getTerminalInputHandler().setState(TerminalInputHandler.InputState.SKIP);
+                            ClientCommands.printBoard();
+                            ClientCommands.otherTiles(args);
+                            ClientCommands.printTiles(args);
+
                         } else {
-                            ClientCommands.askTurn(args);
+                            ((Client) parent).getTerminalInputHandler().setState(TerminalInputHandler.InputState.TURN);
+                            ClientCommands.printBoard();
+                            ClientCommands.otherTiles(args);
+                            ClientCommands.printTiles(args);
                         }
+                        ((Client) parent).getTerminalInputHandlerThread().interrupt();
 
 
                     }
                     break;
-                case "replace":
-                    // sent if a player exchanged one of their tiles for one in the bag
-                    break;
-                case "skip":
-                    // sent if player is allowed to skip? maybe just include in tiles
-                    break;
+
                 case "player":
-                    // player left
-                    // player skipped
+                    if (args[0].equals("skipped")){
+                        System.out.print("Player " + args[1] + " skipped turn.");
+                    } else if (args[1].equals("left")){
+                        TerminalInputHandler.clearScreen();
+                        System.out.println("Player " + args[0] + " left mid-game. Returned to lobby");
+                    }
+                    break;
+                case "replace":
+                    System.out.println(args[0] + " replaced tile " + args[1] +" with new tile:" + args[3]);
                     break;
                 case "move":
-                    // sent if player did a move
-                    // update clientside board here
+                    System.out.println(args[0] + " placed tile " + args[1] + " on position" + args[2] + ", earning " + args[3] + " points.");
+                    ((Client) parent).getBoard().movePiece(Integer.parseInt(args[2]),new Piece(args[1]));
                     break;
                 case "game":
-                    // game finished
+                    if (args[0].equals("finished")){
+                        TerminalInputHandler.clearScreen();
+                        System.out.println("Game finished");
+                        System.out.println("Scoreboard:");
+                        for (int i = 1; i < ((args.length-1)/2); i++){
+                            System.out.println(args[i] + ": " + args[i+1]);
+                        }
+                    }
+
                     break;
                 case "chat":
                     String sender = args[0];
@@ -94,7 +112,7 @@ public class CommandInterpreter {
                     System.out.println(sender + ": " + message);
                     break;
                 case "invalid":
-                    //
+                    System.out.println(inputString);
                     break;
                 default:
                     if (Settings.debug) {
@@ -104,7 +122,6 @@ public class CommandInterpreter {
             }
         } else if (this.parentType== ClientOrServer.Type.SERVER) {
             switch (command) {
-                //TODO Make case for 4 or 8 whitespaces
                 case "connect":
                     ServerCommands.clientConnects(args,peer);
                     break;

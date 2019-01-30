@@ -33,7 +33,7 @@ public class TerminalInputHandler implements Runnable{
     }
 
     public enum InputState {
-        COMMAND, NAME, CHAT_PREFERENCE, NUMBER_OF_PLAYERS, SINGLEPLAYER;
+        COMMAND, NAME, CHAT_PREFERENCE, NUMBER_OF_PLAYERS, SINGLEPLAYER, TURN, SKIP;
     }
 
 
@@ -130,6 +130,26 @@ public class TerminalInputHandler implements Runnable{
                     }
                     state=COMMAND;
 
+                    break;
+                case TURN:
+                    System.out.println("Type the number of the tile you would like to place");
+                    //TODO actually do game logic and stuff here
+
+                    System.out.println("Type the index of the board where you would like to place the tile");
+                    //TODO actually do game logic and stuff here
+                    break;
+                case SKIP:
+                    System.out.println("You have no valid moves.");
+                    System.out.println("Type S to skip turn, or type a number above to exchange one of your tiles");
+                    s = readString();
+                    if (s.equals("S") || s.equals("s")||s.equals("Skip") || s.equals("skip") ){
+                        parent.sendMessageToAll("skip");
+                    } else if (s.equals("EXIT")){
+
+                    } else {
+                        //TODO actually exchange tile here
+                        Integer.parseInt(s);
+                    }
                     break;
                 default:
                        s = readString();
