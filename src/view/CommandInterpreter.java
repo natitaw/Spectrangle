@@ -64,7 +64,7 @@ public class CommandInterpreter {
                 case "tiles":
 
                     if (args[args.length - 1].equals(parent.getName())) {
-                        ClientCommands.printBoard();
+                        parent.getPrinter().println(((Client) parent).getBoard().toPrinterString());
 
                         ClientCommands.otherTiles(args);
                         ClientCommands.setTiles(args);

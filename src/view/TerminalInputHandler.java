@@ -170,7 +170,7 @@ public class TerminalInputHandler implements Runnable {
 
                     break;
                 case TURN:
-                    ClientCommands.printTiles();
+                    PiecePrinter.printTiles((Client) parent);
                     boolean inputFinished = false;
                     while (!inputFinished) {
                         try {
@@ -260,10 +260,6 @@ public class TerminalInputHandler implements Runnable {
                 running = false;
             }
         }
-    }
-
-    public boolean isInterrupted() {
-        return interrupted;
     }
 
     public void setInterrupted(boolean interrupted) {
