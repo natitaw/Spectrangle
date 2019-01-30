@@ -139,24 +139,24 @@ public class CommandInterpreter {
                 }
                     break;
                 case "place":
-                    if (args.length > 1) {
+                    if (args.length > 2) {
                         if (args[1].equals("on")) {
-                            if (peer.getCurrentRoom() instanceof GameRoom) {
+
                                 ((GameRoom) peer.getCurrentRoom()).checkPlace(peer, args[0], Integer.parseInt(args[2]));
-                            }
+
                         }
                     }
                     break;
                 case "skip":
-                            if (peer.getCurrentRoom() instanceof GameRoom) {
+
                                 ((GameRoom) peer.getCurrentRoom()).checkSkip(peer);
-                            }
+
                     break;
                 case "exchange":
                     if (args.length > 0) {
-                        if (peer.getCurrentRoom() instanceof GameRoom) {
+
                             ((GameRoom) peer.getCurrentRoom()).checkExchange(peer,args[0]);
-                        }
+
                     }
                     break;
                 case "chat":

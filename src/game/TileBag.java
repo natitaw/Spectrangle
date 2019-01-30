@@ -56,6 +56,26 @@ public class TileBag {
 		}
 	}
 
+	public int findPiece(Piece inputPiece) {
+		for (Piece piece : pieces){
+			if (piece.equalsRotated(inputPiece)>=0){
+				return pieces.indexOf(piece);
+			}
+
+		}
+		return -1;
+	}
+
+	public int findPieceRotation(Piece inputPiece) {
+		for (Piece piece : pieces){
+			if (piece.equalsRotated(inputPiece)>=0){
+				return piece.equalsRotated(inputPiece);
+			}
+
+		}
+		return -1;
+	}
+
 	public void addPiece(Piece p){
 		pieces.add(p);
 	}
