@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 public class ClientCommands {
 
     private static Client clientObject;
+    private static String[] clientTiles = null;
 
     public static void setClientObject(Client inputClientObject) {
         clientObject = inputClientObject;
@@ -25,6 +26,7 @@ public class ClientCommands {
                 List<String[]> pieceLineList = new ArrayList<>();
                 String[] resultArray;
                 String[] tileArgs = Arrays.copyOfRange(middleArgs, (peerNr * 5) + 1, (peerNr * 5) + 4);
+                clientTiles = tileArgs;
                 for (String t : tileArgs) {
                     Piece tempPiece = new Piece(t);
                     String pieceString = tempPiece.toPrinterString();
@@ -44,23 +46,6 @@ public class ClientCommands {
             }
         }
 }
-    public static void askTurn(String[] args) {
-        printBoard();
-
-        printTiles(args);
-
-;
-        // TODO actually handle input here
-    }
-
-    public static void askSkip(String[] args) {
-        printBoard();
-
-        printTiles(args);
-
-
-        // TODO actually handle input here
-    }
 
     public static void makeBoard(){
         clientObject.setBoard(new Board());
@@ -83,5 +68,9 @@ public class ClientCommands {
             }
         }
 
+    }
+
+    public static String[] getClientTiles() {
+        return clientTiles;
     }
 }

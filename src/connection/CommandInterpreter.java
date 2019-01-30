@@ -63,16 +63,14 @@ public class CommandInterpreter {
 
                         if (args[args.length-2].equals("skip") ) {
                             ((Client) parent).getTerminalInputHandler().setState(TerminalInputHandler.InputState.SKIP);
-                            ClientCommands.printBoard();
-                            ClientCommands.otherTiles(args);
-                            ClientCommands.printTiles(args);
+
 
                         } else {
                             ((Client) parent).getTerminalInputHandler().setState(TerminalInputHandler.InputState.TURN);
-                            ClientCommands.printBoard();
-                            ClientCommands.otherTiles(args);
-                            ClientCommands.printTiles(args);
                         }
+                        ClientCommands.printBoard();
+                        ClientCommands.otherTiles(args);
+                        ClientCommands.printTiles(args);
                         ((Client) parent).getTerminalInputHandlerThread().interrupt();
 
 

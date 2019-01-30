@@ -1,6 +1,8 @@
 package connection;
 
 import connection.client.Client;
+import connection.client.ClientCommands;
+import game.Piece;
 import jdk.internal.util.xml.impl.Input;
 
 import java.io.BufferedReader;
@@ -133,10 +135,13 @@ public class TerminalInputHandler implements Runnable{
                     break;
                 case TURN:
                     System.out.println("Type the number of the tile you would like to place");
-                    //TODO actually do game logic and stuff here
-
+                    s = readString();
+                    Piece tileToPlace = new Piece(ClientCommands.getClientTiles()[Integer.parseInt(s)]);
                     System.out.println("Type the index of the board where you would like to place the tile");
-                    //TODO actually do game logic and stuff here
+                    s = readString();
+                    if (((Client) parent).getBoard().isValidMove(Integer.parseInt(s),tileToPlace)){
+                        parent.sendMessageToAll("place " + tileToPlace.toString() + " on " + s);
+                    }
                     break;
                 case SKIP:
                     System.out.println("You have no valid moves.");
@@ -147,8 +152,8 @@ public class TerminalInputHandler implements Runnable{
                     } else if (s.equals("EXIT")){
 
                     } else {
-                        //TODO actually exchange tile here
-                        Integer.parseInt(s);
+                        Piece tileToReplace = new Piece(ClientCommands.getClientTiles()[Integer.parseInt(s)]);
+                        parent.sendMessageToAll("exchange " + tileToReplace.toString());
                     }
                     break;
                 default:

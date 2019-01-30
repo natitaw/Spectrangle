@@ -72,8 +72,10 @@ public class GameRoom extends Room{
 
     private void newTurn(Peer startingPlayer) {
         this.waitingforMove=true;
-        // determine if player must skip
-        boolean mustSkip = false; // TODO implement this
+
+        // TODO actually test if player has no valid moves and set this bool properly
+        boolean mustSkip = false;
+
         sendTilesCommand(startingPlayer, mustSkip);
 
         waitforMove(startingPlayer);
@@ -168,21 +170,21 @@ public class GameRoom extends Room{
     }
 
 
-
+    // TODO implement
     public void checkPlace(Peer peer, String arg, int parseInt) {
         // check it, if valid:
         // do move
         // announce it
         // update waitingformove
     }
-
+    // TODO implement
     public void checkSkip(Peer peer) {
         // check it, if valid:
         // do move
         // announce it
         // update waitingformove
     }
-
+    // TODO implement
     public void checkExchange(Peer peer, String arg) {
         // check it, if valid:
         // do move
