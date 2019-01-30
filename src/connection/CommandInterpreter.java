@@ -62,11 +62,18 @@ public class CommandInterpreter {
                     if (args[args.length-1].equals(parent.getName()) ) {
 
                         if (args[args.length-2].equals("skip") ) {
-                            ((Client) parent).getTerminalInputHandler().setState(TerminalInputHandler.InputState.SKIP);
-
+                            if (((Client) parent).isAI) {
+                                ((Client) parent).getTerminalInputHandler().setState(TerminalInputHandler.InputState.AI_SKIP);
+                            } else {
+                                ((Client) parent).getTerminalInputHandler().setState(TerminalInputHandler.InputState.SKIP);
+                            }
 
                         } else {
-                            ((Client) parent).getTerminalInputHandler().setState(TerminalInputHandler.InputState.TURN);
+                            if (((Client) parent).isAI) {
+                                ((Client) parent).getTerminalInputHandler().setState(TerminalInputHandler.InputState.AI_TURN);
+                            } else {
+                                ((Client) parent).getTerminalInputHandler().setState(TerminalInputHandler.InputState.TURN);
+                            }
                         }
                         ClientCommands.printBoard();
                         ClientCommands.otherTiles(args);

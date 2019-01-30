@@ -41,7 +41,43 @@ public class ClientMain {
     }
 
     private static void playAsAI() {
-        // TODO Implement AI
+        System.out.println("Type the IP of a server to continue");
+        Scanner scanner = new Scanner(System.in);
+        //TODO Fix error when entering faulty ip
+
+
+        String ip = scanner.nextLine();
+
+        System.out.println("type AI name");
+        String name = scanner.nextLine();
+
+        System.out.println("type preferred nr of players");
+        int preferredNrofPlayers= scanner.nextInt();
+
+        System.out.println("Type preferred difficulty. 0: random, 1: best move, 2: best future move etc");
+        double difficulty = scanner.nextInt();
+
+        Client clientObject = new Client(ip, "ai " + name + " " + preferredNrofPlayers + " " + difficulty);
+
+
+
+
+
+        while (clientObject.getRunning()){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        // go back to main menu on disconnect
+        clearScreen();
+
+        System.out.println("The server has disconnected. Returned to main menu.");
+
+        main(mainArgs);
 
     }
 

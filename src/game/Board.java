@@ -145,6 +145,14 @@ public class Board {
 		return point;
 	}
 
+	public int getPotentialMoveScore(int location, Piece piece){
+		if (isValidMove(location, piece)) {
+			return boardLocations[location].getScorePoint() * piece.getValue();
+		} else {
+			return 0;
+		}
+	}
+
 	/**
 	 * Check color validity against neighbor
 	 * 

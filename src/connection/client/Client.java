@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.regex.Pattern;
 
 /**
  * connection.client.Client class for a simple client-server application
@@ -24,6 +25,9 @@ public class Client implements ClientOrServer {
     private volatile boolean running;
     private String name;
     private Board board;
+    public int prefNrPlayers;
+    public boolean isAI;
+    public double difficulty;
 
     /**
      * Starts a connection.client.Client application.
@@ -31,9 +35,22 @@ public class Client implements ClientOrServer {
     public Client(String ip, String arg) {
         if (arg.equals("singleplayer")){
             terminalInputHandler = new TerminalInputHandler(this, TerminalInputHandler.InputState.SINGLEPLAYER);
-        } else {
+            name="Player";
+            isAI=false;
+        } else if (arg.equals("")){
             terminalInputHandler = new TerminalInputHandler(this);
+            name="default";
+            isAI=false;
+        } else {
+            String[] argArray = arg.split(Pattern.quote(" "));
+            terminalInputHandler = new TerminalInputHandler(this, TerminalInputHandler.InputState.AI_NAME);
+            this.name=argArray[1];
+            this.prefNrPlayers= Integer.parseInt(argArray[2]);
+            isAI=true;
+            this.difficulty = Double.parseDouble(argArray[3]);
+
         }
+
         connect(ip);
         ClientCommands.setClientObject(this);
 
@@ -60,7 +77,7 @@ public class Client implements ClientOrServer {
         InetAddress addr = null;
         int port = 4000;
         Socket sock = null;
-        name="default";
+
 
         // check the IP-adress
         try {

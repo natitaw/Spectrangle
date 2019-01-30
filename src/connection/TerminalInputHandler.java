@@ -37,7 +37,7 @@ public class TerminalInputHandler implements Runnable{
     }
 
     public enum InputState {
-        COMMAND, NAME, CHAT_PREFERENCE, NUMBER_OF_PLAYERS, SINGLEPLAYER, TURN, TURN2, SKIP;
+        COMMAND, NAME, CHAT_PREFERENCE, NUMBER_OF_PLAYERS, SINGLEPLAYER, TURN, TURN2, SKIP, AI, AI_NAME, AI_NUMBER_OF_PLAYERS, AI_TURN, AI_SKIP;
     }
 
 
@@ -81,6 +81,30 @@ public class TerminalInputHandler implements Runnable{
         while (parent.getRunning() && running) {
             String s = "";
             switch (state) {
+                case AI:
+                    while (!interrupted){
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    interrupted=false;
+                    break;
+                case AI_NAME:
+                    parent.sendMessageToAll("connect " + parent.getName());
+                    state=AI_NUMBER_OF_PLAYERS;
+                    break;
+                case AI_NUMBER_OF_PLAYERS:
+                    parent.sendMessageToAll("request " + ((Client) parent).prefNrPlayers);
+                    break;
+                case AI_TURN:
+                    ClientCommands.aiTurn();
+
+                    break;
+                case AI_SKIP:
+                    ClientCommands.aiSkip();
+                    break;
                 case SINGLEPLAYER:
                     this.name = "Player";
                     ((Client) parent).setName(this.name);
