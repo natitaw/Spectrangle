@@ -3,6 +3,7 @@ package connection.client;
 import connection.ClientOrServer;
 import connection.Peer;
 import connection.TerminalInputHandler;
+import game.Board;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -22,7 +23,7 @@ public class Client implements ClientOrServer {
     private Peer clientPeer;
     private volatile boolean running;
     private String name;
-
+    private Board board;
 
     /**
      * Starts a connection.client.Client application.
@@ -72,7 +73,14 @@ public class Client implements ClientOrServer {
         System.out.println("Connected to server");
     }
 
-    // TODO fix null pointer passing
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
     public Peer getPeer() {
         return clientPeer;
     }

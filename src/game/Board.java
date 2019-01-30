@@ -1,6 +1,8 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Board Class representing a Spectrangle board
@@ -19,6 +21,10 @@ public class Board {
 	 * Generate a Board with the following attributes: an
 	 * ArrayList of pieces List of board locations with bonusQuotients
 	 */
+
+	public Board(){
+		this(new TileBag(36));
+	}
 
 	public Board(TileBag t) {
 		this.tileBag = t;
@@ -229,4 +235,21 @@ public class Board {
 
 	// TODO: Add a function to check if colors are valid
 
+	public String toPrinterString(){
+		  List<Integer> values =        Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+		  List<Character> vertical =    Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+		  List<Character> left =        Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+		  List<Character> right =       Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
+		for (int i=0; i<36; i++){
+			if (getPiece(i)!=null){
+				String pieceString = getPiece(i).toString();
+				vertical.set(i,pieceString.charAt(0));
+				left.set(i,pieceString.charAt(1));
+				right.set(i,pieceString.charAt(2));
+				values.set(i,Character.getNumericValue(pieceString.charAt(3)));
+			}
+		}
+		return SpectrangleBoardPrinter.getBoardString(values,vertical,left,right);
+	}
 }

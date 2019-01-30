@@ -51,6 +51,7 @@ public class CommandInterpreter {
 
                         TerminalInputHandler.clearScreen();
                         System.out.println("Starting new game with: " + String.join(", ", newargs));
+                        ClientCommands.makeBoard();
                     }
                     break;
                 case "order":
@@ -81,6 +82,7 @@ public class CommandInterpreter {
                     break;
                 case "move":
                     // sent if player did a move
+                    // update clientside board here
                     break;
                 case "game":
                     // game finished

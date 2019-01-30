@@ -21,6 +21,7 @@ public class BoardLocation {
 	public BoardLocation(int location, int scorePoint) {
 		this.location = location;
 		this.scorePoint = scorePoint;
+
 	}
 
 	// Queries
