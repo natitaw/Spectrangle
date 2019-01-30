@@ -44,7 +44,7 @@ public class ClientCommands {
                 System.out.println("");
                 System.out.println("    [1]    " + " " + "    [2]    " + " " + "    [3]    " + " " + "    [4]    ");
                 System.out.println("");
-                System.out.println("Press enter when you are ready to make your move"); // TODO this is not very neat. fix?
+
             }
         }
 }

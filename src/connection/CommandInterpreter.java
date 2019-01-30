@@ -72,6 +72,7 @@ public class CommandInterpreter {
                         ClientCommands.otherTiles(args);
                         ClientCommands.printTiles(args);
                         ((Client) parent).getTerminalInputHandlerThread().interrupt();
+                        ((Client) parent).getTerminalInputHandler().interrupted=true;
 
 
                     }

@@ -260,6 +260,13 @@ public class GameRoom extends Room implements Runnable {
                     for (Peer p : peerList) {
                         p.sendMessage("move " + peer.getName() + " " + tileString + " " + index + " " + pointsScored);
                     }
+                    if (roomBag.getNumberOfPieces() > 0){
+                        try {
+                            peer.getTileBag().addPiece(roomBag.takeRandomPiece());
+                        } catch (EmptyBagException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     waitingforMove = false;
                 }
             }

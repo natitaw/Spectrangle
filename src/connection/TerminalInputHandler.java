@@ -18,6 +18,7 @@ public class TerminalInputHandler implements Runnable{
     private String name;
     private boolean wantsChat;
     Piece tempPiece = null;
+    public boolean interrupted = false;
 
 
 
@@ -47,14 +48,18 @@ public class TerminalInputHandler implements Runnable{
     public String readString() {
 
         String antw = null;
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                System.in));
-            antw = in.readLine();
-        } catch (IOException e) {
-            if (running && parent.getRunning()){
-                System.out.println("Error in reading message from terminal");
-                e.printStackTrace();
+        while (antw==null && !interrupted) {
+            try {
+                BufferedReader in = new BufferedReader(new InputStreamReader(
+                    System.in));
+                if (System.in.available() > 0) {
+                    antw = in.readLine();
+                }
+            } catch (IOException e) {
+                if (running && parent.getRunning()) {
+                    System.out.println("Error in reading message from terminal");
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -187,10 +192,12 @@ public class TerminalInputHandler implements Runnable{
                     state=COMMAND;
                     break;
                 default:
-                       s = readString();
-                    if (!s.equals("EXIT")) {
-                        parent.sendMessageToAll(s);
-                    }
+                        s = readString();
+                        if (!s.equals("EXIT")) {
+                            if (!interrupted)
+                            parent.sendMessageToAll(s);
+                        }
+                    interrupted=false;
                     break;
 
             }
