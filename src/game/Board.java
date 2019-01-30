@@ -181,13 +181,44 @@ public class Board {
 	// TODO: Implement Properly
 	public boolean isValidColor(int location, Piece piece) {
 
-		boolean result = false;
 
 		if (isValidLocation(location) && piece.isJoker()) {
-			result = true;
+			return true;
 		}
+		
+		ArrayList<Piece> neighbors = new ArrayList<>();
+		
+		Piece left = (this.getLeftPiece(location));
+		Piece right = (this.getRightPiece(location));
+		Piece top = (this.getTopPiece(location));
+		Piece bottom = (this.getBottomPiece(location));
+		
+		if (left != null) {
+			if(left.equals(piece) || left.equals(piece.getRotated()) || left.equals(piece.getRotated2x())) {
+				return true;
+			}
+		}
+		
+		if (right != null) {
+			if (right.equals(piece) || right.equals(piece.getRotated()) || right.equals(piece.getRotated2x())) {
+				return true;
+			}
+		}
+		
+		if (top != null) {
+			if (top.equals(piece) || top.equals(piece.getRotated()) || top.equals(piece.getRotated2x())) {
+				return true;
+			}
+		}
+		
+		if (bottom != null) {
+			if (bottom.equals(piece) || bottom.equals(piece.getRotated()) || bottom.equals(piece.getRotated2x())) {
+				return true;
+			}
+		}
+		
 
-		return result;
+		return false;
 	}
 
 	// TODO: Check for left, right and bottom neighbors
