@@ -1,5 +1,7 @@
 package connection;
 
+import java.io.PrintStream;
+
 public interface ClientOrServer {
     void shutDown();
 
@@ -10,6 +12,8 @@ public interface ClientOrServer {
     enum Type {
         CLIENT, SERVER
     }
+
+    public PrintStream getPrinter();
 
     Type getType();
 

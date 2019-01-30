@@ -36,7 +36,7 @@ public class ServerCommands {
 
             // Set name
             if (nameIsStillUnique) {
-                System.out.println(peer.getName() + " changed name to " + name);
+                serverObject.getPrinter().println(peer.getName() + " changed name to " + name);
                 peer.setName(name);
 
                 //Check the second argument, if it exists
@@ -44,7 +44,7 @@ public class ServerCommands {
                     if (args[1].equals("chat")) {
                         peer.setChatEnabled(true);
                         peer.sendMessage("welcome chat");
-                        System.out.println(name + " enabled chat");
+                        serverObject.getPrinter().println(name + " enabled chat");
                     } else {
                         peer.sendMessage("invalid name");
                     }
