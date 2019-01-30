@@ -1,4 +1,4 @@
-package Game;
+package game;
 
 /**
  * Class representing information on a location of a Spectrangle Board
@@ -21,6 +21,7 @@ public class BoardLocation {
 	public BoardLocation(int location, int scorePoint) {
 		this.location = location;
 		this.scorePoint = scorePoint;
+
 	}
 
 	// Queries

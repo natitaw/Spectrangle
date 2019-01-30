@@ -1,4 +1,4 @@
-package Game;
+package game;
 
 import java.util.ArrayList;
 
@@ -9,29 +9,55 @@ import java.util.ArrayList;
  *
  */
 
-public class TileBagGenerator {
+public class TileBag {
+
+	private int maxSize;
 
 	private ArrayList<Piece> pieces;
 
 	/**
-	 * TileBagGenerator This class generates a bag with 36 tiles according to the
+	 * TileBag This class generates a bag of size with 36 tiles according to the
 	 * rules of Spectrangle
 	 */
-	public TileBagGenerator() {
-		this.pieces = new ArrayList<>();
-		populateBag();
+	// TODO update javadoc here
+	public TileBag(int sizeInput) {
+		this.pieces = new ArrayList<>(sizeInput);
+		this.maxSize=sizeInput;
 	}
 
 	/**
-	 * getRandomPiece() returns a random tile from the tile bag generated
+	 * takeRandomPiece() returns a random tile from the tile bag generated
 	 * 
 	 * @return
 	 */
-	public Piece getRandomPiece() {
-		int random = (int) (Math.random() * 36 + 1);
-		Piece p = pieces.get(random);
-		pieces.remove(random);
-		return p;
+	public Piece takeRandomPiece() throws EmptyBagException {
+		if (pieces.size()!=0) {
+			int random = (int) (Math.random() * this.pieces.size() - 1);
+			Piece p = pieces.get(random);
+			pieces.remove(random);
+			return p;
+		}
+		else {
+			throw new EmptyBagException("Bag is empty!");
+		}
+	}
+
+	public Piece viewPiece(int i) {
+		return pieces.get(i);
+	}
+
+	public Piece takePiece(int index) throws EmptyBagException{
+		if (pieces.size()!=0) {
+			Piece p = pieces.get(index);
+			pieces.remove(index);
+			return p;
+		}else {
+			throw new EmptyBagException("Bag is empty!");
+		}
+	}
+
+	public void addPiece(Piece p){
+		pieces.add(p);
 	}
 
 	/**

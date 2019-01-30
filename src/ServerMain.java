@@ -1,3 +1,8 @@
+import connection.server.Server;
+
 public class ServerMain {
-    // actually start game here
+    public static void main(String[] args){
+       Server serverObject = new Server("");
+
+    }
 }

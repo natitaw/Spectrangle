@@ -1,4 +1,4 @@
-package Game;
+package game;
 
 public enum ColorDefinition {
 
@@ -45,6 +45,6 @@ public enum ColorDefinition {
 		public String toString() {
 			return "WHITE";
 		}
-	}; 
+	}
 
 }

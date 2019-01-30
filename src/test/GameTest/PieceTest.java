@@ -5,12 +5,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 
+import game.TileBag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import Game.ColorDefinition;
-import Game.Piece;
-import Game.Board;
+import game.ColorDefinition;
+import game.Piece;
+import game.Board;
 
 
 class PieceTest {
@@ -25,39 +26,42 @@ class PieceTest {
 	
 	@BeforeEach
 	public void setup() {
-		this.b = new Board();
-		this.p = b.getTileBag().getRandomPiece();
+		this.b = new Board(new TileBag(36));
+		b.getTileBag().populateBag();
+		this.p = b.getTileBag().takeRandomPiece();
 		
-		left = p.getOrientation().get(0);
-		right = p.getOrientation().get(1);
-		bottom = p.getOrientation().get(2);
-		
-		this.p2 = new Piece(bottom, left, right, p.getPoint());
+		left = p.getColors().get(0);
+		right = p.getColors().get(1);
+		bottom = p.getColors().get(2);
+
+		// TODO Change order of bottom,left,right in all these tests
+		this.p2 = new Piece(left, bottom, right, p.getValue());
+
 		}
 
 	@Test
 	void testRotate() {
 		p.rotate();
-		assertEquals(p.getOrientation(), p2.getOrientation());
+		assertEquals(p.getColors(), p2.getColors());
 	}
 	
 	@Test
 	void testRotate2x() {
 		p.rotate2x();
 		p2.rotate();
-		assertEquals(p.getOrientation(), p2.getOrientation());
+		assertEquals(p.getColors(), p2.getColors());
 	}
 	
 	@Test
 	void testGetOrientation() {
-		assertNotNull(p.getOrientation());
+		assertNotNull(p.getColors());
 		//TODO: check
 	}
 	
 	@Test
 	void testGetPoint() {
 		Piece p4 = new Piece(left,right,bottom,4);
-		assertEquals(4, p4.getPoint());
+		assertEquals(4, p4.getValue());
 	}
 	
 	@Test
@@ -73,10 +77,10 @@ class PieceTest {
 		assertTrue(p.isSamePiece(p));
 		assertFalse(p.isSamePiece(p2));
 		
-		assertTrue(p.isSamePiece(p.rotate()));
-		assertTrue(p.isSamePiece(p.rotate2x()));
+		assertTrue(p.isSamePiece(p.getRotated()));
+		assertTrue(p.isSamePiece(p.getRotated2x()));
 		
-		assertFalse(p.isSamePiece(p2.rotate2x()));	
+		assertFalse(p.isSamePiece(p2.getRotated2x()));
 		
 	}
 	
@@ -90,9 +94,9 @@ class PieceTest {
 		Piece p7 = new Piece(ColorDefinition.BLUE,
 				ColorDefinition.GREEN, ColorDefinition.YELLOW, 1);
 		
-		assertEquals(o.get(0), p7.getOrientation().get(0));
-		assertEquals(o.get(1), p7.getOrientation().get(1));
-		assertEquals(o.get(2), p7.getOrientation().get(2));
+		assertEquals(o.get(0), p7.getColors().get(0));
+		assertEquals(o.get(1), p7.getColors().get(1));
+		assertEquals(o.get(2), p7.getColors().get(2));
 		
 	}
 }
