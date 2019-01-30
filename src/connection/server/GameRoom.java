@@ -9,7 +9,7 @@ import game.TileBag;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GameRoom extends Room {
+public class GameRoom extends Room implements Runnable {
 
     public boolean hasFinished = false;
     private Server serverObject;
@@ -34,7 +34,8 @@ public class GameRoom extends Room {
 
     }
 
-    public void startGame() {
+    @Override
+    public void run() {
         determineOrder();
         checkIfAllPeersAreRunning();
 
@@ -300,4 +301,6 @@ public class GameRoom extends Room {
             }
         }
     }
+
+
 }

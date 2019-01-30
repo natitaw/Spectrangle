@@ -135,7 +135,8 @@ public class ServerCommands {
         String arg = String.join(" ", nameList);
         String command = "start with " + arg;
         serverObject.sendMessageToRoom(command, gameRoom, "start with");
-        gameRoom.startGame();
+        Thread gameroomThread = new Thread(gameRoom);
+        gameroomThread.start();
     }
 
 }
