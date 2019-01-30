@@ -150,7 +150,7 @@ public class Piece {
         return result;
 	}
 
-	public String print(){
+	public String toPrinterString(){
         return PiecePrinter.printPiece(value,this.bottom.toString().charAt(0),this.left.toString().charAt(0),this.right.toString().charAt(0));
     }
 }

@@ -16,7 +16,7 @@ public class SpectrangleBoardPrinter {
     }
 
     /**
-     * Method to print a board of Spectrangle, given the properties of the pieces that reside on it.
+     * Method to toPrinterString a board of Spectrangle, given the properties of the pieces that reside on it.
      *
      * The arguments to this method together represent the current state of the board. You will need to generate
      * these arguments yourself. Each argument needs to be a list of exactly 36 items, representing the 36 fields
