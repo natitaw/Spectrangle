@@ -17,6 +17,7 @@ public class TerminalInputHandler implements Runnable{
     private InputState state = InputState.COMMAND;
     private String name;
     private boolean wantsChat;
+    Piece tempPiece = null;
 
 
 
@@ -35,7 +36,7 @@ public class TerminalInputHandler implements Runnable{
     }
 
     public enum InputState {
-        COMMAND, NAME, CHAT_PREFERENCE, NUMBER_OF_PLAYERS, SINGLEPLAYER, TURN, SKIP;
+        COMMAND, NAME, CHAT_PREFERENCE, NUMBER_OF_PLAYERS, SINGLEPLAYER, TURN, TURN2, SKIP;
     }
 
 
@@ -134,22 +135,32 @@ public class TerminalInputHandler implements Runnable{
 
                     break;
                 case TURN:
-                    boolean moveFinished = false;
-                    while (!moveFinished) {
+                    boolean inputFinished = false;
+                    while (!inputFinished) {
                         try {
                             System.out.println("Type the number of the tile you would like to place");
                             s = readString();
-                            Piece tileToPlace = new Piece(ClientCommands.getClientTiles().get(Integer.parseInt(s) - 1));
-                            System.out.println("Type the index of the board where you would like to place the tile");
-                            s = readString();
-                            if (((Client) parent).getBoard().isValidMove(Integer.parseInt(s), tileToPlace)) {
-                                parent.sendMessageToAll("place " + tileToPlace.toString() + " on " + s);
-                                moveFinished = true;
-                            }
+                            tempPiece = new Piece(ClientCommands.getClientTiles().get(Integer.parseInt(s) - 1));
+                            inputFinished=true;
                         } catch (IndexOutOfBoundsException e) {
                             e.printStackTrace(); // TODO Fix exception here
                         }
                     }
+                    state=TURN2;
+                    break;
+                case TURN2:
+                        try {
+                            System.out.println("Type the index of the board where you would like to place the tile");
+                            s = readString();
+                            if (((Client) parent).getBoard().isValidMove(Integer.parseInt(s), tempPiece)) {
+                                parent.sendMessageToAll("place " + tempPiece.toString() + " on " + s);
+                            } else {
+                                state=TURN;
+                            }
+                        } catch (IndexOutOfBoundsException e) {
+                            e.printStackTrace();
+                        }
+
                     state=COMMAND;
                     break;
                 case SKIP:
