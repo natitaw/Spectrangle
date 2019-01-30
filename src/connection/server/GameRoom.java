@@ -163,6 +163,8 @@ public class GameRoom extends Room implements Runnable {
 
 
         String argString = String.join(" ", args);
+        System.out.println("Room "+ getRoomNumber());
+        System.out.println("game finished leaderboard " + argString);
 
         while (!peerList.isEmpty()){
             peerList.get(0).sendMessage("game finished leaderboard " + argString);
@@ -208,7 +210,10 @@ public class GameRoom extends Room implements Runnable {
         }
 
         String fullCommand = command + " " + middleString + " " + lastString;
+        System.out.println("Room "+ getRoomNumber());
+        System.out.println(fullCommand);
         for (Peer p : peerList) {
+
             p.sendMessage(fullCommand);
         }
     }
@@ -219,7 +224,10 @@ public class GameRoom extends Room implements Runnable {
         Collections.sort(peerList);
         List<String> nameList = peerList.stream().map(Peer::getName).collect(Collectors.toList());
         String arg = String.join(" ", nameList);
+        System.out.println("Room "+ getRoomNumber());
+        System.out.println("order " + arg);
         for (Peer p : peerList) {
+
             p.sendMessage("order " + arg);
         }
     }
@@ -241,8 +249,12 @@ public class GameRoom extends Room implements Runnable {
 
 
     public void peerDisconnected(String name) {
+        System.out.println("Room "+ getRoomNumber());
+        System.out.println("player " + name + " left");
+
         for (Peer p : peerList) {
             // did not use sendmessagetoroom because we needed a for loop anyways
+
             p.sendMessage("player " + name + " left");
             p.moveToRoom(serverObject.getRoomList().get(0));
         }
@@ -258,6 +270,8 @@ public class GameRoom extends Room implements Runnable {
                 if (board.isValidMove(index, newPiece)) {
                     int pointsScored = board.movePiece(index, newPiece);
                     peer.incScore(pointsScored);
+                    System.out.println("Room "+ getRoomNumber());
+                    System.out.println("move " + peer.getName() + " " + tileString + " " + index + " " + pointsScored);
                     for (Peer p : peerList) {
                         p.sendMessage("move " + peer.getName() + " " + tileString + " " + index + " " + pointsScored);
                     }
@@ -279,6 +293,8 @@ public class GameRoom extends Room implements Runnable {
     public void checkSkip(Peer peer) {
         if (peer.equals(this.currentPlayer)) {
             if (mustSkip) {
+                System.out.println("Room "+ getRoomNumber());
+                System.out.println("player skipped " + peer.getName());
                 for (Peer p : peerList) {
                     p.sendMessage("player skipped " + peer.getName());
                 }
@@ -302,7 +318,8 @@ public class GameRoom extends Room implements Runnable {
 
                 peer.getTileBag().addPiece(newTile);
                 roomBag.addPiece(removedTile);;
-
+                System.out.println("Room "+ getRoomNumber());
+                System.out.println("replace " + peer.getName() + " " + removedTile.toString() + " with " + newTile.toString());
                 for (Peer p : peerList) {
                     p.sendMessage("replace " + peer.getName() + " " + removedTile.toString() + " with " + newTile.toString());
                 }
