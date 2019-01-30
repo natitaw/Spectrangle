@@ -100,15 +100,23 @@ public class GameRoom extends Room implements Runnable {
 
         while (!result && itr.hasNext()){
             Piece piece = (Piece) itr.next();
-            int i=0;
-            while (!result && i<36) {
-                result = board.isValidMove(i, piece);
-                i++;
+            List<Piece> pieceRotations = new ArrayList<>();
+            pieceRotations.add(piece);
+            pieceRotations.add(piece.getRotated());
+            pieceRotations.add(piece.getRotated2x());
+            for   (Piece rotatedPiece : pieceRotations){
+                int i=0;
+                while (!result && i<36) {
+                    result = board.isValidMove(i, piece);
+                    i++;
+                }
             }
+
         }
 
         return result;
     }
+
     // TODO check if this works (will not work if hasValidMoves does not work)
     private boolean checkIfGameHasEnded() {
         boolean result=false;

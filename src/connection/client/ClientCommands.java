@@ -90,17 +90,24 @@ public class ClientCommands {
 
     // TODO Implement ai here
 
-    private static boolean hasValidMoves(TileBag tileBag) {
+    private boolean hasValidMoves(TileBag tilebag) {
         boolean result = false;
-        Iterator itr = tileBag.getBag().iterator();
+        Iterator itr = tilebag.getBag().iterator();
 
         while (!result && itr.hasNext()){
             Piece piece = (Piece) itr.next();
-            int i=0;
-            while (!result && i<36) {
-                result = clientObject.getBoard().isValidMove(i, piece);
-                i++;
+            List<Piece> pieceRotations = new ArrayList<>();
+            pieceRotations.add(piece);
+            pieceRotations.add(piece.getRotated());
+            pieceRotations.add(piece.getRotated2x());
+            for   (Piece rotatedPiece : pieceRotations){
+                int i=0;
+                while (!result && i<36) {
+                    result = clientObject.getBoard().isValidMove(i, piece);
+                    i++;
+                }
             }
+
         }
 
         return result;
@@ -131,16 +138,22 @@ public class ClientCommands {
 
         while (itr.hasNext()){
             Piece piece = (Piece) itr.next();
-            int i=0;
-            while (i<36) {
-                int thisScore = clientObject.getBoard().getPotentialMoveScore(i, piece);
-                if (thisScore > result) {
-                    result = thisScore;
-                    bestPiece=piece;
-                    bestPos=i;
-                }
-                i++;
-            }
+            List<Piece> pieceRotations = new ArrayList<>();
+            pieceRotations.add(piece);
+            pieceRotations.add(piece.getRotated());
+            pieceRotations.add(piece.getRotated2x());
+            for   (Piece rotatedPiece : pieceRotations){
+                int i=0;
+                while (i<36) {
+                    int thisScore = clientObject.getBoard().getPotentialMoveScore(i, piece);
+                    if (thisScore > result) {
+                        result = thisScore;
+                        bestPiece=piece;
+                        bestPos=i;
+                    }
+                    i++;
+                }}
+
         }
 
         return "place " + bestPiece.toString() + " on " + bestPos;
@@ -151,14 +164,21 @@ public class ClientCommands {
 
         while (itr.hasNext()) {
             Piece piece = (Piece) itr.next();
-            int i = 0;
-            while (i < 36) {
-                if (clientObject.getBoard().isValidMove(i, piece)) {
-                    return "place " + piece.toString() + " on " + i;
+            List<Piece> pieceRotations = new ArrayList<>();
+            pieceRotations.add(piece);
+            pieceRotations.add(piece.getRotated());
+            pieceRotations.add(piece.getRotated2x());
+            for   (Piece rotatedPiece : pieceRotations){
+                int i = 0;
+                while (i < 36) {
+                    if (clientObject.getBoard().isValidMove(i, piece)) {
+                        return "place " + piece.toString() + " on " + i;
+                    }
+
+
                 }
-
-
             }
+
         }
         return "";
     }
