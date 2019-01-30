@@ -2,6 +2,7 @@ package game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,11 +19,11 @@ public class Board {
 	private TileBag tileBag;
 
 	/*
-	 * Generate a Board with the following attributes: an
-	 * ArrayList of pieces List of board locations with bonusQuotients
+	 * Generate a Board with the following attributes: an ArrayList of pieces List
+	 * of board locations with bonusQuotients
 	 */
 
-	public Board(){
+	public Board() {
 		this(new TileBag(36));
 	}
 
@@ -86,9 +87,8 @@ public class Board {
 
 	// Queries
 
-	// TODO: make sure that a piece can only be put next to another piece
 	/**
-	 * Check validity of the move Move is valid if location is valid AND: color
+	 * Check validity of the move. Move is valid if location is valid AND: color
 	 * matches at least on one side (except for Joker) board is empty then
 	 * everywhere except for bonus spots board is not empty then move is valid if
 	 * 
@@ -96,6 +96,61 @@ public class Board {
 	 * @param piece
 	 * @return
 	 */
+
+	/**
+	 * Convert coordinates to index
+	 * 
+	 * @param r
+	 * @param c
+	 * @return
+	 */
+	public int getIndex(int r, int c) {
+		return ((int) (Math.pow(r, 2) + r + c));
+	}
+
+	/**
+	 * Convert index to coordinates to determine left, right, top and bottom pieces
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public ArrayList<Integer> getCoordinate(int index) {
+		ArrayList<Integer> tuple = new ArrayList<>();
+		int r = ((int) Math.floor((int) Math.sqrt(index)));
+		int c = (index - (((int) Math.pow(r, 2))));
+		tuple.add(r);
+		tuple.add(c);
+		return tuple;
+	}
+
+	/**
+	 * Move piece according to the rules of Spectrangle
+	 * 
+	 * @param location
+	 * @param piece
+	 * @return
+	 */
+	public int movePiece(int location, Piece piece) {
+		int point = 0;
+		if (isValidLocation(location) && isValidMove(location, piece)) {
+
+			boardLocations[location].movePiece(piece);
+			point = boardLocations[location].getScorePoint() * piece.getValue();
+
+		}
+		return point;
+	}
+
+	public int getPotentialMoveScore(int location, Piece piece) {
+		if (isValidMove(location, piece)) {
+			return boardLocations[location].getScorePoint() * piece.getValue();
+		} else {
+			return 0;
+		}
+	}
+
+	// TODO: make sure that a piece can only be put next to another piece
+	// TODO: Implement properly
 	public boolean isValidMove(int location, Piece piece) {
 
 		boolean result = false;
@@ -117,63 +172,20 @@ public class Board {
 	}
 
 	/**
-	 * Convert coordinates to index
-	 * 
-	 * @param r
-	 * @param c
-	 * @return
-	 */
-	public int getIndex(int r, int c) {
-		return ((int) (Math.pow(r, 2) + r + c));
-	}
-
-	/**
-	 * Move piece according to the rules of Spectrangle
-	 * 
-	 * @param location
-	 * @param piece
-	 * @return
-	 */
-	public int movePiece(int location, Piece piece) {
-		int point = 0;
-		if (isValidLocation(location) && isValidMove(location, piece)) {
-
-			boardLocations[location].movePiece(piece);
-			point = boardLocations[location].getScorePoint() * piece.getValue();
-
-		}
-		return point;
-	}
-
-	public int getPotentialMoveScore(int location, Piece piece){
-		if (isValidMove(location, piece)) {
-			return boardLocations[location].getScorePoint() * piece.getValue();
-		} else {
-			return 0;
-		}
-	}
-
-	/**
 	 * Check color validity against neighbor
 	 * 
 	 * @param location
 	 * @param piece
 	 * @return
 	 */
-
+	// TODO: Implement Properly
 	public boolean isValidColor(int location, Piece piece) {
 
-		// TODO: implement
 		boolean result = false;
 
-		// Joker fits at all locations
-
 		if (isValidLocation(location) && piece.isJoker()) {
-
 			result = true;
 		}
-
-		// TODO: check for matching colors
 
 		return result;
 	}
@@ -182,10 +194,68 @@ public class Board {
 
 	/**
 	 * Get left piece of a given piece
+	 * 
 	 * @param piece
 	 * @return
 	 */
-	public Piece getLeftPiece(Piece piece) {
+	public Piece getLeftPiece(int index) {
+		int r = getCoordinate(index).get(0);
+		int c = getCoordinate(index).get(1);
+		if ((c - 1) >= (-1 * r)) {
+			int a = getIndex(r, c - 1);
+			return this.getBoardLocation(a).getPiece();
+		}
+		return null;
+	}
+
+	/**
+	 * Get right piece of given piece
+	 * 
+	 * @param piece
+	 * @return
+	 */
+	public Piece getRightPiece(int index) {
+		int r = getCoordinate(index).get(0);
+		int c = getCoordinate(index).get(1);
+		if ((c + 1) <= r) {
+			int a = getIndex(r, c + 1);
+			return this.getBoardLocation(a).getPiece();
+		}
+		return null;
+	}
+
+	/**
+	 * Get bottom piece of given piece
+	 * 
+	 * @param piece
+	 * @return
+	 */
+	public Piece getBottomPiece(int index) {
+		int r = getCoordinate(index).get(0);
+		int c = getCoordinate(index).get(1);
+		if ((r + c) % 2 == 0) {
+			if (r + 1 <= 5) {
+				int a = getIndex(r + 1, c);
+				return this.getBoardLocation(a).getPiece();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Get top piece of given piece
+	 * 
+	 * @param piece
+	 * @return
+	 */
+	public Piece getTopPiece(int index) {
+		int r = getCoordinate(index).get(0);
+		int c = getCoordinate(index).get(1);
+		if ((r + c) % 2 != 0) {
+			int a = getIndex(r - 1, c);
+			return this.getBoardLocation(a).getPiece();
+
+		}
 		return null;
 	}
 
@@ -201,6 +271,7 @@ public class Board {
 
 	/**
 	 * Check if the location is empty
+	 * 
 	 * @param location
 	 * @return
 	 */
@@ -210,6 +281,7 @@ public class Board {
 
 	/**
 	 * check if Board is empty
+	 * 
 	 * @return
 	 */
 	public boolean boardIsEmpty() {
@@ -222,23 +294,29 @@ public class Board {
 		return result;
 	}
 
-	// TODO: Add a function to check if colors are valid
+	public String toPrinterString() {
+		List<Integer> values = Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null);
+		List<Character> vertical = Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null);
+		List<Character> left = Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null);
+		List<Character> right = Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null);
 
-	public String toPrinterString(){
-		  List<Integer> values =        Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-		  List<Character> vertical =    Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-		  List<Character> left =        Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-		  List<Character> right =       Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-
-		for (int i=0; i<36; i++){
-			if (getPiece(i)!=null){
+		for (int i = 0; i < 36; i++) {
+			if (getPiece(i) != null) {
 				String pieceString = getPiece(i).toString();
-				vertical.set(i,pieceString.charAt(0));
-				left.set(i,pieceString.charAt(1));
-				right.set(i,pieceString.charAt(2));
-				values.set(i,Character.getNumericValue(pieceString.charAt(3)));
+				vertical.set(i, pieceString.charAt(0));
+				left.set(i, pieceString.charAt(1));
+				right.set(i, pieceString.charAt(2));
+				values.set(i, Character.getNumericValue(pieceString.charAt(3)));
 			}
 		}
-		return SpectrangleBoardPrinter.getBoardString(values,vertical,left,right);
+		return SpectrangleBoardPrinter.getBoardString(values, vertical, left, right);
 	}
 }
