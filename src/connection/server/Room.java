@@ -7,12 +7,12 @@ import java.util.List;
 
 public class Room {
 
+    final List<Peer> peerList;
     private final int roomNumber;
-    protected List<Peer> peerList;
 
-    public Room(int nr, List<Peer> peers) {
+    Room(int nr, List<Peer> peers) {
         this.roomNumber = nr;
-        this.peerList=peers;
+        this.peerList = peers;
         //
     }
 
@@ -24,15 +24,11 @@ public class Room {
         return peerList;
     }
 
-    public void setPeerList(List<Peer> peerList) {
-        this.peerList = peerList;
-    }
-
-    public boolean addPeer(Peer p){
+    public boolean addPeer(Peer p) {
         return peerList.add(p);
     }
 
-    public boolean removePeer(Peer p){
+    public boolean removePeer(Peer p) {
         return peerList.remove(p);
     }
 

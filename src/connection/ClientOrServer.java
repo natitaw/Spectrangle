@@ -13,7 +13,7 @@ public interface ClientOrServer {
         CLIENT, SERVER
     }
 
-    public PrintStream getPrinter();
+    PrintStream getPrinter();
 
     Type getType();
 

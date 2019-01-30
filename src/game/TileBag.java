@@ -4,185 +4,167 @@ import java.util.ArrayList;
 
 /**
  * Tile Bag Generator. Generates a bag of Piece(tile)
- * 
- * @author User
  *
+ * @author User
  */
 
 public class TileBag {
 
-	private int maxSize;
+    private final ArrayList<Piece> pieces;
 
-	private ArrayList<Piece> pieces;
+    /**
+     * TileBag This class generates a bag of size with 36 tiles according to the
+     * rules of Spectrangle
+     */
+    // TODO update javadoc here
+    public TileBag(int sizeInput) {
+        this.pieces = new ArrayList<>(sizeInput);
+    }
 
-	/**
-	 * TileBag This class generates a bag of size with 36 tiles according to the
-	 * rules of Spectrangle
-	 */
-	// TODO update javadoc here
-	public TileBag(int sizeInput) {
-		this.pieces = new ArrayList<>(sizeInput);
-		this.maxSize=sizeInput;
-	}
+    /**
+     * takeRandomPiece() returns a random tile from the tile bag generated
+     *
+     * @return
+     */
+    public Piece takeRandomPiece() throws EmptyBagException {
+        if (pieces.size() != 0) {
+            int random = (int) (Math.random() * this.pieces.size() - 1);
+            Piece p = pieces.get(random);
+            pieces.remove(random);
+            return p;
+        } else {
+            throw new EmptyBagException("Bag is empty!");
+        }
+    }
 
-	/**
-	 * takeRandomPiece() returns a random tile from the tile bag generated
-	 * 
-	 * @return
-	 */
-	public Piece takeRandomPiece() throws EmptyBagException {
-		if (pieces.size()!=0) {
-			int random = (int) (Math.random() * this.pieces.size() - 1);
-			Piece p = pieces.get(random);
-			pieces.remove(random);
-			return p;
-		}
-		else {
-			throw new EmptyBagException("Bag is empty!");
-		}
-	}
+    public Piece viewPiece(int i) {
+        return pieces.get(i);
+    }
 
-	public Piece viewPiece(int i) {
-		return pieces.get(i);
-	}
+    public Piece takePiece(int index) throws EmptyBagException {
+        if (pieces.size() != 0) {
+            Piece p = pieces.get(index);
+            pieces.remove(index);
+            return p;
+        } else {
+            throw new EmptyBagException("Bag is empty!");
+        }
+    }
 
-	public Piece takePiece(int index) throws EmptyBagException{
-		if (pieces.size()!=0) {
-			Piece p = pieces.get(index);
-			pieces.remove(index);
-			return p;
-		}else {
-			throw new EmptyBagException("Bag is empty!");
-		}
-	}
+    public int findPiece(Piece inputPiece) {
+        for (Piece piece : pieces) {
+            if (piece.equalsRotated(inputPiece) >= 0) {
+                return pieces.indexOf(piece);
+            }
 
-	public int findPiece(Piece inputPiece) {
-		for (Piece piece : pieces){
-			if (piece.equalsRotated(inputPiece)>=0){
-				return pieces.indexOf(piece);
-			}
+        }
+        return -1;
+    }
 
-		}
-		return -1;
-	}
+    public void addPiece(Piece p) {
+        pieces.add(p);
+    }
 
-	public int findPieceRotation(Piece inputPiece) {
-		for (Piece piece : pieces){
-			if (piece.equalsRotated(inputPiece)>=0){
-				return piece.equalsRotated(inputPiece);
-			}
+    /**
+     * This function will be called in the constructor and it will populate the bag
+     * according to the rules of Spectrangle and includes Joker
+     */
+    public void populateBag() {
 
-		}
-		return -1;
-	}
+        // 6 Points
 
-	public void addPiece(Piece p){
-		pieces.add(p);
-	}
+        for (ColorDefinition c : ColorDefinition.values()) {
 
-	/**
-	 * This function will be called in the constructor and it will populate the bag
-	 * according to the rules of Spectrangle and includes Joker
-	 */
-	public void populateBag() {
+            if (c != ColorDefinition.WHITE) {
 
-		// 6 Points
+                pieces.add(new Piece(c, c, c, 6));
+            } else {
+                // Joker
+                pieces.add(new Piece(c, c, c, 1));
+            }
 
-		for (ColorDefinition c : ColorDefinition.values()) {
-			ColorDefinition color = c;
+        }
 
-			if (color != ColorDefinition.WHITE) {
+        // 5 Points
 
-				pieces.add(new Piece(color, color, color, 6));
-			} else if (color == ColorDefinition.WHITE) {
-				// Joker
-				pieces.add(new Piece(color, color, color, 1));
-			}
+        for (ColorDefinition c : ColorDefinition.values()) {
 
-		}
+            if (c == ColorDefinition.RED) {
+                pieces.add(new Piece(c, c, ColorDefinition.YELLOW, 5));
+                pieces.add(new Piece(c, c, ColorDefinition.PURPLE, 5));
 
-		// 5 Points
+            } else if (c == ColorDefinition.BLUE) {
+                pieces.add(new Piece(c, c, ColorDefinition.RED, 5));
+                pieces.add(new Piece(c, c, ColorDefinition.PURPLE, 5));
+            } else if (c == ColorDefinition.GREEN) {
+                pieces.add(new Piece(c, c, ColorDefinition.RED, 5));
+                pieces.add(new Piece(c, c, ColorDefinition.BLUE, 5));
+            } else if (c == ColorDefinition.YELLOW) {
+                pieces.add(new Piece(c, c, ColorDefinition.BLUE, 5));
+                pieces.add(new Piece(c, c, ColorDefinition.GREEN, 5));
+            } else if (c == ColorDefinition.PURPLE) {
+                pieces.add(new Piece(c, c, ColorDefinition.YELLOW, 5));
+                pieces.add(new Piece(c, c, ColorDefinition.GREEN, 5));
+            }
+        }
 
-		for (ColorDefinition c : ColorDefinition.values()) {
-			ColorDefinition color = c;
+        // 4 Points
 
-			if (color == ColorDefinition.RED) {
-				pieces.add(new Piece(color, color, ColorDefinition.YELLOW, 5));
-				pieces.add(new Piece(color, color, ColorDefinition.PURPLE, 5));
+        for (ColorDefinition c : ColorDefinition.values()) {
 
-			} else if (color == ColorDefinition.BLUE) {
-				pieces.add(new Piece(color, color, ColorDefinition.RED, 5));
-				pieces.add(new Piece(color, color, ColorDefinition.PURPLE, 5));
-			} else if (color == ColorDefinition.GREEN) {
-				pieces.add(new Piece(color, color, ColorDefinition.RED, 5));
-				pieces.add(new Piece(color, color, ColorDefinition.BLUE, 5));
-			} else if (color == ColorDefinition.YELLOW) {
-				pieces.add(new Piece(color, color, ColorDefinition.BLUE, 5));
-				pieces.add(new Piece(color, color, ColorDefinition.GREEN, 5));
-			} else if (color == ColorDefinition.PURPLE) {
-				pieces.add(new Piece(color, color, ColorDefinition.YELLOW, 5));
-				pieces.add(new Piece(color, color, ColorDefinition.GREEN, 5));
-			}
-		}
+            if (c == ColorDefinition.RED) {
+                pieces.add(new Piece(c, c, ColorDefinition.BLUE, 4));
+                pieces.add(new Piece(c, c, ColorDefinition.GREEN, 4));
 
-		// 4 Points
+            } else if (c == ColorDefinition.BLUE) {
+                pieces.add(new Piece(c, c, ColorDefinition.GREEN, 4));
+                pieces.add(new Piece(c, c, ColorDefinition.YELLOW, 4));
+            } else if (c == ColorDefinition.GREEN) {
+                pieces.add(new Piece(c, c, ColorDefinition.YELLOW, 4));
+                pieces.add(new Piece(c, c, ColorDefinition.PURPLE, 4));
+            } else if (c == ColorDefinition.YELLOW) {
+                pieces.add(new Piece(c, c, ColorDefinition.RED, 4));
+                pieces.add(new Piece(c, c, ColorDefinition.PURPLE, 4));
+            } else if (c == ColorDefinition.PURPLE) {
+                pieces.add(new Piece(c, c, ColorDefinition.RED, 4));
+                pieces.add(new Piece(c, c, ColorDefinition.BLUE, 4));
+            }
+        }
 
-		for (ColorDefinition c : ColorDefinition.values()) {
-			ColorDefinition color = c;
+        // 3 Points
+        pieces.add(new Piece(ColorDefinition.YELLOW, ColorDefinition.BLUE, ColorDefinition.PURPLE, 3));
+        pieces.add(new Piece(ColorDefinition.RED, ColorDefinition.GREEN, ColorDefinition.YELLOW, 3));
+        pieces.add(new Piece(ColorDefinition.BLUE, ColorDefinition.GREEN, ColorDefinition.PURPLE, 3));
+        pieces.add(new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.BLUE, 3));
 
-			if (color == ColorDefinition.RED) {
-				pieces.add(new Piece(color, color, ColorDefinition.BLUE, 4));
-				pieces.add(new Piece(color, color, ColorDefinition.GREEN, 4));
+        // 2 Points
+        pieces.add(new Piece(ColorDefinition.BLUE, ColorDefinition.RED, ColorDefinition.PURPLE, 2));
+        pieces.add(new Piece(ColorDefinition.YELLOW, ColorDefinition.PURPLE, ColorDefinition.RED, 2));
+        pieces.add(new Piece(ColorDefinition.YELLOW, ColorDefinition.PURPLE, ColorDefinition.GREEN, 2));
 
-			} else if (color == ColorDefinition.BLUE) {
-				pieces.add(new Piece(color, color, ColorDefinition.GREEN, 4));
-				pieces.add(new Piece(color, color, ColorDefinition.YELLOW, 4));
-			} else if (color == ColorDefinition.GREEN) {
-				pieces.add(new Piece(color, color, ColorDefinition.YELLOW, 4));
-				pieces.add(new Piece(color, color, ColorDefinition.PURPLE, 4));
-			} else if (color == ColorDefinition.YELLOW) {
-				pieces.add(new Piece(color, color, ColorDefinition.RED, 4));
-				pieces.add(new Piece(color, color, ColorDefinition.PURPLE, 4));
-			} else if (color == ColorDefinition.PURPLE) {
-				pieces.add(new Piece(color, color, ColorDefinition.RED, 4));
-				pieces.add(new Piece(color, color, ColorDefinition.BLUE, 4));
-			}
-		}
+        // 1 Point
+        pieces.add(new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.PURPLE, 1));
+        pieces.add(new Piece(ColorDefinition.BLUE, ColorDefinition.YELLOW, ColorDefinition.GREEN, 1));
+        pieces.add(new Piece(ColorDefinition.RED, ColorDefinition.YELLOW, ColorDefinition.BLUE, 1));
 
-		// 3 Points
-		pieces.add(new Piece(ColorDefinition.YELLOW, ColorDefinition.BLUE, ColorDefinition.PURPLE, 3));
-		pieces.add(new Piece(ColorDefinition.RED, ColorDefinition.GREEN, ColorDefinition.YELLOW, 3));
-		pieces.add(new Piece(ColorDefinition.BLUE, ColorDefinition.GREEN, ColorDefinition.PURPLE, 3));
-		pieces.add(new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.BLUE, 3));
+    }
 
-		// 2 Points
-		pieces.add(new Piece(ColorDefinition.BLUE, ColorDefinition.RED, ColorDefinition.PURPLE, 2));
-		pieces.add(new Piece(ColorDefinition.YELLOW, ColorDefinition.PURPLE, ColorDefinition.RED, 2));
-		pieces.add(new Piece(ColorDefinition.YELLOW, ColorDefinition.PURPLE, ColorDefinition.GREEN, 2));
+    /**
+     * Get an ArrayList<Piece> of Piece objects that will be used every time a Board
+     * is generated
+     *
+     * @return
+     */
+    public ArrayList<Piece> getBag() {
+        return this.pieces;
+    }
 
-		// 1 Point
-		pieces.add(new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.PURPLE, 1));
-		pieces.add(new Piece(ColorDefinition.BLUE, ColorDefinition.YELLOW, ColorDefinition.GREEN, 1));
-		pieces.add(new Piece(ColorDefinition.RED, ColorDefinition.YELLOW, ColorDefinition.BLUE, 1));
-
-	}
-
-	/**
-	 * Get an ArrayList<Piece> of Piece objects that will be used everytime a Board
-	 * is generated
-	 * 
-	 * @return
-	 */
-	public ArrayList<Piece> getBag() {
-		return this.pieces;
-	}
-
-	/**
-	 * Method to get the number of peices at anypoint in the game
-	 * 
-	 * @return
-	 */
-	public int getNumberOfPieces() {
-		return getBag().size();
-	}
+    /**
+     * Method to get the number of pieces at any point in the game
+     *
+     * @return
+     */
+    public int getNumberOfPieces() {
+        return getBag().size();
+    }
 }

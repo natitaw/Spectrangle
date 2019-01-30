@@ -6,69 +6,66 @@ import java.util.List;
 
 /**
  * Java Class representing a Piece (tile) of a Spectrangle game
- * 
- * @author Group4
  *
+ * @author Group4
  */
 public class Piece {
 
-	private int value;
+    private final int value;
 
-	// TODO: These fields might not be needed
+    // TODO: These fields might not be needed
     private ColorDefinition bottom;
     private ColorDefinition left;
-	private ColorDefinition right;
+    private ColorDefinition right;
 
-	/*
-	 * Orientation is as follows: Left, Right, Bottom
-	 */
-	private ArrayList<ColorDefinition> orientation;
+    /*
+     * Orientation is as follows: Left, Right, Bottom
+     */
+    private ArrayList<ColorDefinition> orientation;
 
-	public Piece(ColorDefinition bottom, ColorDefinition left, ColorDefinition right, int value) {
-		orientation  = new ArrayList<>();
+    public Piece(ColorDefinition bottom, ColorDefinition left, ColorDefinition right, int value) {
+        orientation = new ArrayList<>();
         this.bottom = bottom;
         this.left = left;
-		this.right = right;
-		this.value = value;
+        this.right = right;
+        this.value = value;
         this.orientation.add(this.bottom);
-		this.orientation.add(this.left);
-		this.orientation.add(this.right);
-	}
+        this.orientation.add(this.left);
+        this.orientation.add(this.right);
+    }
 
-    public Piece(List<ColorDefinition> orientationInput, int value) {
+    private Piece(List<ColorDefinition> orientationInput, int value) {
         this(orientationInput.get(0), orientationInput.get(1), orientationInput.get(2), value);
     }
 
-	public Piece(String s) {
-	    if (s.equals("null")){
-            orientation  = new ArrayList<>();
+    public Piece(String s) {
+        if (s.equals("null")) {
+            orientation = new ArrayList<>();
             this.value = 0;
         } else {
 
             List<ColorDefinition> tempColors = new ArrayList<>();
-            for (int i=0; i<3; i++) {
+            for (int i = 0; i < 3; i++) {
 
 
-            for (ColorDefinition tempColor : ColorDefinition.values()){
-                if ( Character.toString(s.charAt(i)).equals(Character.toString(tempColor.toString().charAt(0)))){
+                for (ColorDefinition tempColor : ColorDefinition.values()) {
+                    if (Character.toString(s.charAt(i)).equals(Character.toString(tempColor.toString().charAt(0)))) {
                         tempColors.add(tempColor);
                     }
                 }
             }
 
 
-
-            orientation  = new ArrayList<>();
+            orientation = new ArrayList<>();
             this.bottom = tempColors.get(0);
             this.left = tempColors.get(1);
             this.right = tempColors.get(2);
-            this.value =  Character.getNumericValue(s.charAt(3));
+            this.value = Character.getNumericValue(s.charAt(3));
             this.orientation.add(this.bottom);
             this.orientation.add(this.left);
             this.orientation.add(this.right);
-	    }
+        }
     }
-
 
 
     // TODO: add color check functionality
@@ -85,99 +82,92 @@ public class Piece {
         Collections.rotate(tempOrientation, 2);
         return new Piece(tempOrientation, value);
     }
-	/**
-	 * rotate() This function rotates the Piece object Note: flipping is not taken
-	 * into account
-	 * 
-	 * @return
-	 */
-	public void rotate() {
 
-	    this.orientation=getRotated().getColors();
-	}
+    /**
+     * rotate() This function rotates the Piece object Note: flipping is not taken
+     * into account
+     *
+     * @return
+     */
+    public void rotate() {
 
-	/**
-	 * Rotate twice
-	 * @return
-	 */
-
-	public void rotate2x() {
-
-        this.orientation=getRotated2x().getColors();
-
-	}
-	/**
-	 * Return the orientaiton of this piece
-	 * @return
-	 */
-	public ArrayList<ColorDefinition> getColors() {
-		return this.orientation;
-	}
-
-	// TODO Make javadoc
-    public ColorDefinition getColor(int index) {
-        return orientation.get(index);
+        this.orientation = getRotated().getColors();
     }
 
-	/**
-	 * Return the number of points of given tile
-	 * 
-	 * @return
-	 */
-	public int getValue() {
-		return value;
-	}
+    /**
+     * Rotate twice
+     *
+     * @return
+     */
 
-	/**
-	 * Function to check if tile is joker
-	 * 
-	 * @return
-	 */
-	public boolean isJoker() {
-		return (orientation.get(0).equals(ColorDefinition.WHITE));
-	}
+    public void rotate2x() {
 
-	/**
-	 * Check if given Piece is the same as this Piece
-	 * 
-	 * @param p
-	 * @return
-	 */
-	public boolean isSamePiece(Piece p) {
-		return (this.equals(p) || this.equals(p.getRotated()) || this.equals(p.getRotated2x()));
-	}
+        this.orientation = getRotated2x().getColors();
 
-	@Override
-	public boolean equals(Object obj) {
-	    Piece p = (Piece) obj;
-	    return (this.getColors().equals(p.getColors()) && this.getValue() == p.getValue());
     }
 
-	public int equalsRotated(Piece p) {
-		if (this.equals(p) ){
-			return 0;
-		} else if (this.equals(p.getRotated())){
-			return 1;
-		} else 	if (this.equals(p.getRotated2x())){
-			return 2;
-		} else {
-			return -1;
-		}
-	}
+    /**
+     * Return the orientation of this piece
+     *
+     * @return
+     */
+    public ArrayList<ColorDefinition> getColors() {
+        return this.orientation;
+    }
 
-	@Override
-	public String toString(){
+    /**
+     * Return the number of points of given tile
+     *
+     * @return
+     */
+    public int getValue() {
+        return value;
+    }
+
+    /**
+     * Function to check if tile is joker
+     *
+     * @return
+     */
+    public boolean isJoker() {
+        return (orientation.get(0).equals(ColorDefinition.WHITE));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Piece) {
+            Piece p = (Piece) obj;
+            return (this.getColors().equals(p.getColors()) && this.getValue() == p.getValue());
+        } else {
+            return false;
+        }
+    }
+
+    public int equalsRotated(Piece p) {
+        if (this.equals(p)) {
+            return 0;
+        } else if (this.equals(p.getRotated())) {
+            return 1;
+        } else if (this.equals(p.getRotated2x())) {
+            return 2;
+        } else {
+            return -1;
+        }
+    }
+
+    @Override
+    public String toString() {
         String result = "";
-        for (int pieceColorIndex = 0; pieceColorIndex <= 2; pieceColorIndex++){
+        for (int pieceColorIndex = 0; pieceColorIndex <= 2; pieceColorIndex++) {
             Character letter = orientation.get(pieceColorIndex).toString().charAt(0);
             result = result.concat(letter.toString());
         }
         result = result.concat(Integer.toString(value));
         return result;
-	}
+    }
 
-	public String toPrinterString(){
-	    if (value==0) {
+    public String toPrinterString() {
+        if (value == 0) {
             return PiecePrinter.printEmptyPiece();
         } else {
             return PiecePrinter.printPiece(value, this.bottom.toString().charAt(0), this.left.toString().charAt(0), this.right.toString().charAt(0));
