@@ -136,9 +136,9 @@ public class GameRoom extends Room implements Runnable {
 
     // TODO check if this works (will not work if hasValidMoves does not work)
     private boolean checkIfGameHasEnded() {
-        boolean result=true;
+        boolean result=false;
         Iterator itr = peerList.iterator();
-        while (result && itr.hasNext()){
+        while ((result) && itr.hasNext()){
             Peer p = (Peer) itr.next();
             result = (!hasValidMoves(p));
             // if p has any moves, set result=false
@@ -261,6 +261,7 @@ public class GameRoom extends Room implements Runnable {
                     for (Peer p : peerList) {
                         p.sendMessage("move " + peer.getName() + " " + tileString + " " + index + " " + pointsScored);
                     }
+
                     if (roomBag.getNumberOfPieces() > 0){
                         try {
                             peer.getTileBag().addPiece(roomBag.takeRandomPiece());

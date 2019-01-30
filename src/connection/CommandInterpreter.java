@@ -60,6 +60,9 @@ public class CommandInterpreter {
                 case "tiles":
 
                     if (args[args.length-1].equals(parent.getName()) ) {
+                        ClientCommands.printBoard();
+                        ClientCommands.otherTiles(args);
+                        ClientCommands.printTiles(args);
 
                         if (args[args.length-2].equals("skip") ) {
                             if (((Client) parent).isAI) {
@@ -75,9 +78,7 @@ public class CommandInterpreter {
                                 ((Client) parent).getTerminalInputHandler().setState(TerminalInputHandler.InputState.TURN);
                             }
                         }
-                        ClientCommands.printBoard();
-                        ClientCommands.otherTiles(args);
-                        ClientCommands.printTiles(args);
+
                         ((Client) parent).getTerminalInputHandler().interrupted=true;
 
 

@@ -65,7 +65,7 @@ public class ClientCommands {
     public static void otherTiles(String[] args) {
         System.out.println("Other players have tiles:");
         otherTileList = new ArrayList<>();
-        String[] middleArgs = Arrays.copyOfRange(args, 0, args.length - 2);
+        String[] middleArgs = Arrays.copyOfRange(args, 0, args.length - 3);
         for (int peerNr = 0; peerNr < middleArgs.length / 5; peerNr++) {
             String name = middleArgs[peerNr * 5];
             if (!name.equals(clientObject.getName())) {
