@@ -57,7 +57,7 @@ public class Peer implements Runnable, Comparable<Peer> {
             }
 
         } catch (IOException e) {
-            System.out.println("Error in starting peer");
+            parent.getPrinter().println("Error in starting peer");
             e.printStackTrace();
         }
     }
@@ -129,7 +129,7 @@ public class Peer implements Runnable, Comparable<Peer> {
 
         } catch (IOException e) {
             if (running && parent.getRunning()){
-                System.out.println("Error in reading data from " + name);
+                parent.getPrinter().println("Error in reading data from " + name);
                 e.printStackTrace();
             }
 
@@ -165,12 +165,12 @@ public class Peer implements Runnable, Comparable<Peer> {
         this.running=false;
 
         streamInputHandler.interrupt();
-        System.out.println("Connection reading thread for " + name + " closed");
+        parent.getPrinter().println("Connection reading thread for " + name + " closed");
         try {
             sock.close();
-            System.out.println("Socket for connection " + name + " closed");
+            parent.getPrinter().println("Socket for connection " + name + " closed");
         } catch (IOException e) {
-            System.out.println("Error in closing socket for " + name);
+            parent.getPrinter().println("Error in closing socket for " + name);
 
         }
         // TODO if server, remove peer from lists, rooms and such. Close any game rooms it is in

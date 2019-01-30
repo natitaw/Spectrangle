@@ -57,7 +57,7 @@ public class TerminalInputHandler implements Runnable{
                 }
             } catch (IOException e) {
                 if (running && parent.getRunning()) {
-                    System.out.println("Error in reading message from terminal");
+                    parent.getPrinter().println("Error in reading message from terminal");
                     e.printStackTrace();
                 }
             }
@@ -116,7 +116,7 @@ public class TerminalInputHandler implements Runnable{
                     break;
 
                 case NAME:
-                    System.out.println("Please enter your desired name");
+                    parent.getPrinter().println("Please enter your desired name");
                     s = readString();
                     this.name = s;
                     ((Client) parent).setName(s);
@@ -126,7 +126,7 @@ public class TerminalInputHandler implements Runnable{
                     boolean hasChosen = false;
 
                     while (!hasChosen) {
-                        System.out.println("Would you like to enable chat? Y/N");
+                        parent.getPrinter().println("Would you like to enable chat? Y/N");
                         s = readString();
 
                         if (s.equals("Y") || s.equals("y") || s.equals("yes") || s.equals("Yes")) {
@@ -136,7 +136,7 @@ public class TerminalInputHandler implements Runnable{
                             wantsChat = false;
                             hasChosen=true;
                         } else {
-                            System.out.println("Please type a correct response");
+                            parent.getPrinter().println("Please type a correct response");
                         }
 
                     }
@@ -152,10 +152,10 @@ public class TerminalInputHandler implements Runnable{
 
                     break;
                 case NUMBER_OF_PLAYERS:
-                    System.out.println("If you'd like to play a game, just type \"request <number>\"");
-                    System.out.println("Where <number> is the amount of players to play with, from 1-4");
+                    parent.getPrinter().println("If you'd like to play a game, just type \"request <number>\"");
+                    parent.getPrinter().println("Where <number> is the amount of players to play with, from 1-4");
                     if (wantsChat) {
-                        System.out.println("Type \"chat <your message> \" to chat with others");
+                        parent.getPrinter().println("Type \"chat <your message> \" to chat with others");
                     }
 
                     s = readString();
@@ -170,11 +170,11 @@ public class TerminalInputHandler implements Runnable{
                     boolean inputFinished = false;
                     while (!inputFinished) {
                         try {
-                            System.out.println("Type the number of the tile you would like to place (or rotate)");
-                            System.out.println("Or type \"hint\" for a hint");
+                            parent.getPrinter().println("Type the number of the tile you would like to place (or rotate)");
+                            parent.getPrinter().println("Or type \"hint\" for a hint");
                             s = readString();
                             if (s.equals("hint") || s.equals("Hint") || s.equals("h") || s.equals("H")){
-                                System.out.println(ClientCommands.bestMove(ClientCommands.generateBag(ClientCommands.getClientTiles())));
+                                parent.getPrinter().println(ClientCommands.bestMove(ClientCommands.generateBag(ClientCommands.getClientTiles())));
                                 state=TURN;
                             } else {
                                 tempPieceIndex = Integer.parseInt(s) - 1;
@@ -192,8 +192,8 @@ public class TerminalInputHandler implements Runnable{
                     break;
                 case TURN2:
                         try {
-                            System.out.println("Type the index of the board where you would like to place the tile");
-                            System.out.println("Or type R to rotate clockwise one. Type RR to rotate clockwise twice");
+                            parent.getPrinter().println("Type the index of the board where you would like to place the tile");
+                            parent.getPrinter().println("Or type R to rotate clockwise one. Type RR to rotate clockwise twice");
                             s = readString();
                         if (s.equals("R") || s.equals("r")){
                             tempPiece.rotate();
@@ -221,8 +221,8 @@ public class TerminalInputHandler implements Runnable{
                     boolean moveFinished2 = false;
                     while (!moveFinished2) {
                         try {
-                            System.out.println("You have no valid moves.");
-                            System.out.println("Type S to skip turn, or type a number above to exchange one of your tiles");
+                            parent.getPrinter().println("You have no valid moves.");
+                            parent.getPrinter().println("Type S to skip turn, or type a number above to exchange one of your tiles");
                             s = readString();
                             if (s.equals("S") || s.equals("s") || s.equals("Skip") || s.equals("skip")) {
                                 parent.sendMessageToAll("skip");
@@ -257,9 +257,9 @@ public class TerminalInputHandler implements Runnable{
         }
     }
 
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+    public static void clearScreen(ClientOrServer parent) {
+        parent.getPrinter().print("\033[H\033[2J");
+        parent.getPrinter().flush();
     }
 
 }

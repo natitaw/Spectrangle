@@ -34,28 +34,28 @@ public class CommandInterpreter {
         if (this.parentType== ClientOrServer.Type.CLIENT){
             switch (command) {
                 case "welcome":
-                    System.out.print("Name change acknowledged");
+                    parent.getPrinter().print("Name change acknowledged");
                     if (args.length > 1 && args[1].equals("chat")){
-                        System.out.print(", and chat has been enabled.\n");
+                        parent.getPrinter().print(", and chat has been enabled.\n");
                     } else {
-                        System.out.print(".\n");
+                        parent.getPrinter().print(".\n");
                     }
                     break;
                 case "waiting":
-                    System.out.println("Waiting for game with requested amount of players.");
-                    System.out.println("Players in queue: " + String.join(", ", args));
+                    parent.getPrinter().println("Waiting for game with requested amount of players.");
+                    parent.getPrinter().println("Players in queue: " + String.join(", ", args));
                     break;
                 case "start":
                     if (args[0].equals("with")){
                         String[] newargs = Arrays.copyOfRange(args, 1, args.length);
 
-                        TerminalInputHandler.clearScreen();
-                        System.out.println("Starting new game with: " + String.join(", ", newargs));
+                        TerminalInputHandler.clearScreen(parent);
+                        parent.getPrinter().println("Starting new game with: " + String.join(", ", newargs));
                         ClientCommands.makeBoard();
                     }
                     break;
                 case "order":
-                    System.out.println("Order of turns: " + String.join(", ", args));
+                    parent.getPrinter().println("Order of turns: " + String.join(", ", args));
                     break;
                 case "tiles":
 
@@ -89,26 +89,26 @@ public class CommandInterpreter {
 
                 case "player":
                     if (args[0].equals("skipped")){
-                        System.out.print("Player " + args[1] + " skipped turn.");
+                        parent.getPrinter().print("Player " + args[1] + " skipped turn.");
                     } else if (args[1].equals("left")){
-                        TerminalInputHandler.clearScreen();
-                        System.out.println("Player " + args[0] + " left mid-game. Returned to lobby");
+                        TerminalInputHandler.clearScreen(parent);
+                        parent.getPrinter().println("Player " + args[0] + " left mid-game. Returned to lobby");
                     }
                     break;
                 case "replace":
-                    System.out.println(args[0] + " replaced tile " + args[1] +" with new tile:" + args[3]);
+                    parent.getPrinter().println(args[0] + " replaced tile " + args[1] +" with new tile:" + args[3]);
                     break;
                 case "move":
-                    System.out.println(args[0] + " placed tile " + args[1] + " on position " + args[2] + ", earning " + args[3] + " points.");
+                    parent.getPrinter().println(args[0] + " placed tile " + args[1] + " on position " + args[2] + ", earning " + args[3] + " points.");
                     ((Client) parent).getBoard().movePiece(Integer.parseInt(args[2]),new Piece(args[1]));
                     break;
                 case "game":
                     if (args[0].equals("finished")){
-                        TerminalInputHandler.clearScreen();
-                        System.out.println("Game finished");
-                        System.out.println("Scoreboard:");
+                        TerminalInputHandler.clearScreen(parent);
+                        parent.getPrinter().println("Game finished");
+                        parent.getPrinter().println("Scoreboard:");
                         for (int i = 1; i < ((args.length-1)/2); i++){
-                            System.out.println(args[i] + ": " + args[i+1]);
+                            parent.getPrinter().println(args[i] + ": " + args[i+1]);
                         }
                     }
 
@@ -117,14 +117,14 @@ public class CommandInterpreter {
                     String sender = args[0];
                     String[] messageArray = Arrays.copyOfRange(args, 1, args.length);
                     String message = String.join(" ", messageArray);
-                    System.out.println(sender + ": " + message);
+                    parent.getPrinter().println(sender + ": " + message);
                     break;
                 case "invalid":
-                    System.out.println(inputString);
+                    parent.getPrinter().println(inputString);
                     break;
                 default:
                     if (Settings.debug) {
-                        System.out.println(peer.getName() + " sent an unknown command that was ignored: " + inputString);
+                        parent.getPrinter().println(peer.getName() + " sent an unknown command that was ignored: " + inputString);
                     }
                     break;
             }
@@ -166,7 +166,7 @@ public class CommandInterpreter {
                     break;
                 default:
                     if (Settings.debug) {
-                        ((Server) parent).printer.println(peer.getName() + " sent an unknown command that was ignored: " + inputString);
+                        ((Server) parent).getPrinter().println(peer.getName() + " sent an unknown command that was ignored: " + inputString);
                     }
                     break;
             }

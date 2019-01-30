@@ -26,7 +26,7 @@ public class Server implements Runnable, ClientOrServer {
     Thread newConnectionThread;
     public Room lobby;
     private List<Room> roomList;
-    public PrintStream printer;
+    private PrintStream printer;
 
 
     public synchronized boolean getRunning(){
@@ -77,6 +77,10 @@ public class Server implements Runnable, ClientOrServer {
         return peerList;
     }
 
+    @Override
+    public PrintStream getPrinter() {
+        return printer;
+    }
 
     public List<Room> getRoomList() {
         return roomList;

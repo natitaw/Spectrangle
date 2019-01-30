@@ -1,6 +1,8 @@
 import connection.client.Client;
 import connection.server.Server;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class ClientMain {
@@ -57,7 +59,7 @@ public class ClientMain {
         System.out.println("Type preferred difficulty. 0: random, 1: best move, 2: best future move etc");
         double difficulty = scanner.nextInt();
 
-        Client clientObject = new Client(ip, "ai " + name + " " + preferredNrofPlayers + " " + difficulty);
+        Client clientObject = new Client(ip, "ai " + name + " " + preferredNrofPlayers + " " + difficulty + " " + "false");
 
 
 
@@ -92,13 +94,38 @@ public class ClientMain {
             }
         });
         serverThread.start();
+
+        // wait for a moment so server can start
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Client clientObject = new Client("127.0.0.1", "singleplayer");
+        System.out.println("type preferred nr of players");
+        int preferredNrofPlayers= scanner.nextInt();
 
+        System.out.println("Type preferred difficulty. 0: random, 1: best move, 2: best future move etc");
+        double difficulty = scanner.nextInt();
+
+
+        List<Thread> aiThreads = new ArrayList<>();
+        for (int i = 1; i <= preferredNrofPlayers; i++) {
+
+
+            final Client[] aiObject = new Client[1]; // needed weird final array because of inner class
+            int finalI = i;
+            Thread aiThread = new Thread(new Runnable() {
+                int j = finalI;
+                @Override
+                public void run() {
+                    aiObject[0] = new Client("127.0.0.1", "ai Computer" + j + " " + preferredNrofPlayers + " " + difficulty + " " + "true");
+                }
+            });
+            aiThreads.add(aiThread);
+            aiThread.start();
+        }
+
+        Client clientObject =  new Client("127.0.0.1", "singleplayer Player " + preferredNrofPlayers + " " + difficulty);
 
 
 
@@ -110,12 +137,12 @@ public class ClientMain {
             }
         }
 
-        serverObject[0].shutDown();
-        try {
-            serverThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        for (int i = 1; i <= preferredNrofPlayers; i++) {
+            aiThreads.get(i).stop();
         }
+
+
+
 
         // go back to main menu on disconnect
         clearScreen();

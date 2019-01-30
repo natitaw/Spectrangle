@@ -35,7 +35,7 @@ public class ClientCommands {
 }
 
     public static void printTiles() {
-        System.out.println("You have tiles:");
+        clientObject.getPrinter().println("You have tiles:");
 
         List<String[]> pieceLineList = new ArrayList<>();
         String[] resultArray;
@@ -53,10 +53,10 @@ public class ClientCommands {
             }
         }
         String tilesPrinted = String.join("\n", resultArray);
-        System.out.println(tilesPrinted);
-        System.out.println("");
-        System.out.println("    [1]    " + " " + "    [2]    " + " " + "    [3]    " + " " + "    [4]    ");
-        System.out.println("");
+        clientObject.getPrinter().println(tilesPrinted);
+        clientObject.getPrinter().println("");
+        clientObject.getPrinter().println("    [1]    " + " " + "    [2]    " + " " + "    [3]    " + " " + "    [4]    ");
+        clientObject.getPrinter().println("");
     }
 
     public static void makeBoard(){
@@ -64,12 +64,12 @@ public class ClientCommands {
     }
 
     public static void printBoard() {
-        System.out.println(clientObject.getBoard().toPrinterString());
+        clientObject.getPrinter().println(clientObject.getBoard().toPrinterString());
     }
 
     // prints other people's tiles in a shortened way
     public static void otherTiles(String[] args) {
-        System.out.println("Other players have tiles:");
+        clientObject.getPrinter().println("Other players have tiles:");
         otherTileList = new ArrayList<>();
         String[] middleArgs = Arrays.copyOfRange(args, 0, args.length - 3);
         for (int peerNr = 0; peerNr < middleArgs.length / 5; peerNr++) {
@@ -81,7 +81,7 @@ public class ClientCommands {
                 printString = name + ": " + printString;
 
 
-                System.out.println(printString);
+                clientObject.getPrinter().println(printString);
             }
         }
 

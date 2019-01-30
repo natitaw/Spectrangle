@@ -6,6 +6,8 @@ import connection.TerminalInputHandler;
 import game.Board;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -19,6 +21,10 @@ import java.util.regex.Pattern;
  */
 public class Client implements ClientOrServer {
     public static final Type type = ClientOrServer.Type.CLIENT;
+
+
+
+    private final boolean isSilent;
     private TerminalInputHandler terminalInputHandler;
     private Thread terminalInputHandlerThread;
     private Peer clientPeer;
@@ -28,19 +34,25 @@ public class Client implements ClientOrServer {
     public int prefNrPlayers;
     public boolean isAI;
     public double difficulty;
+    private PrintStream printer;
 
     /**
      * Starts a connection.client.Client application.
      */
     public Client(String ip, String arg) {
         if (arg.equals("singleplayer")){
+            String[] argArray = arg.split(Pattern.quote(" "));
+            this.prefNrPlayers= Integer.parseInt(argArray[2]);
+            this.difficulty = Double.parseDouble(argArray[3]);
             terminalInputHandler = new TerminalInputHandler(this, TerminalInputHandler.InputState.SINGLEPLAYER);
             name="Player";
             isAI=false;
+            isSilent=false;
         } else if (arg.equals("")){
             terminalInputHandler = new TerminalInputHandler(this);
             name="default";
             isAI=false;
+            isSilent=false;
         } else {
             String[] argArray = arg.split(Pattern.quote(" "));
             terminalInputHandler = new TerminalInputHandler(this, TerminalInputHandler.InputState.AI_NAME);
@@ -48,12 +60,16 @@ public class Client implements ClientOrServer {
             this.prefNrPlayers= Integer.parseInt(argArray[2]);
             isAI=true;
             this.difficulty = Double.parseDouble(argArray[3]);
+            this.isSilent=Boolean.parseBoolean(argArray[4]);
 
         }
 
         connect(ip);
         ClientCommands.setClientObject(this);
 
+    }
+    public boolean isSilent() {
+        return isSilent;
     }
 
     public TerminalInputHandler getTerminalInputHandler() {
@@ -79,12 +95,25 @@ public class Client implements ClientOrServer {
         Socket sock = null;
 
 
+        if (isSilent) {
+            printer = new PrintStream(new OutputStream(){
+                public void write(int b) {
+                    // does nothing
+                }
+            });
+
+        } else {
+            printer = System.out;
+
+
+        }
+
         // check the IP-adress
         try {
             addr = InetAddress.getByName(ip);
         } catch (UnknownHostException e) {
 
-            System.out.println("ERROR: host " + ip + " unknown");
+            printer.println("ERROR: host " + ip + " unknown");
             System.exit(0);
         }
 
@@ -93,7 +122,7 @@ public class Client implements ClientOrServer {
         try {
             sock = new Socket(addr, port);
         } catch (IOException e) {
-            System.out.println("ERROR: could not create a socket on " + addr
+            printer.println("ERROR: could not create a socket on " + addr
                 + " and port " + port);
         }
 
@@ -103,7 +132,7 @@ public class Client implements ClientOrServer {
         clientPeer = new Peer(sock, type, this);
         terminalInputHandlerThread = new Thread(terminalInputHandler);
         terminalInputHandlerThread.start();
-        System.out.println("Connected to server");
+        printer.println("Connected to server");
     }
 
     public Board getBoard() {
@@ -116,6 +145,11 @@ public class Client implements ClientOrServer {
 
     public Peer getPeer() {
         return clientPeer;
+    }
+
+    @Override
+    public PrintStream getPrinter() {
+        return printer;
     }
 
     public void sendMessageToAll(String s) {
@@ -145,13 +179,13 @@ public class Client implements ClientOrServer {
         this.running = false;
         clientPeer.setRunning(false);
 
-        System.out.println("Trying to shut down");
+        printer.println("Trying to shut down");
         try {
             terminalInputHandlerThread.interrupt();
-            System.out.println("Closed terminal input handling thread");
+            printer.println("Closed terminal input handling thread");
         } catch (Exception e) {
             Thread.currentThread().interrupt();
-            System.out.println("Error in closing terminal input thread");
+            printer.println("Error in closing terminal input thread");
         }
         clientPeer.close();
 
