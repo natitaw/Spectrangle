@@ -92,48 +92,12 @@ public class ClientCommands {
         return clientTiles;
     }
 
-    public static void setClientTiles(List<String> clientTiles) {
-        ClientCommands.clientTiles = clientTiles;
-    }
-
-
-    private boolean hasValidMoves(TileBag tilebag) {
-        boolean result = false;
-        Iterator itr = tilebag.getBag().iterator();
-
-        while (!result && itr.hasNext()){
-            Piece piece = (Piece) itr.next();
-            List<Piece> pieceRotations = new ArrayList<>();
-            pieceRotations.add(piece);
-            pieceRotations.add(piece.getRotated());
-            pieceRotations.add(piece.getRotated2x());
-            for   (Piece rotatedPiece : pieceRotations){
-                int i=0;
-                while (!result && i<36) {
-                    result = clientObject.getBoard().isValidMove(i, rotatedPiece);
-                    i++;
-                }
-            }
-
-        }
-
-        return result;
-    }
 
     public static TileBag generateBag(List<String> stringList){
         TileBag result = new TileBag(4);
         for (String s : stringList){
             result.addPiece(new Piece(s));
         }
-        return result;
-    }
-
-    public static List<TileBag> generateBags(List<List<String>> stringListList){
-        List<TileBag> result = new ArrayList<>();
-        for (List<String> stringList : stringListList){
-            result.add(generateBag(stringList));
-        }
-
         return result;
     }
 
@@ -166,7 +130,7 @@ public class ClientCommands {
         return "place " + bestPiece.toString() + " on " + bestPos;
     }
 
-    public static String randomMove(TileBag tileBag) {
+    private static String randomMove(TileBag tileBag) {
         Iterator itr = tileBag.getBag().iterator();
 
         while (itr.hasNext()) {
@@ -180,8 +144,9 @@ public class ClientCommands {
                 while (i < 36) {
                     if (clientObject.getBoard().isValidMove(i, rotatedPiece)) {
                         return "place " + rotatedPiece.toString() + " on " + i;
-                    }
 
+                    }
+                    i++;
 
                 }
             }
@@ -193,9 +158,9 @@ public class ClientCommands {
 
 
     public static void aiTurn() {
-        if (clientObject.difficulty < 1){
+        if (clientObject.getDifficulty() < 1){
             clientObject.sendMessageToAll(randomMove(generateBag(clientTiles)));
-        } else if (clientObject.difficulty < 2) {
+        } else if (clientObject.getDifficulty() < 2) {
             clientObject.sendMessageToAll(bestMove(generateBag(clientTiles)));
         }
 

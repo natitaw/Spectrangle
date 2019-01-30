@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Board {
 
-	public static final int DIM = 36; // loop t/m 35
+	private static final int DIM = 36; // loop t/m 35
 	private BoardLocation[] boardLocations;
 	private ArrayList<Piece> pieces;
 	private TileBag tileBag;

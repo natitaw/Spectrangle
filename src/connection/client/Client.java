@@ -20,20 +20,20 @@ import java.util.regex.Pattern;
  * @version 2005.02.21
  */
 public class Client implements ClientOrServer {
-    public static final Type type = ClientOrServer.Type.CLIENT;
+    private static final Type type = ClientOrServer.Type.CLIENT;
 
 
 
     private final boolean isSilent;
-    private TerminalInputHandler terminalInputHandler;
+    private final TerminalInputHandler terminalInputHandler;
     private Thread terminalInputHandlerThread;
     private Peer clientPeer;
     private volatile boolean running;
     private String name;
     private Board board;
-    public int prefNrPlayers;
-    public boolean isAI;
-    public double difficulty;
+    private int prefNrPlayers;
+    private final boolean isAI;
+    private double difficulty;
     private PrintStream printer;
 
     /**
@@ -67,27 +67,32 @@ public class Client implements ClientOrServer {
         ClientCommands.setClientObject(this);
 
     }
-    public boolean isSilent() {
-        return isSilent;
+
+    public int getPrefNrPlayers() {
+        return prefNrPlayers;
+    }
+
+    public void setPrefNrPlayers(int prefNrPlayers) {
+        this.prefNrPlayers = prefNrPlayers;
+    }
+
+    public boolean isAI() {
+        return isAI;
+    }
+
+    public double getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(double difficulty) {
+        this.difficulty = difficulty;
     }
 
     public TerminalInputHandler getTerminalInputHandler() {
         return terminalInputHandler;
     }
 
-    public void setTerminalInputHandler(TerminalInputHandler terminalInputHandler) {
-        this.terminalInputHandler = terminalInputHandler;
-    }
-
-    public Thread getTerminalInputHandlerThread() {
-        return terminalInputHandlerThread;
-    }
-
-    public void setTerminalInputHandlerThread(Thread terminalInputHandlerThread) {
-        this.terminalInputHandlerThread = terminalInputHandlerThread;
-    }
-
-    public void connect(String ip) {
+    private void connect(String ip) {
         InetAddress addr = null;
         int port = 4000;
         Socket sock = null;
@@ -141,10 +146,6 @@ public class Client implements ClientOrServer {
         this.board = board;
     }
 
-    public Peer getPeer() {
-        return clientPeer;
-    }
-
     @Override
     public PrintStream getPrinter() {
         return printer;
@@ -168,7 +169,7 @@ public class Client implements ClientOrServer {
     }
 
     public Type getType(){
-        return this.type;
+        return type;
     }
 
 

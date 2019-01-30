@@ -7,8 +7,6 @@ import java.io.*;
 import java.net.Socket;
 
 public class Peer implements Runnable, Comparable<Peer> {
-    public static final String EXIT = "EXIT";
-
     private Socket sock;
     private BufferedReader in;
     private PrintWriter out;

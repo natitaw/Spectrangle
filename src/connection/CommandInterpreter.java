@@ -11,8 +11,8 @@ import java.util.Arrays;
 
 public class CommandInterpreter {
 
-    public ClientOrServer parent;
-    public ClientOrServer.Type parentType;
+    private ClientOrServer parent;
+    private ClientOrServer.Type parentType;
 
 
     public CommandInterpreter(ClientOrServer parentInput){

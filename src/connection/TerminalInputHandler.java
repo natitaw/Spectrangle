@@ -11,14 +11,14 @@ import java.io.InputStreamReader;
 import static connection.TerminalInputHandler.InputState.*;
 
 public class TerminalInputHandler implements Runnable{
-    ClientOrServer parent;
+    private ClientOrServer parent;
     private boolean running = true;
     private InputState state = InputState.COMMAND;
     private String name;
     private boolean wantsChat;
-    Piece tempPiece = null;
-    public boolean interrupted = false;
-    int tempPieceIndex = 0;
+    private Piece tempPiece = null;
+    private boolean interrupted = false;
+    private int tempPieceIndex = 0;
 
 
 

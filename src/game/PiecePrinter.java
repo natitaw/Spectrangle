@@ -1,11 +1,6 @@
 package game;
 
 public class PiecePrinter {
-    public static Integer value = 5;
-
-    private static Character vertical = 'R';
-    private static Character left = 'G';
-    private static Character right = 'B';
 
     public static void main(String[] args) {
         // This is an example of how to use the function below.
