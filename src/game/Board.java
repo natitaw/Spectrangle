@@ -173,7 +173,7 @@ public class Board {
 
 	/**
 	 * Check color validity against neighbor
-	 * 
+	 * This function checks wheather or not a piece can be put on a location depending on the matching colors
 	 * @param location
 	 * @param piece
 	 * @return
@@ -194,26 +194,42 @@ public class Board {
 		Piece bottom = (this.getBottomPiece(location));
 		
 		if (left != null) {
-			if(left.equals(piece) || left.equals(piece.getRotated()) || left.equals(piece.getRotated2x())) {
-				return true;
+			for (ColorDefinition c : left.getColors()) {
+				for (ColorDefinition d : piece.getColors()) {
+					if (d.equals(c)) {
+						return true;
+					}
+				}
 			}
 		}
 		
 		if (right != null) {
-			if (right.equals(piece) || right.equals(piece.getRotated()) || right.equals(piece.getRotated2x())) {
-				return true;
+			for (ColorDefinition c : right.getColors()) {
+				for (ColorDefinition d : piece.getColors()) {
+					if (d.equals(c)) {
+						return true;
+					}
+				}
 			}
 		}
 		
 		if (top != null) {
-			if (top.equals(piece) || top.equals(piece.getRotated()) || top.equals(piece.getRotated2x())) {
-				return true;
+			for (ColorDefinition c : top.getColors()) {
+				for (ColorDefinition d : piece.getColors()) {
+					if (d.equals(c)) {
+						return true;
+					}
+				}
 			}
 		}
 		
 		if (bottom != null) {
-			if (bottom.equals(piece) || bottom.equals(piece.getRotated()) || bottom.equals(piece.getRotated2x())) {
-				return true;
+			for (ColorDefinition c : bottom.getColors()) {
+				for (ColorDefinition d : piece.getColors()) {
+					if (d.equals(c)) {
+						return true;
+					}
+				}
 			}
 		}
 		
