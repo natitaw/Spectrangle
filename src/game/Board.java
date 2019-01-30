@@ -277,7 +277,7 @@ public class Board {
 	 * @param piece
 	 * @return
 	 */
-	public Piece getBottomPiece(int index) {
+	public Piece getBottomPiece(int index) throws NoPieceException{
 		int r = getCoordinate(index).get(0);
 		int c = getCoordinate(index).get(1);
 		if ((r + c) % 2 == 0) {
@@ -285,8 +285,12 @@ public class Board {
 				int a = getIndex(r + 1, c);
 				return this.getBoardLocation(a).getPiece();
 			}
+		} else {
+			
+			throw new NoPieceException("No Piece Found");
 		}
-		return null;
+		
+		throw new NoPieceException("No Piece Found");
 	}
 
 	/**
@@ -295,15 +299,15 @@ public class Board {
 	 * @param piece
 	 * @return
 	 */
-	public Piece getTopPiece(int index) {
+	public Piece getTopPiece(int index) throws NoPieceException{
 		int r = getCoordinate(index).get(0);
 		int c = getCoordinate(index).get(1);
 		if ((r + c) % 2 != 0) {
 			int a = getIndex(r - 1, c);
 			return this.getBoardLocation(a).getPiece();
-
+		} else {
+			throw new NoPieceException("No Piece Found");
 		}
-		return null;
 	}
 
 	/**
