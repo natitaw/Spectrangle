@@ -109,6 +109,19 @@ public class GameRoom extends Room implements Runnable {
 
         return result;
     }
+    // TODO check if this works (will not work if hasValidMoves does not work)
+    private boolean checkIfGameHasEnded() {
+        boolean result=false;
+        Iterator itr = peerList.iterator();
+        while ((result) && itr.hasNext()){
+            Peer p = (Peer) itr.next();
+            result = (!hasValidMoves(p));
+            // if p has any moves, set result=false
+        }
+
+        return result;
+    }
+
 
     private void newTurn(Peer startingPlayer) {
         this.currentPlayer = startingPlayer;
@@ -134,18 +147,7 @@ public class GameRoom extends Room implements Runnable {
 
     }
 
-    // TODO check if this works (will not work if hasValidMoves does not work)
-    private boolean checkIfGameHasEnded() {
-        boolean result=false;
-        Iterator itr = peerList.iterator();
-        while ((result) && itr.hasNext()){
-            Peer p = (Peer) itr.next();
-            result = (!hasValidMoves(p));
-            // if p has any moves, set result=false
-        }
 
-        return result;
-    }
 
     private void endGame() {
         Collections.sort(peerList, new Comparator<Peer>() {
@@ -308,23 +310,26 @@ public class GameRoom extends Room implements Runnable {
     public void checkExchange(Peer peer, String tileArg) {
         if (peer.equals(this.currentPlayer)) {
             if (mustSkip) {
+                // check if player actually has the tile
                 Piece removedTile = new Piece(tileArg);
-                peer.getTileBag().getBag().remove(removedTile); // TODO check if this actually works, I reimplemented equals method
-                Piece newTile = null;
-                try {
-                    newTile = roomBag.takeRandomPiece();
-                } catch (EmptyBagException e) {
-                    serverObject.printer.println(e.getMessage());
+                if (peer.getTileBag().getBag().remove(removedTile)){
+                    Piece newTile = null;
+                    try {
+                        newTile = roomBag.takeRandomPiece();
+                    } catch (EmptyBagException e) {
+                        serverObject.printer.println(e.getMessage());
+                    }
+
+                    peer.getTileBag().addPiece(newTile);
+                    roomBag.addPiece(removedTile);;
+                    serverObject.printer.println("Room "+ getRoomNumber());
+                    serverObject.printer.println("replace " + peer.getName() + " " + removedTile.toString() + " with " + newTile.toString());
+                    for (Peer p : peerList) {
+                        p.sendMessage("replace " + peer.getName() + " " + removedTile.toString() + " with " + newTile.toString());
+                    }
+                    waitingforMove = false;
                 }
 
-                peer.getTileBag().addPiece(newTile);
-                roomBag.addPiece(removedTile);;
-                serverObject.printer.println("Room "+ getRoomNumber());
-                serverObject.printer.println("replace " + peer.getName() + " " + removedTile.toString() + " with " + newTile.toString());
-                for (Peer p : peerList) {
-                    p.sendMessage("replace " + peer.getName() + " " + removedTile.toString() + " with " + newTile.toString());
-                }
-                waitingforMove = false;
             }
         }
     }
