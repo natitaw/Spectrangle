@@ -270,23 +270,37 @@ public class GameRoom extends Room implements Runnable {
         Piece newPiece = new Piece(tileString);
         if (peer.equals(this.currentPlayer)) {
             if (!mustSkip) {
-                if (board.isValidMove(index, newPiece)) {
-                    int pointsScored = board.movePiece(index, newPiece);
-                    peer.incScore(pointsScored);
-                    serverObject.printer.println("Room "+ getRoomNumber());
-                    serverObject.printer.println("move " + peer.getName() + " " + tileString + " " + index + " " + pointsScored);
-                    for (Peer p : peerList) {
-                        p.sendMessage("move " + peer.getName() + " " + tileString + " " + index + " " + pointsScored);
-                    }
 
-                    if (roomBag.getNumberOfPieces() > 0){
-                        try {
-                            peer.getTileBag().addPiece(roomBag.takeRandomPiece());
-                        } catch (EmptyBagException e) {
-                            e.printStackTrace();
+                if (peer.getTileBag().findPiece(newPiece) >= 0) {
+
+                    if (board.isValidMove(index, newPiece)) {
+                        int pointsScored = board.movePiece(index, newPiece);
+                        peer.incScore(pointsScored);
+                        serverObject.printer.println("Room " + getRoomNumber());
+                        serverObject.printer.println("move " + peer.getName() + " " + tileString + " " + index + " " + pointsScored);
+                        for (Peer p : peerList) {
+                            p.sendMessage("move " + peer.getName() + " " + tileString + " " + index + " " + pointsScored);
                         }
+
+
+                        int pieceIndex = peer.getTileBag().findPiece(newPiece);
+
+                        try {
+                            peer.getTileBag().takePiece(pieceIndex);
+                        } catch (EmptyBagException e) {
+                            serverObject.printer.println("Player bag is empty");
+                        }
+
+
+
+                            try {
+                                peer.getTileBag().addPiece(roomBag.takeRandomPiece());
+                            } catch (EmptyBagException e) {
+                                serverObject.printer.println("Room bag is empty");
+                            }
+
+                        waitingforMove = false;
                     }
-                    waitingforMove = false;
                 }
             }
         }
@@ -310,7 +324,6 @@ public class GameRoom extends Room implements Runnable {
     public void checkExchange(Peer peer, String tileArg) {
         if (peer.equals(this.currentPlayer)) {
             if (mustSkip) {
-                // TODO check for rotations
                 boolean cont = false;
                 Piece removedTile = new Piece(tileArg);
                 if (peer.getTileBag().getBag().remove(removedTile)){
