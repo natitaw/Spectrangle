@@ -6,18 +6,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-import Game.TileBagGenerator;
-import Game.Board;
+import game.TileBag;
+import game.Board;
 
-class TileBagGeneratorTest {
+class TileBagTest {
 	
-	private TileBagGenerator tg;
+	private TileBag tg;
 	private Board b;
 	
 	@BeforeEach
 	public void setup() {
-		this.b = new Board();
-		this.tg = new TileBagGenerator();
+		this.b = new Board(new TileBag(36));
+		b.getTileBag().populateBag();
+		this.tg = b.getTileBag();
 	
 	}
 
@@ -25,7 +26,7 @@ class TileBagGeneratorTest {
 	void testGetRandomPiece() {
 		int a = tg.getBag().size();
 		assertEquals(a, tg.getBag().size());
-		assertNotNull(tg.getRandomPiece());
+		assertNotNull(tg.takeRandomPiece());
 		assertEquals(a - 1, tg.getBag().size());
 	}
 	
@@ -42,7 +43,7 @@ class TileBagGeneratorTest {
 	@Test
 	void testGetNumberOfPieces() {
 		assertEquals(36, tg.getBag().size());
-		tg.getRandomPiece();
+		tg.takeRandomPiece();
 		assertEquals(35,tg.getBag().size());
 	}
 
