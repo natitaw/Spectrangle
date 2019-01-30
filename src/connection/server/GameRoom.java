@@ -107,7 +107,7 @@ public class GameRoom extends Room implements Runnable {
             for   (Piece rotatedPiece : pieceRotations){
                 int i=0;
                 while (!result && i<36) {
-                    result = board.isValidMove(i, piece);
+                    result = board.isValidMove(i, rotatedPiece);
                     i++;
                 }
             }

@@ -29,7 +29,7 @@ public class ClientCommands {
             if (name.equals(clientObject.getName())) {
                 List<String[]> pieceLineList = new ArrayList<>();
                 String[] resultArray;
-                String[] tileArgs = Arrays.copyOfRange(middleArgs, (peerNr * 5) + 1, (peerNr * 5) + 4);
+                String[] tileArgs = Arrays.copyOfRange(middleArgs, (peerNr * 5) + 1, (peerNr * 5) + 5);
                 clientTiles = Arrays.asList(tileArgs);
                 for (String t : tileArgs) {
                     Piece tempPiece = new Piece(t);
@@ -37,7 +37,8 @@ public class ClientCommands {
                     String[] pieceLines = pieceString.split(Pattern.quote("\n"));
                     pieceLineList.add(pieceLines);
                 }
-                resultArray = pieceLineList.get(0);
+                resultArray = new String[]{"","","" ,"" ,"", "" };
+
                 for (int lineNr = 0; lineNr < resultArray.length; lineNr++) {
                     for (String[] tempPieceLines : pieceLineList) {
                         resultArray[lineNr] = resultArray[lineNr].concat(" ").concat(tempPieceLines[lineNr]);
@@ -69,7 +70,7 @@ public class ClientCommands {
         for (int peerNr = 0; peerNr < middleArgs.length / 5; peerNr++) {
             String name = middleArgs[peerNr * 5];
             if (!name.equals(clientObject.getName())) {
-                String[] printArgs = Arrays.copyOfRange(args, peerNr * 5 + 1, peerNr * 5 + 4);
+                String[] printArgs = Arrays.copyOfRange(args, peerNr * 5 + 1, peerNr * 5 + 5);
                 otherTileList.add(Arrays.asList(printArgs));
                 String printString = String.join(" ", printArgs);
                 printString = name + ": " + printString;
@@ -103,7 +104,7 @@ public class ClientCommands {
             for   (Piece rotatedPiece : pieceRotations){
                 int i=0;
                 while (!result && i<36) {
-                    result = clientObject.getBoard().isValidMove(i, piece);
+                    result = clientObject.getBoard().isValidMove(i, rotatedPiece);
                     i++;
                 }
             }
@@ -145,10 +146,10 @@ public class ClientCommands {
             for   (Piece rotatedPiece : pieceRotations){
                 int i=0;
                 while (i<36) {
-                    int thisScore = clientObject.getBoard().getPotentialMoveScore(i, piece);
+                    int thisScore = clientObject.getBoard().getPotentialMoveScore(i, rotatedPiece);
                     if (thisScore > result) {
                         result = thisScore;
-                        bestPiece=piece;
+                        bestPiece=rotatedPiece;
                         bestPos=i;
                     }
                     i++;
@@ -171,8 +172,8 @@ public class ClientCommands {
             for   (Piece rotatedPiece : pieceRotations){
                 int i = 0;
                 while (i < 36) {
-                    if (clientObject.getBoard().isValidMove(i, piece)) {
-                        return "place " + piece.toString() + " on " + i;
+                    if (clientObject.getBoard().isValidMove(i, rotatedPiece)) {
+                        return "place " + rotatedPiece.toString() + " on " + i;
                     }
 
 
