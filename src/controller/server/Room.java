@@ -1,6 +1,6 @@
-package connection.server;
+package controller.server;
 
-import connection.Peer;
+import controller.Peer;
 
 import java.util.ArrayList;
 import java.util.List;

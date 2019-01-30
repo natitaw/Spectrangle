@@ -1,14 +1,13 @@
-package connection.client;
+package controller.client;
 
-import game.Board;
-import game.Piece;
-import game.TileBag;
+import model.Board;
+import model.Piece;
+import model.TileBag;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class ClientCommands {
 
@@ -34,38 +33,10 @@ public class ClientCommands {
         }
     }
 
-    public static void printTiles() {
-        clientObject.getPrinter().println("You have tiles:");
-
-        List<String[]> pieceLineList = new ArrayList<>();
-        String[] resultArray;
-        for (String t : clientTiles) {
-            Piece tempPiece = new Piece(t);
-            String pieceString = tempPiece.toPrinterString();
-            String[] pieceLines = pieceString.split(Pattern.quote("\n"));
-            pieceLineList.add(pieceLines);
-        }
-        resultArray = new String[] {"", "", "", "", "", ""};
-
-        for (int lineNr = 0; lineNr < resultArray.length; lineNr++) {
-            for (String[] tempPieceLines : pieceLineList) {
-                resultArray[lineNr] = resultArray[lineNr].concat(" ").concat(tempPieceLines[lineNr]);
-            }
-        }
-        String tilesPrinted = String.join("\n", resultArray);
-        clientObject.getPrinter().println(tilesPrinted);
-        clientObject.getPrinter().println("");
-        clientObject.getPrinter().println("    [1]    " + " " + "    [2]    " + " " + "    [3]    " + " " + "    [4]    ");
-        clientObject.getPrinter().println("");
-    }
-
     public static void makeBoard() {
         clientObject.setBoard(new Board());
     }
 
-    public static void printBoard() {
-        clientObject.getPrinter().println(clientObject.getBoard().toPrinterString());
-    }
 
     // prints other people's tiles in a shortened way
     public static void otherTiles(String[] args) {

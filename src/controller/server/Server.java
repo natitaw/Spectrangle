@@ -1,8 +1,8 @@
-package connection.server;
+package controller.server;
 
-import connection.ClientOrServer;
-import connection.Peer;
-import connection.TerminalInputHandler;
+import controller.ClientOrServer;
+import controller.Peer;
+import view.TerminalInputHandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -95,7 +95,7 @@ public class Server implements Runnable, ClientOrServer {
     }
 
     /**
-     * Starts a connection.server.Server-application.
+     * Starts a controller.server.Server-application.
      */
     public void run() {
 
@@ -188,4 +188,4 @@ public class Server implements Runnable, ClientOrServer {
 
     }
 
-} // end of class connection.server.Server
+} // end of class controller.server.Server

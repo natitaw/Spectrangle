@@ -1,10 +1,10 @@
-package connection.server;
+package controller.server;
 
-import connection.Peer;
-import game.Board;
-import game.EmptyBagException;
-import game.Piece;
-import game.TileBag;
+import controller.Peer;
+import model.Board;
+import model.EmptyBagException;
+import model.Piece;
+import model.TileBag;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -158,10 +158,10 @@ public class GameRoom extends Room implements Runnable {
         String argString = String.join(" ", args);
 
         serverObject.getPrinter().println("Room " + getRoomNumber());
-        serverObject.getPrinter().println("game finished leaderboard " + argString);
+        serverObject.getPrinter().println("model finished leaderboard " + argString);
 
         while (!peerList.isEmpty()) {
-            peerList.get(0).sendMessage("game finished leaderboard " + argString);
+            peerList.get(0).sendMessage("model finished leaderboard " + argString);
             peerList.get(0).moveToRoom(serverObject.getRoomList().get(0));
         }
 

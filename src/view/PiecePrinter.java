@@ -1,4 +1,12 @@
-package game;
+package view;
+
+import controller.client.Client;
+import controller.client.ClientCommands;
+import model.Piece;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class PiecePrinter {
 
@@ -48,6 +56,31 @@ public class PiecePrinter {
             "           \n" +
             "           \n" +
             "           \n";
+    }
+
+    public static void printTiles(Client clientObject) {
+        clientObject.getPrinter().println("You have tiles:");
+
+        List<String[]> pieceLineList = new ArrayList<>();
+        String[] resultArray;
+        for (String t : ClientCommands.getClientTiles()) {
+            Piece tempPiece = new Piece(t);
+            String pieceString = tempPiece.toPrinterString();
+            String[] pieceLines = pieceString.split(Pattern.quote("\n"));
+            pieceLineList.add(pieceLines);
+        }
+        resultArray = new String[] {"", "", "", "", "", ""};
+
+        for (int lineNr = 0; lineNr < resultArray.length; lineNr++) {
+            for (String[] tempPieceLines : pieceLineList) {
+                resultArray[lineNr] = resultArray[lineNr].concat(" ").concat(tempPieceLines[lineNr]);
+            }
+        }
+        String tilesPrinted = String.join("\n", resultArray);
+        clientObject.getPrinter().println(tilesPrinted);
+        clientObject.getPrinter().println("");
+        clientObject.getPrinter().println("    [1]    " + " " + "    [2]    " + " " + "    [3]    " + " " + "    [4]    ");
+        clientObject.getPrinter().println("");
     }
 }
 

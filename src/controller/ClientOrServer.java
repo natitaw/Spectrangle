@@ -1,4 +1,4 @@
-package connection;
+package controller;
 
 import java.io.PrintStream;
 

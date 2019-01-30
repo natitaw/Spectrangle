@@ -1,4 +1,4 @@
-package game;
+package model;
 
 /**
  * Class representing information on a location of a Spectrangle Board

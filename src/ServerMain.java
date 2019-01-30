@@ -1,6 +1,6 @@
-import connection.server.Server;
+import controller.server.Server;
 
-public class ServerMain {
+class ServerMain {
     public static void main(String[] args) {
         Server serverObject = new Server("");
 

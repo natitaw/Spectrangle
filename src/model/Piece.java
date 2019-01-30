@@ -1,11 +1,13 @@
-package game;
+package model;
+
+import view.PiecePrinter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Java Class representing a Piece (tile) of a Spectrangle game
+ * Java Class representing a Piece (tile) of a Spectrangle model
  *
  * @author Group4
  */

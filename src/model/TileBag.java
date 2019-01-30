@@ -1,4 +1,4 @@
-package game;
+package model;
 
 import java.util.ArrayList;
 
@@ -160,7 +160,7 @@ public class TileBag {
     }
 
     /**
-     * Method to get the number of pieces at any point in the game
+     * Method to get the number of pieces at any point in the model
      *
      * @return
      */
