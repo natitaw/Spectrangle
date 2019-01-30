@@ -1,4 +1,4 @@
-import connection.server.Server;
+import controller.server.Server;
 
 public class ServerMain {
     public static void main(String[] args) {

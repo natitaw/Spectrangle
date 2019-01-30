@@ -1,7 +1,8 @@
-package connection;
+package controller;
 
-import connection.server.Room;
-import game.TileBag;
+import controller.server.Room;
+import model.TileBag;
+import view.CommandInterpreter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class Peer implements Runnable, Comparable<Peer> {
     /**
      * Constructor. creates a peer object based in the given parameters.
      *
-     * @param sockArg Socket of the connection.Peer-proces
+     * @param sockArg Socket of the controller.Peer-proces
      */
     public Peer(Socket sockArg, ClientOrServer.Type type, ClientOrServer parentInput) {
         try {
@@ -107,7 +108,7 @@ public class Peer implements Runnable, Comparable<Peer> {
     }
 
     /**
-     * Reads strings of the stream of the socket-connection and
+     * Reads strings of the stream of the socket-controller and
      * writes the characters to the default output.
      */
 
@@ -155,7 +156,7 @@ public class Peer implements Runnable, Comparable<Peer> {
 
 
     /**
-     * Closes the connection, the sockets will be terminated
+     * Closes the controller, the sockets will be terminated
      */
     public void close() {
         this.running = false;
@@ -164,16 +165,16 @@ public class Peer implements Runnable, Comparable<Peer> {
         parent.getPrinter().println("Connection reading thread for " + name + " closed");
         try {
             sock.close();
-            parent.getPrinter().println("Socket for connection " + name + " closed");
+            parent.getPrinter().println("Socket for controller " + name + " closed");
         } catch (IOException e) {
             parent.getPrinter().println("Error in closing socket for " + name);
 
         }
-        // TODO if server, remove peer from lists, rooms and such. Close any game rooms it is in
+        // TODO if server, remove peer from lists, rooms and such. Close any model rooms it is in
 
     }
 
-    // used for sorting reasons in game logic
+    // used for sorting reasons in model logic
     @Override
     public int compareTo(Peer p) {
         return this.name.compareTo(p.getName());

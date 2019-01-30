@@ -1,8 +1,8 @@
-package connection.client;
+package controller.client;
 
-import game.Board;
-import game.Piece;
-import game.TileBag;
+import model.Board;
+import model.Piece;
+import model.TileBag;
 
 import java.util.ArrayList;
 import java.util.Arrays;

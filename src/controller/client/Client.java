@@ -1,9 +1,9 @@
-package connection.client;
+package controller.client;
 
-import connection.ClientOrServer;
-import connection.Peer;
-import connection.TerminalInputHandler;
-import game.Board;
+import controller.ClientOrServer;
+import controller.Peer;
+import view.TerminalInputHandler;
+import model.Board;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -14,7 +14,7 @@ import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 
 /**
- * connection.client.Client class for a simple client-server application
+ * controller.client.Client class for a simple client-server application
  *
  * @author Theo Ruys
  * @version 2005.02.21
@@ -36,7 +36,7 @@ public class Client implements ClientOrServer {
     private PrintStream printer;
 
     /**
-     * Starts a connection.client.Client application.
+     * Starts a controller.client.Client application.
      */
     public Client(String ip, String arg) {
         String[] argArray = arg.split(Pattern.quote(" "));
@@ -122,7 +122,7 @@ public class Client implements ClientOrServer {
 
         this.running = true;
 
-        // create connection.Peer object and start the two-way communication
+        // create controller.Peer object and start the two-way communication
         clientPeer = new Peer(sock, type, this);
         terminalInputHandlerThread = new Thread(terminalInputHandler);
         terminalInputHandlerThread.start();
@@ -181,4 +181,4 @@ public class Client implements ClientOrServer {
 
 
     }
-} // end of class connection.client.Client
+} // end of class controller.client.Client

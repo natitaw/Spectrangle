@@ -1,4 +1,6 @@
-package game;
+package model;
+
+import view.SpectrangleBoardPrinter;
 
 import java.util.ArrayList;
 import java.util.Arrays;

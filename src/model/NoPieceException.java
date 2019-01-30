@@ -1,4 +1,4 @@
-package game;
+package model;
 
 /**
  * Exception handler for when there is no piece found

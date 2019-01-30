@@ -1,5 +1,5 @@
-import connection.client.Client;
-import connection.server.Server;
+import controller.client.Client;
+import controller.server.Server;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,14 +1,15 @@
-package connection;
+package view;
 
-import connection.client.Client;
-import connection.client.ClientCommands;
-import game.Piece;
+import controller.ClientOrServer;
+import controller.client.Client;
+import controller.client.ClientCommands;
+import model.Piece;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import static connection.TerminalInputHandler.InputState.*;
+import static view.TerminalInputHandler.InputState.*;
 
 public class TerminalInputHandler implements Runnable {
     private final ClientOrServer parent;
@@ -71,8 +72,8 @@ public class TerminalInputHandler implements Runnable {
 
     /**
      * Reads a string from the console and sends this string over
-     * the socket-connection to the peer.
-     * On connection.Peer.EXIT the process ends
+     * the socket-controller to the peer.
+     * On controller.Peer.EXIT the process ends
      */
     @Override
     public void run() {
@@ -155,7 +156,7 @@ public class TerminalInputHandler implements Runnable {
 
                     break;
                 case NUMBER_OF_PLAYERS:
-                    parent.getPrinter().println("If you'd like to play a game, just type \"request <number>\"");
+                    parent.getPrinter().println("If you'd like to play a model, just type \"request <number>\"");
                     parent.getPrinter().println("Where <number> is the amount of players to play with, from 1-4");
                     if (wantsChat) {
                         parent.getPrinter().println("Type \"chat <your message> \" to chat with others");

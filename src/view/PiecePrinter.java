@@ -1,4 +1,4 @@
-package game;
+package view;
 
 public class PiecePrinter {
 
