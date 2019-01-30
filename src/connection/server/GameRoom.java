@@ -164,10 +164,11 @@ public class GameRoom extends Room implements Runnable {
 
         String argString = String.join(" ", args);
 
-        for (Peer p : peerList){
-            p.sendMessage("game finished leaderboard " + argString);
-            p.moveToRoom(serverObject.getRoomList().get(0));
+        while (!peerList.isEmpty()){
+            peerList.get(0).sendMessage("game finished leaderboard " + argString);
+            peerList.get(0).moveToRoom(serverObject.getRoomList().get(0));
         }
+
     }
 
     private void waitforMove(Peer startingPlayer) {
