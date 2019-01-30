@@ -96,7 +96,6 @@ public class ClientCommands {
         ClientCommands.clientTiles = clientTiles;
     }
 
-// TODO Implement ai here
 
     private boolean hasValidMoves(TileBag tilebag) {
         boolean result = false;
@@ -138,7 +137,7 @@ public class ClientCommands {
         return result;
     }
 
-    private static String bestMove(TileBag tileBag){
+    public static String bestMove(TileBag tileBag){
         int result = 0;
         Piece bestPiece = null;
         int bestPos = 0;

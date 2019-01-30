@@ -171,15 +171,24 @@ public class TerminalInputHandler implements Runnable{
                     while (!inputFinished) {
                         try {
                             System.out.println("Type the number of the tile you would like to place (or rotate)");
+                            System.out.println("Or type \"hint\" for a hint");
                             s = readString();
-                            tempPieceIndex = Integer.parseInt(s) - 1;
-                            tempPiece = new Piece(ClientCommands.getClientTiles().get(tempPieceIndex));
-                            inputFinished=true;
+                            if (s.equals("hint") || s.equals("Hint") || s.equals("h") || s.equals("H")){
+                                System.out.println(ClientCommands.bestMove(ClientCommands.generateBag(ClientCommands.getClientTiles())));
+                                state=TURN;
+                            } else {
+                                tempPieceIndex = Integer.parseInt(s) - 1;
+                                tempPiece = new Piece(ClientCommands.getClientTiles().get(tempPieceIndex));
+                                inputFinished=true;
+                                state=TURN2;
+                            }
+
                         } catch (IndexOutOfBoundsException e) {
                             e.printStackTrace();
+                            state=TURN;
                         }
                     }
-                    state=TURN2;
+
                     break;
                 case TURN2:
                         try {
