@@ -89,7 +89,7 @@ public class TerminalInputHandler implements Runnable{
                             e.printStackTrace();
                         }
                     }
-                    interrupted=false;
+                    this.interrupted=false;
                     break;
                 case AI_NAME:
                     parent.sendMessageToAll("connect " + parent.getName());
