@@ -310,9 +310,22 @@ public class GameRoom extends Room implements Runnable {
     public void checkExchange(Peer peer, String tileArg) {
         if (peer.equals(this.currentPlayer)) {
             if (mustSkip) {
-                // check if player actually has the tile
+                // TODO check for rotations
+                boolean cont = false;
                 Piece removedTile = new Piece(tileArg);
                 if (peer.getTileBag().getBag().remove(removedTile)){
+                    cont=true;
+                } else if (peer.getTileBag().getBag().remove(removedTile.getRotated())){
+                    cont=true;
+                    removedTile.rotate();
+                } else if (peer.getTileBag().getBag().remove(removedTile.getRotated())) {
+                    cont=true;
+                    removedTile.rotate2x();
+                }
+
+
+
+                if (cont) {
                     Piece newTile = null;
                     try {
                         newTile = roomBag.takeRandomPiece();
