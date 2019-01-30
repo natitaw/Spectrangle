@@ -11,21 +11,21 @@ import java.util.stream.Collectors;
 
 public class GameRoom extends Room implements Runnable {
 
-    public boolean hasFinished = false;
-    private Server serverObject;
+    private boolean hasFinished = false;
+    private final Server serverObject;
     private TileBag roomBag;
     private Board board;
     private boolean waitingforMove;
     private Peer currentPlayer;
     private int currentPlayernr;
-    boolean mustSkip;
+    private boolean mustSkip;
 
 
     public GameRoom(int nr, Server inputServer) {
         this(nr, new ArrayList<>(), inputServer);
     }
 
-    public GameRoom(int nr, List<Peer> peers, Server inputServer) {
+    private GameRoom(int nr, List<Peer> peers, Server inputServer) {
         super(nr, peers);
         this.serverObject = inputServer;
         this.waitingforMove = false;
@@ -42,7 +42,7 @@ public class GameRoom extends Room implements Runnable {
 
         roomBag = new TileBag(36);
         roomBag.populateBag();
-        board = new Board(roomBag);
+        board = new Board();
 
         int highestValue = 0;
         Peer startingPlayer = null;
@@ -75,22 +75,6 @@ public class GameRoom extends Room implements Runnable {
 
         newTurn(startingPlayer);
 
-    }
-
-    public int getCurrentPlayernr() {
-        return currentPlayernr;
-    }
-
-    public void setCurrentPlayernr(int currentPlayernr) {
-        this.currentPlayernr = currentPlayernr;
-    }
-
-    public boolean isWaitingforMove() {
-        return waitingforMove;
-    }
-
-    public void setWaitingforMove(boolean waitingforMove) {
-        this.waitingforMove = waitingforMove;
     }
 
     // TODO Check if this actually works
@@ -140,7 +124,7 @@ public class GameRoom extends Room implements Runnable {
 
         sendTilesCommand(startingPlayer, mustSkip);
 
-        waitforMove(startingPlayer);
+        waitforMove();
 
         hasFinished=checkIfGameHasEnded();
         
@@ -158,7 +142,7 @@ public class GameRoom extends Room implements Runnable {
 
 
     private void endGame() {
-        Collections.sort(peerList, new Comparator<Peer>() {
+        peerList.sort(new Comparator<Peer>() {
             @Override
             public int compare(Peer p1, Peer p2) {
                 return Integer.compare(p1.getScore(), p2.getScore());
@@ -184,7 +168,7 @@ public class GameRoom extends Room implements Runnable {
 
     }
 
-    private void waitforMove(Peer startingPlayer) {
+    private void waitforMove() {
         while (waitingforMove) {
             try {
                 Thread.sleep(400);
@@ -198,7 +182,7 @@ public class GameRoom extends Room implements Runnable {
     private void sendTilesCommand(Peer startingPlayer, boolean mustSkip) {
         String command = "tiles";
         List<String> middleArgs = new ArrayList<>();
-        String lastString = null;
+        String lastString;
 
         for (Peer p : peerList) {
             List<String> peerArgs = new ArrayList<>();
@@ -230,7 +214,7 @@ public class GameRoom extends Room implements Runnable {
     }
 
 
-    public void determineOrder() {
+    private void determineOrder() {
         // TODO Check if this is the right way of determining order
         Collections.sort(peerList);
         List<String> nameList = peerList.stream().map(Peer::getName).collect(Collectors.toList());
@@ -243,7 +227,7 @@ public class GameRoom extends Room implements Runnable {
         }
     }
 
-    public void checkIfAllPeersAreRunning() {
+    private void checkIfAllPeersAreRunning() {
         boolean allRunning = true;
         String disconnectedPeerName = null;
         for (Peer p : peerList) { // decided not to use iterator and do lazy checking, because two might disconnect at once
@@ -259,7 +243,7 @@ public class GameRoom extends Room implements Runnable {
     }
 
 
-    public void peerDisconnected(String name) {
+    private void peerDisconnected(String name) {
         serverObject.getPrinter().println("Room "+ getRoomNumber());
         serverObject.getPrinter().println("player " + name + " left");
 
@@ -356,7 +340,7 @@ public class GameRoom extends Room implements Runnable {
                     }
 
                     peer.getTileBag().addPiece(newTile);
-                    roomBag.addPiece(removedTile);;
+                    roomBag.addPiece(removedTile);
                     serverObject.getPrinter().println("Room "+ getRoomNumber());
                     serverObject.getPrinter().println("replace " + peer.getName() + " " + removedTile.toString() + " with " + newTile.toString());
                     for (Peer p : peerList) {

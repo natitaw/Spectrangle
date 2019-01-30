@@ -122,7 +122,7 @@ public class ServerCommands {
         peer.sendMessage("waiting " + arg);
     }
 
-    public static void createGame(List<Peer> peerList) {
+    private static void createGame(List<Peer> peerList) {
 
         GameRoom gameRoom = serverObject.newGameRoom();
         for (Peer p : peerList) {

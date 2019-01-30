@@ -2,8 +2,8 @@ package game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Board Class representing a Spectrangle board
@@ -14,9 +14,8 @@ import java.util.List;
 public class Board {
 
 	private static final int DIM = 36; // loop t/m 35
-	private BoardLocation[] boardLocations;
-	private ArrayList<Piece> pieces;
-	private TileBag tileBag;
+	private final BoardLocation[] boardLocations;
+
 
 	/*
 	 * Generate a Board with the following attributes: an ArrayList of pieces List
@@ -24,11 +23,6 @@ public class Board {
 	 */
 
 	public Board() {
-		this(new TileBag(36));
-	}
-
-	public Board(TileBag t) {
-		this.tileBag = t;
 		this.boardLocations = new BoardLocation[DIM];
 
 		// populate the board
@@ -52,14 +46,6 @@ public class Board {
 
 	}
 
-	public TileBag getTileBag() {
-		return tileBag;
-	}
-
-	public void setTileBag(TileBag tileBag) {
-		this.tileBag = tileBag;
-	}
-
 	/**
 	 * Get a BoardLocation object that can be used to get information on the
 	 * location
@@ -67,7 +53,7 @@ public class Board {
 	 * @param location
 	 * @return
 	 */
-	public BoardLocation getBoardLocation(int location) {
+	private BoardLocation getBoardLocation(int location) {
 		if (this.isValidLocation(location)) {
 			return this.boardLocations[location];
 		} else {
@@ -81,7 +67,7 @@ public class Board {
 	 * @param location
 	 * @return
 	 */
-	public Piece getPiece(int location) {
+	private Piece getPiece(int location) {
 		return this.boardLocations[location].getPiece();
 	}
 
@@ -104,7 +90,7 @@ public class Board {
 	 * @param c
 	 * @return
 	 */
-	public int getIndex(int r, int c) {
+	private int getIndex(int r, int c) {
 		return ((int) (Math.pow(r, 2) + r + c));
 	}
 
@@ -114,7 +100,7 @@ public class Board {
 	 * @param index
 	 * @return
 	 */
-	public ArrayList<Integer> getCoordinate(int index) {
+	private ArrayList<Integer> getCoordinate(int index) {
 		ArrayList<Integer> tuple = new ArrayList<>();
 		int r = ((int) Math.floor((int) Math.sqrt(index)));
 		int c = (index - (((int) Math.pow(r, 2))));
@@ -173,13 +159,13 @@ public class Board {
 
 	/**
 	 * Check color validity against neighbor
-	 * This function checks wheather or not a piece can be put on a location depending on the matching colors
+	 * This function checks whether or not a piece can be put on a location depending on the matching colors
 	 * @param location
 	 * @param piece
 	 * @return
 	 */
 	// TODO: Implement Properly
-	public boolean isValidColor(int location, Piece piece) {
+	private boolean isValidColor(int location, Piece piece) {
 
 
 		if (isValidLocation(location) && piece.isJoker()) {
@@ -191,25 +177,25 @@ public class Board {
         Piece left = null;
         try {
             left = (this.getLeftPiece(location));
-        } catch (NoPieceException e) {
+        } catch (NoPieceException ignored) {
 
         }
         Piece right = null;
         try {
             right = (this.getRightPiece(location));
-        } catch (NoPieceException e) {
+        } catch (NoPieceException ignored) {
 
         }
         Piece top = null;
         try {
             top = (this.getTopPiece(location));
-        } catch (NoPieceException e) {
+        } catch (NoPieceException ignored) {
 
         }
         Piece bottom = null;
         try {
             bottom = (this.getBottomPiece(location));
-        } catch (NoPieceException e) {
+        } catch (NoPieceException ignored) {
 
         }
 
@@ -262,15 +248,14 @@ public class Board {
 	/**
 	 * Get left piece of a given piece
 	 *
-	 * @param piece
 	 * @return
 	 */
-	public Piece getLeftPiece(int index) throws NoPieceException{
+	private Piece getLeftPiece(int index) throws NoPieceException{
 		int r = getCoordinate(index).get(0);
 		int c = getCoordinate(index).get(1);
 		if ((c - 1) >= (-1 * r)) {
 			int a = getIndex(r, c - 1);
-			return this.getBoardLocation(a).getPiece();
+			return Objects.requireNonNull(this.getBoardLocation(a)).getPiece();
         } else {
 
             throw new NoPieceException("No Piece Found");
@@ -282,15 +267,14 @@ public class Board {
 	/**
 	 * Get right piece of given piece
 	 *
-	 * @param piece
 	 * @return
 	 */
-	public Piece getRightPiece(int index) throws NoPieceException{
+	private Piece getRightPiece(int index) throws NoPieceException{
 		int r = getCoordinate(index).get(0);
 		int c = getCoordinate(index).get(1);
 		if ((c + 1) <= r) {
 			int a = getIndex(r, c + 1);
-			return this.getBoardLocation(a).getPiece();
+			return Objects.requireNonNull(this.getBoardLocation(a)).getPiece();
 		} else {
 
         throw new NoPieceException("No Piece Found");
@@ -302,16 +286,15 @@ public class Board {
 	/**
 	 * Get bottom piece of given piece
 	 *
-	 * @param piece
 	 * @return
 	 */
-	public Piece getBottomPiece(int index) throws NoPieceException{
+	private Piece getBottomPiece(int index) throws NoPieceException{
 		int r = getCoordinate(index).get(0);
 		int c = getCoordinate(index).get(1);
 		if ((r + c) % 2 == 0) {
 			if (r + 1 <= 5) {
 				int a = getIndex(r + 1, c);
-				return this.getBoardLocation(a).getPiece();
+				return Objects.requireNonNull(this.getBoardLocation(a)).getPiece();
 			}
 		} else {
 
@@ -324,15 +307,14 @@ public class Board {
 	/**
 	 * Get top piece of given piece
 	 *
-	 * @param piece
 	 * @return
 	 */
-	public Piece getTopPiece(int index) throws NoPieceException{
+	private Piece getTopPiece(int index) throws NoPieceException{
 		int r = getCoordinate(index).get(0);
 		int c = getCoordinate(index).get(1);
 		if ((r + c) % 2 != 0) {
 			int a = getIndex(r - 1, c);
-			return this.getBoardLocation(a).getPiece();
+			return Objects.requireNonNull(this.getBoardLocation(a)).getPiece();
 		} else {
 			throw new NoPieceException("No Piece Found");
 		}
@@ -344,7 +326,7 @@ public class Board {
 	 * @param location
 	 * @return
 	 */
-	public boolean isValidLocation(int location) {
+	private boolean isValidLocation(int location) {
 		return (location >= 0 && location < Board.DIM);
 	}
 
@@ -354,7 +336,7 @@ public class Board {
 	 * @param location
 	 * @return
 	 */
-	public boolean isEmptyLocation(int location) {
+	private boolean isEmptyLocation(int location) {
 		return (this.boardLocations[location].isEmptySpot());
 	}
 
@@ -363,7 +345,7 @@ public class Board {
 	 *
 	 * @return
 	 */
-	public boolean boardIsEmpty() {
+	private boolean boardIsEmpty() {
 		boolean result = true;
 		for (int i = 0; i < this.boardLocations.length; i++) {
 			if (!boardLocations[i].isEmptySpot()) {

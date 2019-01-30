@@ -5,7 +5,7 @@ package game;
  * @author User
  *
  */
-public class NoPieceException extends Exception {
+class NoPieceException extends Exception {
     public NoPieceException(String s){
         super(s);
     }

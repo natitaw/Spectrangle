@@ -13,20 +13,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Server implements Runnable, ClientOrServer {
-    public static final Type type = ClientOrServer.Type.SERVER;
+    private static final Type type = ClientOrServer.Type.SERVER;
 
-    // TODO encapsulate
-    Thread streamInputHandler;
-    Thread terminalInputHandlerThread;
-    int port;
-    String name;
-    ServerSocket serverSock;
-    private List<Peer> peerList;
+    private Thread terminalInputHandlerThread;
+    private final int port;
+    private String name;
+    private ServerSocket serverSock;
+    private final List<Peer> peerList;
     private volatile boolean running;
-    Thread newConnectionThread;
-    public Room lobby;
-    private List<Room> roomList;
-    private PrintStream printer;
+    private final Thread newConnectionThread;
+    private final Room lobby;
+    private final List<Room> roomList;
+    private final PrintStream printer;
 
 
     public synchronized boolean getRunning(){
@@ -86,7 +84,7 @@ public class Server implements Runnable, ClientOrServer {
         return roomList;
     }
 
-    public Room newRoom(){
+    private Room newRoom(){
         Room tempRoom = new Room(roomList.size());
         roomList.add(tempRoom);
         return tempRoom;
@@ -152,7 +150,7 @@ public class Server implements Runnable, ClientOrServer {
     }
 
     public Type getType(){
-        return this.type;
+        return type;
     }
 
     @Override

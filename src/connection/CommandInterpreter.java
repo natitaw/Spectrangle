@@ -9,10 +9,10 @@ import game.Piece;
 
 import java.util.Arrays;
 
-public class CommandInterpreter {
+class CommandInterpreter {
 
-    private ClientOrServer parent;
-    private ClientOrServer.Type parentType;
+    private final ClientOrServer parent;
+    private final ClientOrServer.Type parentType;
 
 
     public CommandInterpreter(ClientOrServer parentInput){
@@ -25,11 +25,11 @@ public class CommandInterpreter {
     }
 
     public void read(String inputString, Peer peer) {
-        // seperate by spaces
+        // separate by spaces
         // get first command
-        String[] seperateWords = inputString.split("\\s+");
-        String command = seperateWords[0];
-        String[] args = Arrays.copyOfRange(seperateWords, 1, seperateWords.length);
+        String[] separateWords = inputString.split("\\s+");
+        String command = separateWords[0];
+        String[] args = Arrays.copyOfRange(separateWords, 1, separateWords.length);
 
         if (this.parentType== ClientOrServer.Type.CLIENT){
             switch (command) {
@@ -166,7 +166,7 @@ public class CommandInterpreter {
                     break;
                 default:
                     if (Settings.debug) {
-                        ((Server) parent).getPrinter().println(peer.getName() + " sent an unknown command that was ignored: " + inputString);
+                        parent.getPrinter().println(peer.getName() + " sent an unknown command that was ignored: " + inputString);
                     }
                     break;
             }

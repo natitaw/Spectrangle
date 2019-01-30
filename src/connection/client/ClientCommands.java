@@ -14,7 +14,7 @@ public class ClientCommands {
 
     private static Client clientObject;
     private static List<String> clientTiles;
-    private static List<List<String>> otherTileList;
+    private static List<List<String>> otherTileList; // intend to use this for complicated AI
 
     public static void setClientObject(Client inputClientObject) {
         clientObject = inputClientObject;

@@ -72,20 +72,12 @@ public class Client implements ClientOrServer {
         return prefNrPlayers;
     }
 
-    public void setPrefNrPlayers(int prefNrPlayers) {
-        this.prefNrPlayers = prefNrPlayers;
-    }
-
     public boolean isAI() {
         return isAI;
     }
 
     public double getDifficulty() {
         return difficulty;
-    }
-
-    public void setDifficulty(double difficulty) {
-        this.difficulty = difficulty;
     }
 
     public TerminalInputHandler getTerminalInputHandler() {

@@ -11,9 +11,7 @@ import java.util.ArrayList;
 
 public class TileBag {
 
-	private int maxSize;
-
-	private ArrayList<Piece> pieces;
+	private final ArrayList<Piece> pieces;
 
 	/**
 	 * TileBag This class generates a bag of size with 36 tiles according to the
@@ -22,7 +20,6 @@ public class TileBag {
 	// TODO update javadoc here
 	public TileBag(int sizeInput) {
 		this.pieces = new ArrayList<>(sizeInput);
-		this.maxSize=sizeInput;
 	}
 
 	/**
@@ -66,16 +63,6 @@ public class TileBag {
 		return -1;
 	}
 
-	public int findPieceRotation(Piece inputPiece) {
-		for (Piece piece : pieces){
-			if (piece.equalsRotated(inputPiece)>=0){
-				return piece.equalsRotated(inputPiece);
-			}
-
-		}
-		return -1;
-	}
-
 	public void addPiece(Piece p){
 		pieces.add(p);
 	}
@@ -89,14 +76,13 @@ public class TileBag {
 		// 6 Points
 
 		for (ColorDefinition c : ColorDefinition.values()) {
-			ColorDefinition color = c;
 
-			if (color != ColorDefinition.WHITE) {
+			if (c != ColorDefinition.WHITE) {
 
-				pieces.add(new Piece(color, color, color, 6));
-			} else if (color == ColorDefinition.WHITE) {
+				pieces.add(new Piece(c, c, c, 6));
+			} else {
 				// Joker
-				pieces.add(new Piece(color, color, color, 1));
+				pieces.add(new Piece(c, c, c, 1));
 			}
 
 		}
@@ -104,48 +90,46 @@ public class TileBag {
 		// 5 Points
 
 		for (ColorDefinition c : ColorDefinition.values()) {
-			ColorDefinition color = c;
 
-			if (color == ColorDefinition.RED) {
-				pieces.add(new Piece(color, color, ColorDefinition.YELLOW, 5));
-				pieces.add(new Piece(color, color, ColorDefinition.PURPLE, 5));
+			if (c == ColorDefinition.RED) {
+				pieces.add(new Piece(c, c, ColorDefinition.YELLOW, 5));
+				pieces.add(new Piece(c, c, ColorDefinition.PURPLE, 5));
 
-			} else if (color == ColorDefinition.BLUE) {
-				pieces.add(new Piece(color, color, ColorDefinition.RED, 5));
-				pieces.add(new Piece(color, color, ColorDefinition.PURPLE, 5));
-			} else if (color == ColorDefinition.GREEN) {
-				pieces.add(new Piece(color, color, ColorDefinition.RED, 5));
-				pieces.add(new Piece(color, color, ColorDefinition.BLUE, 5));
-			} else if (color == ColorDefinition.YELLOW) {
-				pieces.add(new Piece(color, color, ColorDefinition.BLUE, 5));
-				pieces.add(new Piece(color, color, ColorDefinition.GREEN, 5));
-			} else if (color == ColorDefinition.PURPLE) {
-				pieces.add(new Piece(color, color, ColorDefinition.YELLOW, 5));
-				pieces.add(new Piece(color, color, ColorDefinition.GREEN, 5));
+			} else if (c == ColorDefinition.BLUE) {
+				pieces.add(new Piece(c, c, ColorDefinition.RED, 5));
+				pieces.add(new Piece(c, c, ColorDefinition.PURPLE, 5));
+			} else if (c == ColorDefinition.GREEN) {
+				pieces.add(new Piece(c, c, ColorDefinition.RED, 5));
+				pieces.add(new Piece(c, c, ColorDefinition.BLUE, 5));
+			} else if (c == ColorDefinition.YELLOW) {
+				pieces.add(new Piece(c, c, ColorDefinition.BLUE, 5));
+				pieces.add(new Piece(c, c, ColorDefinition.GREEN, 5));
+			} else if (c == ColorDefinition.PURPLE) {
+				pieces.add(new Piece(c, c, ColorDefinition.YELLOW, 5));
+				pieces.add(new Piece(c, c, ColorDefinition.GREEN, 5));
 			}
 		}
 
 		// 4 Points
 
 		for (ColorDefinition c : ColorDefinition.values()) {
-			ColorDefinition color = c;
 
-			if (color == ColorDefinition.RED) {
-				pieces.add(new Piece(color, color, ColorDefinition.BLUE, 4));
-				pieces.add(new Piece(color, color, ColorDefinition.GREEN, 4));
+			if (c == ColorDefinition.RED) {
+				pieces.add(new Piece(c, c, ColorDefinition.BLUE, 4));
+				pieces.add(new Piece(c, c, ColorDefinition.GREEN, 4));
 
-			} else if (color == ColorDefinition.BLUE) {
-				pieces.add(new Piece(color, color, ColorDefinition.GREEN, 4));
-				pieces.add(new Piece(color, color, ColorDefinition.YELLOW, 4));
-			} else if (color == ColorDefinition.GREEN) {
-				pieces.add(new Piece(color, color, ColorDefinition.YELLOW, 4));
-				pieces.add(new Piece(color, color, ColorDefinition.PURPLE, 4));
-			} else if (color == ColorDefinition.YELLOW) {
-				pieces.add(new Piece(color, color, ColorDefinition.RED, 4));
-				pieces.add(new Piece(color, color, ColorDefinition.PURPLE, 4));
-			} else if (color == ColorDefinition.PURPLE) {
-				pieces.add(new Piece(color, color, ColorDefinition.RED, 4));
-				pieces.add(new Piece(color, color, ColorDefinition.BLUE, 4));
+			} else if (c == ColorDefinition.BLUE) {
+				pieces.add(new Piece(c, c, ColorDefinition.GREEN, 4));
+				pieces.add(new Piece(c, c, ColorDefinition.YELLOW, 4));
+			} else if (c == ColorDefinition.GREEN) {
+				pieces.add(new Piece(c, c, ColorDefinition.YELLOW, 4));
+				pieces.add(new Piece(c, c, ColorDefinition.PURPLE, 4));
+			} else if (c == ColorDefinition.YELLOW) {
+				pieces.add(new Piece(c, c, ColorDefinition.RED, 4));
+				pieces.add(new Piece(c, c, ColorDefinition.PURPLE, 4));
+			} else if (c == ColorDefinition.PURPLE) {
+				pieces.add(new Piece(c, c, ColorDefinition.RED, 4));
+				pieces.add(new Piece(c, c, ColorDefinition.BLUE, 4));
 			}
 		}
 
@@ -168,7 +152,7 @@ public class TileBag {
 	}
 
 	/**
-	 * Get an ArrayList<Piece> of Piece objects that will be used everytime a Board
+	 * Get an ArrayList<Piece> of Piece objects that will be used every time a Board
 	 * is generated
 	 * 
 	 * @return
@@ -178,7 +162,7 @@ public class TileBag {
 	}
 
 	/**
-	 * Method to get the number of peices at anypoint in the game
+	 * Method to get the number of pieces at any point in the game
 	 * 
 	 * @return
 	 */

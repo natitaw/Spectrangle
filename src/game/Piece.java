@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Piece {
 
-	private int value;
+	private final int value;
 
 	// TODO: These fields might not be needed
     private ColorDefinition bottom;
@@ -35,7 +35,7 @@ public class Piece {
 		this.orientation.add(this.right);
 	}
 
-    public Piece(List<ColorDefinition> orientationInput, int value) {
+    private Piece(List<ColorDefinition> orientationInput, int value) {
         this(orientationInput.get(0), orientationInput.get(1), orientationInput.get(2), value);
     }
 
@@ -107,17 +107,12 @@ public class Piece {
 
 	}
 	/**
-	 * Return the orientaiton of this piece
+	 * Return the orientation of this piece
 	 * @return
 	 */
 	public ArrayList<ColorDefinition> getColors() {
 		return this.orientation;
 	}
-
-	// TODO Make javadoc
-    public ColorDefinition getColor(int index) {
-        return orientation.get(index);
-    }
 
 	/**
 	 * Return the number of points of given tile
@@ -137,21 +132,15 @@ public class Piece {
 		return (orientation.get(0).equals(ColorDefinition.WHITE));
 	}
 
-	/**
-	 * Check if given Piece is the same as this Piece
-	 * 
-	 * @param p
-	 * @return
-	 */
-	public boolean isSamePiece(Piece p) {
-		return (this.equals(p) || this.equals(p.getRotated()) || this.equals(p.getRotated2x()));
-	}
-
 	@Override
 	public boolean equals(Object obj) {
-	    Piece p = (Piece) obj;
-	    return (this.getColors().equals(p.getColors()) && this.getValue() == p.getValue());
-    }
+		if (obj instanceof Piece) {
+			Piece p = (Piece) obj;
+			return (this.getColors().equals(p.getColors()) && this.getValue() == p.getValue());
+		} else {
+			return false;
+		}
+	}
 
 	public int equalsRotated(Piece p) {
 		if (this.equals(p) ){

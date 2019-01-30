@@ -9,7 +9,7 @@ public class PiecePrinter {
     
     // TODO add method for WWW1 input
     
-    public static String printPiece(String s){
+    private static String printPiece(String s){
         int val = Integer.parseInt(String.valueOf(s.charAt(3)));
         return printPiece(val, s.charAt(0), s.charAt(1), s.charAt(2));
     }
@@ -42,14 +42,12 @@ public class PiecePrinter {
     }
 
     public static String printEmptyPiece() {
-        String template =
-                    "           \n" +
-                    "           \n" +
-                    "           \n" +
-                    "           \n" +
-                    "           \n" +
-                    "           \n";
-        return template;
+        return "           \n" +
+        "           \n" +
+        "           \n" +
+        "           \n" +
+        "           \n" +
+        "           \n";
     }
 }
 

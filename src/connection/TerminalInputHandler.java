@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 import static connection.TerminalInputHandler.InputState.*;
 
 public class TerminalInputHandler implements Runnable{
-    private ClientOrServer parent;
+    private final ClientOrServer parent;
     private boolean running = true;
     private InputState state = InputState.COMMAND;
     private String name;
@@ -37,7 +37,7 @@ public class TerminalInputHandler implements Runnable{
     }
 
     public enum InputState {
-        COMMAND, NAME, CHAT_PREFERENCE, NUMBER_OF_PLAYERS, SINGLEPLAYER, TURN, TURN2, SKIP, AI, AI_NAME, AI_NUMBER_OF_PLAYERS, AI_TURN, AI_SKIP;
+        COMMAND, NAME, CHAT_PREFERENCE, NUMBER_OF_PLAYERS, SINGLEPLAYER, TURN, TURN2, SKIP, AI, AI_NAME, AI_NUMBER_OF_PLAYERS, AI_TURN, AI_SKIP
     }
 
 
@@ -45,7 +45,7 @@ public class TerminalInputHandler implements Runnable{
     /**
      * Uses readers to read string from console
      */
-    public String readString() {
+    private String readString() {
 
         String antw = null;
         while (antw==null && !interrupted) {
@@ -124,7 +124,7 @@ public class TerminalInputHandler implements Runnable{
                     parent.getPrinter().println("Please enter your desired name");
                     s = readString();
                     this.name = s;
-                    ((Client) parent).setName(s);
+                    parent.setName(s);
                     state=CHAT_PREFERENCE;
                     break;
                 case CHAT_PREFERENCE:

@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class ClientMain {
 
-    public static final String[] mainArgs = {""};
+    private static final String[] mainArgs = {""};
 
     public static void main(String[] args) {
         System.out.println("");
@@ -84,7 +84,7 @@ public class ClientMain {
     }
 
 
-    public static void singleplayer() {
+    private static void singleplayer() {
         Scanner scanner = new Scanner(System.in);
         final Server[] serverObject = new Server[1]; // needed weird final array because of inner class
         Thread serverThread = new Thread(new Runnable() {
@@ -117,7 +117,7 @@ public class ClientMain {
 
             int finalI = i;
             Thread aiThread = new Thread(new Runnable() {
-                int j = finalI;
+                final int j = finalI;
                 @Override
                 public void run() {
                     aiObject[0] = new Client("127.0.0.1", "ai Computer" + j + " " + preferredNrofPlayers + " " + difficulty + " " + "true");
@@ -161,7 +161,7 @@ public class ClientMain {
 
     }
 
-    public static void multiplayer() {
+    private static void multiplayer() {
         System.out.println("Type the IP of a server to continue");
         Scanner scanner = new Scanner(System.in);
         //TODO Fix error when entering faulty ip
@@ -188,7 +188,7 @@ public class ClientMain {
     
     
 
-    public static void clearScreen() {
+    private static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }

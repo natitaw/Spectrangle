@@ -1,5 +1,5 @@
 package connection;
 
-public class Settings {
+class Settings {
     public static final boolean debug = true;
 }

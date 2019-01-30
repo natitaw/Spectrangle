@@ -21,10 +21,6 @@ public class Peer implements Runnable, Comparable<Peer> {
     private TileBag tileBag;
     private int score;
 
-    public Thread getStreamInputHandler() {
-        return streamInputHandler;
-    }
-
     /**
      * Constructor. creates a peer object based in the given parameters.
      * @param   sockArg Socket of the connection.Peer-proces

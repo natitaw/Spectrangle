@@ -6,11 +6,11 @@ package game;
  * @author Group4
  *
  */
-public class BoardLocation {
+class BoardLocation {
 
 	
-	private int location;
-	private int scorePoint;
+	private final int location;
+	private final int scorePoint;
 	private Piece piece;
 	
 	/**
@@ -32,14 +32,7 @@ public class BoardLocation {
 	public int getScorePoint() {
 		return scorePoint;
 	}
-	
-	/**
-	 * Return the location of this spot
-	 * @return
-	 */
-	public int getLocation() {
-		return this.location;
-	}
+
 	/**
 	 * Return the piece of this spot
 	 * @return
