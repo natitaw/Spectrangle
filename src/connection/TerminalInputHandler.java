@@ -33,7 +33,7 @@ public class TerminalInputHandler implements Runnable{
     }
 
     public enum InputState {
-        COMMAND, SINGLEPLAYER, NAME, CHAT_PREFERENCE, NUMBER_OF_PLAYERS;
+        COMMAND, NAME, CHAT_PREFERENCE, NUMBER_OF_PLAYERS, SINGLEPLAYER;
     }
 
 

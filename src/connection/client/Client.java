@@ -17,7 +17,6 @@ import java.net.UnknownHostException;
  */
 public class Client implements ClientOrServer {
     public static final Type type = ClientOrServer.Type.CLIENT;
-    static Thread streamInputHandler;
     private TerminalInputHandler terminalInputHandler;
     private Thread terminalInputHandlerThread;
     private Peer clientPeer;
@@ -29,13 +28,14 @@ public class Client implements ClientOrServer {
      * Starts a connection.client.Client application.
      */
     public Client(String ip, String arg) {
-        connect(ip);
-        ClientCommands.setClientObject(this);
         if (arg.equals("singleplayer")){
             terminalInputHandler = new TerminalInputHandler(this, TerminalInputHandler.InputState.SINGLEPLAYER);
         } else {
             terminalInputHandler = new TerminalInputHandler(this);
         }
+        connect(ip);
+        ClientCommands.setClientObject(this);
+
     }
 
     public void connect(String ip) {
