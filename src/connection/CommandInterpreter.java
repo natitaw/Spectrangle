@@ -67,21 +67,21 @@ public class CommandInterpreter {
 
 
                         if (args[args.length-2].equals("skip") ) {
-                            if (((Client) parent).isAI) {
+                            if (((Client) parent).isAI()) {
                                 ((Client) parent).getTerminalInputHandler().setState(TerminalInputHandler.InputState.AI_SKIP);
                             } else {
                                 ((Client) parent).getTerminalInputHandler().setState(TerminalInputHandler.InputState.SKIP);
                             }
 
                         } else {
-                            if (((Client) parent).isAI) {
+                            if (((Client) parent).isAI()) {
                                 ((Client) parent).getTerminalInputHandler().setState(TerminalInputHandler.InputState.AI_TURN);
                             } else {
                                 ((Client) parent).getTerminalInputHandler().setState(TerminalInputHandler.InputState.TURN);
                             }
                         }
 
-                        ((Client) parent).getTerminalInputHandler().interrupted=true;
+                        ((Client) parent).getTerminalInputHandler().setInterrupted(true);
 
 
                     }

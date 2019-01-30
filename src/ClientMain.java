@@ -109,16 +109,19 @@ public class ClientMain {
 
 
         List<Thread> aiThreads = new ArrayList<>();
+        List<Client> aiObjects = new ArrayList<>();
         for (int i = 1; i < preferredNrofPlayers; i++) {
 
 
             final Client[] aiObject = new Client[1]; // needed weird final array because of inner class
+
             int finalI = i;
             Thread aiThread = new Thread(new Runnable() {
                 int j = finalI;
                 @Override
                 public void run() {
                     aiObject[0] = new Client("127.0.0.1", "ai Computer" + j + " " + preferredNrofPlayers + " " + difficulty + " " + "true");
+                    aiObjects.add(aiObject[0]);
                 }
             });
             aiThreads.add(aiThread);
@@ -138,7 +141,12 @@ public class ClientMain {
         }
 
         for (int i = 1; i <= preferredNrofPlayers; i++) {
-            aiThreads.get(i).stop();
+            aiObjects.get(i).shutDown();
+            try {
+                aiThreads.get(i).join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
 

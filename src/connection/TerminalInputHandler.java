@@ -96,7 +96,7 @@ public class TerminalInputHandler implements Runnable{
                     state=AI_NUMBER_OF_PLAYERS;
                     break;
                 case AI_NUMBER_OF_PLAYERS:
-                    parent.sendMessageToAll("request " + ((Client) parent).prefNrPlayers);
+                    parent.sendMessageToAll("request " + ((Client) parent).getPrefNrPlayers());
                     state=AI;
                     break;
                 case AI_TURN:
@@ -116,7 +116,7 @@ public class TerminalInputHandler implements Runnable{
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    parent.sendMessageToAll("request " + String.valueOf(((Client) parent).prefNrPlayers));
+                    parent.sendMessageToAll("request " + String.valueOf(((Client) parent).getPrefNrPlayers()));
                     state=COMMAND;
                     break;
 
@@ -260,6 +260,14 @@ public class TerminalInputHandler implements Runnable{
                 running = false;
             }
         }
+    }
+
+    public boolean isInterrupted() {
+        return interrupted;
+    }
+
+    public void setInterrupted(boolean interrupted) {
+        this.interrupted = interrupted;
     }
 
     public static void clearScreen(ClientOrServer parent) {
