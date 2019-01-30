@@ -279,6 +279,7 @@ public class GameRoom extends Room implements Runnable {
         if (peer.equals(this.currentPlayer)) {
             if (!mustSkip) {
 
+                // TODO this does not work (might be clientside)
                 if (peer.getTileBag().findPiece(newPiece) >= 0) {
 
                     if (board.isValidMove(index, newPiece)) {
