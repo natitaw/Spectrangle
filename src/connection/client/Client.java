@@ -40,12 +40,12 @@ public class Client implements ClientOrServer {
      * Starts a connection.client.Client application.
      */
     public Client(String ip, String arg) {
-        if (arg.equals("singleplayer")){
-            String[] argArray = arg.split(Pattern.quote(" "));
+        String[] argArray = arg.split(Pattern.quote(" "));
+        if (argArray[0].equals("singleplayer")){
             this.prefNrPlayers= Integer.parseInt(argArray[2]);
             this.difficulty = Double.parseDouble(argArray[3]);
             terminalInputHandler = new TerminalInputHandler(this, TerminalInputHandler.InputState.SINGLEPLAYER);
-            name="Player";
+            name=argArray[1];
             isAI=false;
             isSilent=false;
         } else if (arg.equals("")){
@@ -54,7 +54,6 @@ public class Client implements ClientOrServer {
             isAI=false;
             isSilent=false;
         } else {
-            String[] argArray = arg.split(Pattern.quote(" "));
             terminalInputHandler = new TerminalInputHandler(this, TerminalInputHandler.InputState.AI_NAME);
             this.name=argArray[1];
             this.prefNrPlayers= Integer.parseInt(argArray[2]);
@@ -89,7 +88,6 @@ public class Client implements ClientOrServer {
     }
 
     public void connect(String ip) {
-        String name = "name";
         InetAddress addr = null;
         int port = 4000;
         Socket sock = null;

@@ -109,7 +109,7 @@ public class ClientMain {
 
 
         List<Thread> aiThreads = new ArrayList<>();
-        for (int i = 1; i <= preferredNrofPlayers; i++) {
+        for (int i = 1; i < preferredNrofPlayers; i++) {
 
 
             final Client[] aiObject = new Client[1]; // needed weird final array because of inner class

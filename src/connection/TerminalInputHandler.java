@@ -108,11 +108,16 @@ public class TerminalInputHandler implements Runnable{
                     state=AI;
                     break;
                 case SINGLEPLAYER:
-                    this.name = "Player";
-                    ((Client) parent).setName(this.name);
+
                     wantsChat=false;
-                    parent.sendMessageToAll("connect " + this.name);
-                    state=NUMBER_OF_PLAYERS;
+                    parent.sendMessageToAll("connect " + parent.getName());
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    parent.sendMessageToAll("request " + String.valueOf(((Client) parent).prefNrPlayers));
+                    state=COMMAND;
                     break;
 
                 case NAME:
