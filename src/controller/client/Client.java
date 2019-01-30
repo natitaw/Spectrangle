@@ -1,9 +1,9 @@
-package connection.client;
+package controller.client;
 
-import connection.ClientOrServer;
-import connection.Peer;
-import connection.TerminalInputHandler;
-import game.Board;
+import controller.ClientOrServer;
+import controller.Peer;
+import view.TerminalInputHandler;
+import model.Board;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -14,52 +14,51 @@ import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 
 /**
- * connection.client.Client class for a simple client-server application
+ * controller.client.Client class for a simple client-server application
  *
  * @author Theo Ruys
  * @version 2005.02.21
  */
 public class Client implements ClientOrServer {
-    public static final Type type = ClientOrServer.Type.CLIENT;
-
+    private static final Type type = ClientOrServer.Type.CLIENT;
 
 
     private final boolean isSilent;
-    private TerminalInputHandler terminalInputHandler;
+    private final TerminalInputHandler terminalInputHandler;
+    private final boolean isAI;
     private Thread terminalInputHandlerThread;
     private Peer clientPeer;
     private volatile boolean running;
     private String name;
     private Board board;
-    public int prefNrPlayers;
-    public boolean isAI;
-    public double difficulty;
+    private int prefNrPlayers;
+    private double difficulty;
     private PrintStream printer;
 
     /**
-     * Starts a connection.client.Client application.
+     * Starts a controller.client.Client application.
      */
     public Client(String ip, String arg) {
         String[] argArray = arg.split(Pattern.quote(" "));
-        if (argArray[0].equals("singleplayer")){
-            this.prefNrPlayers= Integer.parseInt(argArray[2]);
+        if (argArray[0].equals("singleplayer")) {
+            this.prefNrPlayers = Integer.parseInt(argArray[2]);
             this.difficulty = Double.parseDouble(argArray[3]);
             terminalInputHandler = new TerminalInputHandler(this, TerminalInputHandler.InputState.SINGLEPLAYER);
-            name=argArray[1];
-            isAI=false;
-            isSilent=false;
-        } else if (arg.equals("")){
+            name = argArray[1];
+            isAI = false;
+            isSilent = false;
+        } else if (arg.equals("")) {
             terminalInputHandler = new TerminalInputHandler(this);
-            name="default";
-            isAI=false;
-            isSilent=false;
+            name = "default";
+            isAI = false;
+            isSilent = false;
         } else {
             terminalInputHandler = new TerminalInputHandler(this, TerminalInputHandler.InputState.AI_NAME);
-            this.name=argArray[1];
-            this.prefNrPlayers= Integer.parseInt(argArray[2]);
-            isAI=true;
+            this.name = argArray[1];
+            this.prefNrPlayers = Integer.parseInt(argArray[2]);
+            isAI = true;
             this.difficulty = Double.parseDouble(argArray[3]);
-            this.isSilent=Boolean.parseBoolean(argArray[4]);
+            this.isSilent = Boolean.parseBoolean(argArray[4]);
 
         }
 
@@ -67,34 +66,31 @@ public class Client implements ClientOrServer {
         ClientCommands.setClientObject(this);
 
     }
-    public boolean isSilent() {
-        return isSilent;
+
+    public int getPrefNrPlayers() {
+        return prefNrPlayers;
+    }
+
+    public boolean isAI() {
+        return isAI;
+    }
+
+    public double getDifficulty() {
+        return difficulty;
     }
 
     public TerminalInputHandler getTerminalInputHandler() {
         return terminalInputHandler;
     }
 
-    public void setTerminalInputHandler(TerminalInputHandler terminalInputHandler) {
-        this.terminalInputHandler = terminalInputHandler;
-    }
-
-    public Thread getTerminalInputHandlerThread() {
-        return terminalInputHandlerThread;
-    }
-
-    public void setTerminalInputHandlerThread(Thread terminalInputHandlerThread) {
-        this.terminalInputHandlerThread = terminalInputHandlerThread;
-    }
-
-    public void connect(String ip) {
+    private void connect(String ip) {
         InetAddress addr = null;
         int port = 4000;
         Socket sock = null;
 
 
         if (isSilent) {
-            printer = new PrintStream(new OutputStream(){
+            printer = new PrintStream(new OutputStream() {
                 public void write(int b) {
                     // does nothing
                 }
@@ -126,7 +122,7 @@ public class Client implements ClientOrServer {
 
         this.running = true;
 
-        // create connection.Peer object and start the two-way communication
+        // create controller.Peer object and start the two-way communication
         clientPeer = new Peer(sock, type, this);
         terminalInputHandlerThread = new Thread(terminalInputHandler);
         terminalInputHandlerThread.start();
@@ -139,10 +135,6 @@ public class Client implements ClientOrServer {
 
     public void setBoard(Board board) {
         this.board = board;
-    }
-
-    public Peer getPeer() {
-        return clientPeer;
     }
 
     @Override
@@ -167,8 +159,8 @@ public class Client implements ClientOrServer {
         return this.running;
     }
 
-    public Type getType(){
-        return this.type;
+    public Type getType() {
+        return type;
     }
 
 
@@ -188,6 +180,5 @@ public class Client implements ClientOrServer {
         clientPeer.close();
 
 
-
     }
-} // end of class connection.client.Client
+} // end of class controller.client.Client

@@ -1,8 +1,8 @@
-package connection.server;
+package controller.server;
 
-import connection.ClientOrServer;
-import connection.Peer;
-import connection.TerminalInputHandler;
+import controller.ClientOrServer;
+import controller.Peer;
+import view.TerminalInputHandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -13,25 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Server implements Runnable, ClientOrServer {
-    public static final Type type = ClientOrServer.Type.SERVER;
-
-    // TODO encapsulate
-    Thread streamInputHandler;
-    Thread terminalInputHandlerThread;
-    int port;
-    String name;
-    ServerSocket serverSock;
-    private List<Peer> peerList;
+    private static final Type type = ClientOrServer.Type.SERVER;
+    private final int port;
+    private final List<Peer> peerList;
+    private final Thread newConnectionThread;
+    private final Room lobby;
+    private final List<Room> roomList;
+    private final PrintStream printer;
+    private Thread terminalInputHandlerThread;
+    private String name;
+    private ServerSocket serverSock;
     private volatile boolean running;
-    Thread newConnectionThread;
-    public Room lobby;
-    private List<Room> roomList;
-    private PrintStream printer;
-
-
-    public synchronized boolean getRunning(){
-        return this.running;
-    }
 
 
     public Server(String arg) {
@@ -57,7 +49,7 @@ public class Server implements Runnable, ClientOrServer {
         lobby = newRoom();
 
         if (arg.equals("singleplayer")) {
-            printer = new PrintStream(new OutputStream(){
+            printer = new PrintStream(new OutputStream() {
                 public void write(int b) {
                     // does nothing
                 }
@@ -73,6 +65,10 @@ public class Server implements Runnable, ClientOrServer {
         printer.println("Server successfully started on port " + port);
     }
 
+    public synchronized boolean getRunning() {
+        return this.running;
+    }
+
     public List<Peer> getPeerList() {
         return peerList;
     }
@@ -86,20 +82,20 @@ public class Server implements Runnable, ClientOrServer {
         return roomList;
     }
 
-    public Room newRoom(){
+    private Room newRoom() {
         Room tempRoom = new Room(roomList.size());
         roomList.add(tempRoom);
         return tempRoom;
     }
 
-    public GameRoom newGameRoom(){
+    public GameRoom newGameRoom() {
         GameRoom tempGameRoom = new GameRoom(roomList.size(), this);
         roomList.add(tempGameRoom);
         return tempGameRoom;
     }
 
     /**
-     * Starts a connection.server.Server-application.
+     * Starts a controller.server.Server-application.
      */
     public void run() {
 
@@ -121,7 +117,7 @@ public class Server implements Runnable, ClientOrServer {
 
             } catch (IOException e) {
                 if (running) {
-                printer.println("Thread was unable to create socket on port " + port);
+                    printer.println("Thread was unable to create socket on port " + port);
                 }
             }
 
@@ -130,39 +126,39 @@ public class Server implements Runnable, ClientOrServer {
     }
 
 
-    public void sendMessageToAll(String s){
+    public void sendMessageToAll(String s) {
         for (Peer p : peerList) {
             p.sendMessage(s);
         }
     }
 
-    public void sendMessageToRoom(String command, Room room, String commandType){
+    public void sendMessageToRoom(String command, Room room, String commandType) {
         for (Peer p : room.getPeerList()) {
 
-                if (commandType.equals("chat")){
-                    if (p.getChatEnabled()){
-                        p.sendMessage(command);
-                    }
-                } else {
+            if (commandType.equals("chat")) {
+                if (p.getChatEnabled()) {
                     p.sendMessage(command);
                 }
+            } else {
+                p.sendMessage(command);
+            }
 
 
         }
     }
 
-    public Type getType(){
-        return this.type;
-    }
-
-    @Override
-    public void setName(String s) {
-        this.name = s;
+    public Type getType() {
+        return type;
     }
 
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public void setName(String s) {
+        this.name = s;
     }
 
     public void shutDown() {
@@ -192,4 +188,4 @@ public class Server implements Runnable, ClientOrServer {
 
     }
 
-} // end of class connection.server.Server
+} // end of class controller.server.Server

@@ -1,4 +1,4 @@
-package connection;
+package controller;
 
 import java.io.PrintStream;
 
@@ -13,7 +13,7 @@ public interface ClientOrServer {
         CLIENT, SERVER
     }
 
-    public PrintStream getPrinter();
+    PrintStream getPrinter();
 
     Type getType();
 

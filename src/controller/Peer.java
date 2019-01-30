@@ -1,14 +1,16 @@
-package connection;
+package controller;
 
-import connection.server.Room;
-import game.TileBag;
+import controller.server.Room;
+import model.TileBag;
+import view.CommandInterpreter;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Peer implements Runnable, Comparable<Peer> {
-    public static final String EXIT = "EXIT";
-
     private Socket sock;
     private BufferedReader in;
     private PrintWriter out;
@@ -23,18 +25,14 @@ public class Peer implements Runnable, Comparable<Peer> {
     private TileBag tileBag;
     private int score;
 
-    public Thread getStreamInputHandler() {
-        return streamInputHandler;
-    }
-
     /**
      * Constructor. creates a peer object based in the given parameters.
-     * @param   sockArg Socket of the connection.Peer-proces
+     *
+     * @param sockArg Socket of the controller.Peer-proces
      */
-    public Peer(Socket sockArg, ClientOrServer.Type type, ClientOrServer parentInput)
-    {
+    public Peer(Socket sockArg, ClientOrServer.Type type, ClientOrServer parentInput) {
         try {
-            parent=parentInput;
+            parent = parentInput;
 
             sock = sockArg;
             in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
@@ -43,17 +41,16 @@ public class Peer implements Runnable, Comparable<Peer> {
             reader = new CommandInterpreter(parent);
 
 
-
             streamInputHandler = new Thread(this);
             streamInputHandler.start();
 
-            if (type== ClientOrServer.Type.CLIENT) {
-                name="Server";
-                chatEnabled=true; // Client leaves all communication with its "Peer", the server, enabled by default
+            if (type == ClientOrServer.Type.CLIENT) {
+                name = "Server";
+                chatEnabled = true; // Client leaves all communication with its "Peer", the server, enabled by default
             } else {
-                name="Unknown client";
-                chatEnabled=false;
-                preferredNrOfPlayers =0;
+                name = "Unknown client";
+                chatEnabled = false;
+                preferredNrOfPlayers = 0;
             }
 
         } catch (IOException e) {
@@ -62,24 +59,16 @@ public class Peer implements Runnable, Comparable<Peer> {
         }
     }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     public Room getCurrentRoom() {
         return currentRoom;
     }
 
-    public boolean getChatEnabled(){
+    public boolean getChatEnabled() {
         return this.chatEnabled;
     }
 
-    public void setChatEnabled(boolean b){
-        this.chatEnabled=b;
-    }
-
-    public void setRunning(boolean running) {
-        this.running = running;
+    public void setChatEnabled(boolean b) {
+        this.chatEnabled = b;
     }
 
     public int getPreferredNrOfPlayers() {
@@ -94,6 +83,10 @@ public class Peer implements Runnable, Comparable<Peer> {
         return running;
     }
 
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
     public TileBag getTileBag() {
         return tileBag;
     }
@@ -106,37 +99,41 @@ public class Peer implements Runnable, Comparable<Peer> {
         return score;
     }
 
-    public void incScore(int i){
-        this.score+=i;
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void incScore(int i) {
+        this.score += i;
     }
 
     /**
-     * Reads strings of the stream of the socket-connection and
+     * Reads strings of the stream of the socket-controller and
      * writes the characters to the default output.
      */
 
 
-
     public void run() {
         while (running && parent.getRunning()) {
-        try {
-            String s1 = in.readLine();
-            if (s1 == null || s1.equals("")) {
-                close();
-            } else {
-                reader.read(s1, this);
-            }
+            try {
+                String s1 = in.readLine();
+                if (s1 == null || s1.equals("")) {
+                    close();
+                } else {
+                    reader.read(s1, this);
+                }
 
-        } catch (IOException e) {
-            if (running && parent.getRunning()){
-                parent.getPrinter().println("Error in reading data from " + name);
-                e.printStackTrace();
-            }
+            } catch (IOException e) {
+                if (running && parent.getRunning()) {
+                    parent.getPrinter().println("Error in reading data from " + name);
+                    e.printStackTrace();
+                }
 
+            }
+        }
     }
-    } }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
@@ -145,7 +142,7 @@ public class Peer implements Runnable, Comparable<Peer> {
     }
 
 
-    public void sendMessage(String s){
+    public void sendMessage(String s) {
         out.println(s);
     }
 
@@ -154,30 +151,30 @@ public class Peer implements Runnable, Comparable<Peer> {
             currentRoom.removePeer(this);
         }
         room.addPeer(this);
-        currentRoom=room;
+        currentRoom = room;
     }
 
 
     /**
-     * Closes the connection, the sockets will be terminated
+     * Closes the controller, the sockets will be terminated
      */
     public void close() {
-        this.running=false;
+        this.running = false;
 
         streamInputHandler.interrupt();
         parent.getPrinter().println("Connection reading thread for " + name + " closed");
         try {
             sock.close();
-            parent.getPrinter().println("Socket for connection " + name + " closed");
+            parent.getPrinter().println("Socket for controller " + name + " closed");
         } catch (IOException e) {
             parent.getPrinter().println("Error in closing socket for " + name);
 
         }
-        // TODO if server, remove peer from lists, rooms and such. Close any game rooms it is in
+        // TODO if server, remove peer from lists, rooms and such. Close any model rooms it is in
 
     }
 
-    // used for sorting reasons in game logic
+    // used for sorting reasons in model logic
     @Override
     public int compareTo(Peer p) {
         return this.name.compareTo(p.getName());
