@@ -66,9 +66,10 @@ public class ClientCommands {
             if (!name.equals(clientObject.getName())) {
                 String[] printArgs = Arrays.copyOfRange(args, peerNr * 5 + 1, peerNr * 5 + 4);
                 String printString = String.join(" ", printArgs);
-                System.out.println(name + ": " + printArgs);
+                System.out.println(name + ": " + printString);
             }
         }
+
 
     }
 
