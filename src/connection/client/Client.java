@@ -18,17 +18,24 @@ import java.net.UnknownHostException;
 public class Client implements ClientOrServer {
     public static final Type type = ClientOrServer.Type.CLIENT;
     static Thread streamInputHandler;
+    private TerminalInputHandler terminalInputHandler;
     private Thread terminalInputHandlerThread;
     private Peer clientPeer;
     private volatile boolean running;
     private String name;
 
+
     /**
      * Starts a connection.client.Client application.
      */
-    public Client(String ip) {
+    public Client(String ip, String arg) {
         connect(ip);
         ClientCommands.setClientObject(this);
+        if (arg.equals("singleplayer")){
+            terminalInputHandler = new TerminalInputHandler(this, TerminalInputHandler.InputState.SINGLEPLAYER);
+        } else {
+            terminalInputHandler = new TerminalInputHandler(this);
+        }
     }
 
     public void connect(String ip) {
@@ -38,7 +45,7 @@ public class Client implements ClientOrServer {
         Socket sock = null;
         name="default";
 
-        // check args[1] - the IP-adress
+        // check the IP-adress
         try {
             addr = InetAddress.getByName(ip);
         } catch (UnknownHostException e) {
@@ -60,7 +67,7 @@ public class Client implements ClientOrServer {
 
         // create connection.Peer object and start the two-way communication
         clientPeer = new Peer(sock, type, this);
-        terminalInputHandlerThread = new Thread(new TerminalInputHandler(this));
+        terminalInputHandlerThread = new Thread(terminalInputHandler);
         terminalInputHandlerThread.start();
         System.out.println("Connected to server");
     }

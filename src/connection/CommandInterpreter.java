@@ -135,7 +135,7 @@ public class CommandInterpreter {
                     break;
                 default:
                     if (Settings.debug) {
-                        System.out.println(peer.getName() + " sent an unknown command that was ignored: " + inputString);
+                        ((Server) parent).printer.println(peer.getName() + " sent an unknown command that was ignored: " + inputString);
                     }
                     break;
             }

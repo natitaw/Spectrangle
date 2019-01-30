@@ -12,7 +12,7 @@ import static connection.TerminalInputHandler.InputState.*;
 public class TerminalInputHandler implements Runnable{
     ClientOrServer parent;
     private boolean running = true;
-    public InputState state = InputState.COMMAND;
+    private InputState state = InputState.COMMAND;
     private String name;
     private boolean wantsChat;
 
@@ -27,8 +27,13 @@ public class TerminalInputHandler implements Runnable{
         }
     }
 
+    public TerminalInputHandler(ClientOrServer inputParent, InputState firstState) {
+        this(inputParent);
+        state=firstState;
+    }
+
     public enum InputState {
-        COMMAND, NAME, CHAT_PREFERENCE, NUMBER_OF_PLAYERS
+        COMMAND, SINGLEPLAYER, NAME, CHAT_PREFERENCE, NUMBER_OF_PLAYERS;
     }
 
 
@@ -54,6 +59,10 @@ public class TerminalInputHandler implements Runnable{
         return (antw == null) ? "" : antw;
     }
 
+    public void setState(InputState state) {
+        this.state = state;
+    }
+
     /**
      * Reads a string from the console and sends this string over
      * the socket-connection to the peer.
@@ -64,6 +73,13 @@ public class TerminalInputHandler implements Runnable{
         while (parent.getRunning() && running) {
             String s = "";
             switch (state) {
+                case SINGLEPLAYER:
+                    this.name = "Player";
+                    ((Client) parent).setName(this.name);
+                    wantsChat=false;
+                    parent.sendMessageToAll("connect " + this.name);
+                    state=NUMBER_OF_PLAYERS;
+                    break;
 
                 case NAME:
                     System.out.println("Please enter your desired name");

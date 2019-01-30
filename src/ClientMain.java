@@ -1,8 +1,12 @@
 import connection.client.Client;
+import connection.server.Server;
 
 import java.util.Scanner;
 
 public class ClientMain {
+
+    public static final String[] mainArgs = {""};
+
     public static void main(String[] args) {
         System.out.println("");
         System.out.println("Welcome to our Spectrangle client. ");
@@ -43,9 +47,45 @@ public class ClientMain {
 
 
     public static void singleplayer() {
-        // TODO implement singleplayer
-        System.out.println("Singleplayer is not ready yet. Going back to menu");
-        String[] mainArgs = {""};
+        Scanner scanner = new Scanner(System.in);
+        final Server[] serverObject = new Server[1]; // needed weird final array because of inner class
+        Thread serverThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                serverObject[0] = new Server("singleplayer");
+            }
+        });
+        serverThread.start();
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Client clientObject = new Client("127.0.0.1", "singleplayer");
+
+
+
+
+        while (clientObject.getRunning()){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        serverObject[0].shutDown();
+        try {
+            serverThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // go back to main menu on disconnect
+        clearScreen();
+
+        System.out.println("User has exited singleplayer. Returned to main menu.");
+
         main(mainArgs);
 
     }
@@ -56,7 +96,7 @@ public class ClientMain {
         //TODO Fix error when entering faulty ip
 
         String ip = scanner.nextLine();
-        Client clientObject = new Client(ip);
+        Client clientObject = new Client(ip, "");
 
         while (clientObject.getRunning()){
             try {
@@ -72,7 +112,6 @@ public class ClientMain {
 
         System.out.println("The server has disconnected. Returned to main menu.");
 
-        String[] mainArgs = {""};
         main(mainArgs);
     }
     

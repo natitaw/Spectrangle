@@ -5,6 +5,8 @@ import connection.Peer;
 import connection.TerminalInputHandler;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class Server implements Runnable, ClientOrServer {
     Thread newConnectionThread;
     public Room lobby;
     private List<Room> roomList;
+    public PrintStream printer;
 
 
     public synchronized boolean getRunning(){
@@ -31,7 +34,7 @@ public class Server implements Runnable, ClientOrServer {
     }
 
 
-    public Server() {
+    public Server(String arg) {
         port = 4000;
         name = "server";
         serverSock = null;
@@ -44,15 +47,30 @@ public class Server implements Runnable, ClientOrServer {
         }
         newConnectionThread = new Thread(this);
         newConnectionThread.start();
-        terminalInputHandlerThread = new Thread(new TerminalInputHandler(this));
-        terminalInputHandlerThread.start();
-
+        if (!arg.equals("singleplayer")) {
+            terminalInputHandlerThread = new Thread(new TerminalInputHandler(this));
+            terminalInputHandlerThread.start();
+        }
         // zero index of roomlist should always have lobby
         roomList = new ArrayList<>();
 
         lobby = newRoom();
 
-        System.out.println("Server successfully started on port " + port);
+        if (arg.equals("singleplayer")) {
+            printer = new PrintStream(new OutputStream(){
+                public void write(int b) {
+                    // does nothing
+                }
+            });
+
+        } else {
+            printer = System.out;
+
+
+        }
+
+
+        printer.println("Server successfully started on port " + port);
     }
 
     public List<Peer> getPeerList() {
@@ -94,12 +112,12 @@ public class Server implements Runnable, ClientOrServer {
 
                 newPeer.setName("Unknown client " + peerList.size());
                 newPeer.moveToRoom(lobby);
-                System.out.println(newPeer.getName() + " connected");
+                printer.println(newPeer.getName() + " connected");
 
 
             } catch (IOException e) {
                 if (running) {
-                System.out.println("Thread was unable to create socket on port " + port);
+                printer.println("Thread was unable to create socket on port " + port);
                 }
             }
 
@@ -154,18 +172,18 @@ public class Server implements Runnable, ClientOrServer {
 
         try {
             serverSock.close();
-            System.out.println("Server socket closed");
+            printer.println("Server socket closed");
         } catch (IOException e) {
-            System.out.println("Error in closing server socket. Printing error");
+            printer.println("Error in closing server socket. Printing error");
             e.printStackTrace();
         }
 
         try {
             terminalInputHandlerThread.interrupt();
-            System.out.println("Terminal input handling thread closed");
+            printer.println("Terminal input handling thread closed");
         } catch (Exception e) {
             Thread.currentThread().interrupt();
-            System.out.println("Error in closing terminal input thread");
+            printer.println("Error in closing terminal input thread");
         }
 
     }
