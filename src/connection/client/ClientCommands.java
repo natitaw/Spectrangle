@@ -1,6 +1,5 @@
 package connection.client;
 
-import connection.Peer;
 import game.Board;
 import game.Piece;
 import game.TileBag;
@@ -21,38 +20,44 @@ public class ClientCommands {
         clientObject = inputClientObject;
     }
 
-    public static void printTiles(String[] args){
-        System.out.println("You have tiles:");
+    public static void setTiles(String[] args){
         String[] middleArgs = Arrays.copyOfRange(args, 0, args.length-2);
         for (int peerNr=0; peerNr < middleArgs.length/5; peerNr++) {
             String name = middleArgs[peerNr * 5];
             if (name.equals(clientObject.getName())) {
-                List<String[]> pieceLineList = new ArrayList<>();
-                String[] resultArray;
+
                 String[] tileArgs = Arrays.copyOfRange(middleArgs, (peerNr * 5) + 1, (peerNr * 5) + 5);
                 clientTiles = Arrays.asList(tileArgs);
-                for (String t : tileArgs) {
-                    Piece tempPiece = new Piece(t);
-                    String pieceString = tempPiece.toPrinterString();
-                    String[] pieceLines = pieceString.split(Pattern.quote("\n"));
-                    pieceLineList.add(pieceLines);
-                }
-                resultArray = new String[]{"","","" ,"" ,"", "" };
 
-                for (int lineNr = 0; lineNr < resultArray.length; lineNr++) {
-                    for (String[] tempPieceLines : pieceLineList) {
-                        resultArray[lineNr] = resultArray[lineNr].concat(" ").concat(tempPieceLines[lineNr]);
-                    }
-                }
-                String tilesPrinted = String.join("\n", resultArray);
-                System.out.println(tilesPrinted);
-                System.out.println("");
-                System.out.println("    [1]    " + " " + "    [2]    " + " " + "    [3]    " + " " + "    [4]    ");
-                System.out.println("");
 
             }
         }
 }
+
+    public static void printTiles() {
+        System.out.println("You have tiles:");
+
+        List<String[]> pieceLineList = new ArrayList<>();
+        String[] resultArray;
+        for (String t : clientTiles) {
+            Piece tempPiece = new Piece(t);
+            String pieceString = tempPiece.toPrinterString();
+            String[] pieceLines = pieceString.split(Pattern.quote("\n"));
+            pieceLineList.add(pieceLines);
+        }
+        resultArray = new String[]{"","","" ,"" ,"", "" };
+
+        for (int lineNr = 0; lineNr < resultArray.length; lineNr++) {
+            for (String[] tempPieceLines : pieceLineList) {
+                resultArray[lineNr] = resultArray[lineNr].concat(" ").concat(tempPieceLines[lineNr]);
+            }
+        }
+        String tilesPrinted = String.join("\n", resultArray);
+        System.out.println(tilesPrinted);
+        System.out.println("");
+        System.out.println("    [1]    " + " " + "    [2]    " + " " + "    [3]    " + " " + "    [4]    ");
+        System.out.println("");
+    }
 
     public static void makeBoard(){
         clientObject.setBoard(new Board());
@@ -87,9 +92,11 @@ public class ClientCommands {
         return clientTiles;
     }
 
+    public static void setClientTiles(List<String> clientTiles) {
+        ClientCommands.clientTiles = clientTiles;
+    }
 
-
-    // TODO Implement ai here
+// TODO Implement ai here
 
     private boolean hasValidMoves(TileBag tilebag) {
         boolean result = false;

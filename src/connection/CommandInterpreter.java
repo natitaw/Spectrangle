@@ -61,8 +61,10 @@ public class CommandInterpreter {
 
                     if (args[args.length-1].equals(parent.getName()) ) {
                         ClientCommands.printBoard();
+
                         ClientCommands.otherTiles(args);
-                        ClientCommands.printTiles(args);
+                        ClientCommands.setTiles(args);
+
 
                         if (args[args.length-2].equals("skip") ) {
                             if (((Client) parent).isAI) {

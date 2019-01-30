@@ -3,7 +3,6 @@ package connection;
 import connection.client.Client;
 import connection.client.ClientCommands;
 import game.Piece;
-import jdk.internal.util.xml.impl.Input;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,6 +18,7 @@ public class TerminalInputHandler implements Runnable{
     private boolean wantsChat;
     Piece tempPiece = null;
     public boolean interrupted = false;
+    int tempPieceIndex = 0;
 
 
 
@@ -166,15 +166,17 @@ public class TerminalInputHandler implements Runnable{
 
                     break;
                 case TURN:
+                    ClientCommands.printTiles();
                     boolean inputFinished = false;
                     while (!inputFinished) {
                         try {
-                            System.out.println("Type the number of the tile you would like to place");
+                            System.out.println("Type the number of the tile you would like to place (or rotate)");
                             s = readString();
-                            tempPiece = new Piece(ClientCommands.getClientTiles().get(Integer.parseInt(s) - 1));
+                            tempPieceIndex = Integer.parseInt(s) - 1;
+                            tempPiece = new Piece(ClientCommands.getClientTiles().get(tempPieceIndex));
                             inputFinished=true;
                         } catch (IndexOutOfBoundsException e) {
-                            e.printStackTrace(); // TODO Fix exception here
+                            e.printStackTrace();
                         }
                     }
                     state=TURN2;
@@ -182,17 +184,29 @@ public class TerminalInputHandler implements Runnable{
                 case TURN2:
                         try {
                             System.out.println("Type the index of the board where you would like to place the tile");
+                            System.out.println("Or type R to rotate clockwise one. Type RR to rotate clockwise twice");
                             s = readString();
-                            if (((Client) parent).getBoard().isValidMove(Integer.parseInt(s), tempPiece)) {
+                        if (s.equals("R") || s.equals("r")){
+                            tempPiece.rotate();
+                            ClientCommands.getClientTiles().set(tempPieceIndex, tempPiece.toString());
+
+                            state=TURN;
+                        }else if (s.equals("RR") || s.equals("rr")  ) {
+                            tempPiece.rotate2x();
+                            ClientCommands.getClientTiles().set(tempPieceIndex, tempPiece.toString());
+                            state = TURN;
+                        } else if (((Client) parent).getBoard().isValidMove(Integer.parseInt(s), tempPiece)) {
                                 parent.sendMessageToAll("place " + tempPiece.toString() + " on " + s);
+                            state=COMMAND;
                             } else {
                                 state=TURN;
                             }
                         } catch (IndexOutOfBoundsException e) {
                             e.printStackTrace();
+                            state=TURN;
                         }
 
-                    state=COMMAND;
+
                     break;
                 case SKIP:
                     boolean moveFinished2 = false;
