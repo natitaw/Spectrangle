@@ -17,6 +17,7 @@ public class GameRoom extends Room {
     private Board board;
     private boolean waitingforMove;
     private Peer currentPlayer;
+    private int currentPlayernr;
     boolean mustSkip;
 
 
@@ -75,6 +76,14 @@ public class GameRoom extends Room {
 
     }
 
+    public int getCurrentPlayernr() {
+        return currentPlayernr;
+    }
+
+    public void setCurrentPlayernr(int currentPlayernr) {
+        this.currentPlayernr = currentPlayernr;
+    }
+
     public boolean isWaitingforMove() {
         return waitingforMove;
     }
@@ -83,28 +92,58 @@ public class GameRoom extends Room {
         this.waitingforMove = waitingforMove;
     }
 
+    // TODO Check if this actually works
+    private boolean hasValidMoves(Peer player) {
+        boolean result = false;
+        Iterator itr = player.getTileBag().getBag().iterator();
+
+        while (!result && itr.hasNext()){
+            Piece piece = (Piece) itr.next();
+            int i=0;
+            while (!result && i<36) {
+                result = board.isValidMove(i, piece);
+                i++;
+            }
+        }
+
+        return result;
+    }
+
     private void newTurn(Peer startingPlayer) {
         this.currentPlayer = startingPlayer;
         this.waitingforMove = true;
 
-        // TODO actually test if player has no valid moves and set this bool properly
-        mustSkip = false;
+
+        mustSkip = (!hasValidMoves(currentPlayer));
 
         sendTilesCommand(startingPlayer, mustSkip);
 
         waitforMove(startingPlayer);
 
-        // TODO actually check if game ended
-        hasFinished=false;
+        hasFinished=checkIfGameHasEnded();
         
         if (hasFinished) {
             endGame();
         } else {
-            Iterator itr = peerList.listIterator( ((ArrayList<Peer>) peerList).indexOf(startingPlayer));
-            newTurn((Peer) itr.next());
+            int newIndex = (currentPlayernr + 1) % (peerList.size());
+            Peer newPeer = peerList.get(newIndex);
+            newTurn(newPeer);
         }
 
 
+    }
+
+    // TODO check if this works (will not work if hasValidMoves does not work)
+    private boolean checkIfGameHasEnded() {
+        boolean result=true;
+        Iterator itr = peerList.iterator();
+        while (result && itr.hasNext()){
+            Peer p = (Peer) itr.next();
+            result = (!hasValidMoves(p));
+            // if p has any moves, set result=false
+        }
+
+        return result;
     }
 
     private void endGame() {

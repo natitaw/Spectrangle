@@ -121,18 +121,23 @@ public class CommandInterpreter {
         } else if (this.parentType== ClientOrServer.Type.SERVER) {
             switch (command) {
                 case "connect":
-                    ServerCommands.clientConnects(args,peer);
+                    if (args.length > 0) {
+                        ServerCommands.clientConnects(args, peer);
+                    }
                     break;
                 case "request":
-                    ServerCommands.clientRequests(args,peer);
+                    if (args.length > 0){
+                    ServerCommands.clientRequests(args, peer);
+                }
                     break;
                 case "place":
+                    if (args.length > 1) {
                         if (args[1].equals("on")) {
                             if (peer.getCurrentRoom() instanceof GameRoom) {
-                                ((GameRoom) peer.getCurrentRoom()).checkPlace(peer,args[0],Integer.parseInt(args[2]));
+                                ((GameRoom) peer.getCurrentRoom()).checkPlace(peer, args[0], Integer.parseInt(args[2]));
                             }
                         }
-
+                    }
                     break;
                 case "skip":
                             if (peer.getCurrentRoom() instanceof GameRoom) {

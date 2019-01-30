@@ -134,27 +134,44 @@ public class TerminalInputHandler implements Runnable{
 
                     break;
                 case TURN:
-                    System.out.println("Type the number of the tile you would like to place");
-                    s = readString();
-                    Piece tileToPlace = new Piece(ClientCommands.getClientTiles()[Integer.parseInt(s)]);
-                    System.out.println("Type the index of the board where you would like to place the tile");
-                    s = readString();
-                    if (((Client) parent).getBoard().isValidMove(Integer.parseInt(s),tileToPlace)){
-                        parent.sendMessageToAll("place " + tileToPlace.toString() + " on " + s);
+                    boolean moveFinished = false;
+                    while (!moveFinished) {
+                        try {
+                            System.out.println("Type the number of the tile you would like to place");
+                            s = readString();
+                            Piece tileToPlace = new Piece(ClientCommands.getClientTiles().get(Integer.parseInt(s) - 1));
+                            System.out.println("Type the index of the board where you would like to place the tile");
+                            s = readString();
+                            if (((Client) parent).getBoard().isValidMove(Integer.parseInt(s), tileToPlace)) {
+                                parent.sendMessageToAll("place " + tileToPlace.toString() + " on " + s);
+                                moveFinished = true;
+                            }
+                        } catch (IndexOutOfBoundsException e) {
+                            e.printStackTrace(); // TODO Fix exception here
+                        }
                     }
                     state=COMMAND;
                     break;
                 case SKIP:
-                    System.out.println("You have no valid moves.");
-                    System.out.println("Type S to skip turn, or type a number above to exchange one of your tiles");
-                    s = readString();
-                    if (s.equals("S") || s.equals("s")||s.equals("Skip") || s.equals("skip") ){
-                        parent.sendMessageToAll("skip");
-                    } else if (s.equals("EXIT")){
+                    boolean moveFinished2 = false;
+                    while (!moveFinished2) {
+                        try {
+                            System.out.println("You have no valid moves.");
+                            System.out.println("Type S to skip turn, or type a number above to exchange one of your tiles");
+                            s = readString();
+                            if (s.equals("S") || s.equals("s") || s.equals("Skip") || s.equals("skip")) {
+                                parent.sendMessageToAll("skip");
+                                moveFinished2 = true;
+                            } else if (s.equals("EXIT")) {
 
-                    } else {
-                        Piece tileToReplace = new Piece(ClientCommands.getClientTiles()[Integer.parseInt(s)]);
-                        parent.sendMessageToAll("exchange " + tileToReplace.toString());
+                            } else {
+                                Piece tileToReplace = new Piece(ClientCommands.getClientTiles().get(Integer.parseInt(s) - 1));
+                                parent.sendMessageToAll("exchange " + tileToReplace.toString());
+                                moveFinished2 = true;
+                            }
+                        } catch (IndexOutOfBoundsException e) {
+                            e.printStackTrace(); // TODO Fix exception here
+                        }
                     }
                     state=COMMAND;
                     break;

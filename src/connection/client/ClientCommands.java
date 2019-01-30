@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class ClientCommands {
 
     private static Client clientObject;
-    private static String[] clientTiles = null;
+    private static List<String> clientTiles;
 
     public static void setClientObject(Client inputClientObject) {
         clientObject = inputClientObject;
@@ -26,7 +26,7 @@ public class ClientCommands {
                 List<String[]> pieceLineList = new ArrayList<>();
                 String[] resultArray;
                 String[] tileArgs = Arrays.copyOfRange(middleArgs, (peerNr * 5) + 1, (peerNr * 5) + 4);
-                clientTiles = tileArgs;
+                clientTiles = Arrays.asList(tileArgs);
                 for (String t : tileArgs) {
                     Piece tempPiece = new Piece(t);
                     String pieceString = tempPiece.toPrinterString();
@@ -43,6 +43,8 @@ public class ClientCommands {
                 System.out.println(tilesPrinted);
                 System.out.println("");
                 System.out.println("    [1]    " + " " + "    [2]    " + " " + "    [3]    " + " " + "    [4]    ");
+                System.out.println("");
+                System.out.println("Press enter when you are ready to make your move"); // TODO this is not very neat. fix?
             }
         }
 }
@@ -70,7 +72,7 @@ public class ClientCommands {
 
     }
 
-    public static String[] getClientTiles() {
+    public static List<String> getClientTiles() {
         return clientTiles;
     }
 }
