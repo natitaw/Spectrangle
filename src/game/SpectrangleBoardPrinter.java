@@ -1,14 +1,17 @@
 package game;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class SpectrangleBoardPrinter {
-    private static final List<Integer> bonuses =       Arrays.asList(1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 2, 4, 1, 4, 2, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 3, 1, 1, 1, 2, 1, 1, 1, 3, 1);
-    private static final List<Integer> values =        Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-    private static final List<Character> vertical =    Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-    private static final List<Character> left =        Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-    private static final List<Character> right =       Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    private static final List<Integer> bonuses = Arrays.asList(1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 2, 4, 1, 4, 2, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 3, 1, 1, 1, 2, 1, 1, 1, 3, 1);
+    private static final List<Integer> values = Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    private static final List<Character> vertical = Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    private static final List<Character> left = Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    private static final List<Character> right = Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
 
     public static void main(String[] args) {
@@ -18,12 +21,12 @@ public class SpectrangleBoardPrinter {
 
     /**
      * Method to toPrinterString a board of Spectrangle, given the properties of the pieces that reside on it.
-     *
+     * <p>
      * The arguments to this method together represent the current state of the board. You will need to generate
      * these arguments yourself. Each argument needs to be a list of exactly 36 items, representing the 36 fields
      * on your board. The index in the list corresponds with the index of the field on the board, as they were
      * explained in the slides of the Project Design session in week 6.
-     *
+     * <p>
      * An example of how you would generate the 'values' list is as follows, assuming your board has a List of fields,
      * which have an attribute called "value" to represent the value of the piece that is placed in that field, or
      * null if there is no piece in that field:
@@ -34,28 +37,28 @@ public class SpectrangleBoardPrinter {
      *     values.add(this.getField(i).value);
      * }
      * }</pre>
-     *
+     * <p>
      * The SpectrangleBoardPrinter class has a main method which prints out a board where only
      * the first field (index 0) is filled with a piece with value 5 and the colors red on the bottom,
      * green on the left and blue on the right. It uses the ArrayLists defined on the top of the file.
      *
-     * @param values The values of all fields on the board. This should be a List of exactly 36 items.
-     *               If the field has no piece on it, the value is 'null', and if it does have a piece
-     *               on it, it is the integer value of the piece.
+     * @param values   The values of all fields on the board. This should be a List of exactly 36 items.
+     *                 If the field has no piece on it, the value is 'null', and if it does have a piece
+     *                 on it, it is the integer value of the piece.
      * @param vertical The letters of the vertical colors of all fields on the board. This should be a List of exactly
      *                 36 items. If the field has no piece on it, the value is 'null', and if it does have a piece
      *                 on it, the value is a character representing the color of the top or bottom side of the piece.
-     * @param left The letters of the vertical colors of all fields on the board. This should be a List of exactly
-     *             36 items. If the field has no piece on it, the value is 'null', and if it does have a piece
-     *             on it, the value is a character representing the color of the left side of the piece.
-     * @param right The letters of the vertical colors of all fields on the board. This should be a List of exactly
-     *              36 items. If the field has no piece on it, the value is 'null', and if it does have a piece
-     *              on it, the value is a character representing the color of the right side of the piece.
+     * @param left     The letters of the vertical colors of all fields on the board. This should be a List of exactly
+     *                 36 items. If the field has no piece on it, the value is 'null', and if it does have a piece
+     *                 on it, the value is a character representing the color of the left side of the piece.
+     * @param right    The letters of the vertical colors of all fields on the board. This should be a List of exactly
+     *                 36 items. If the field has no piece on it, the value is 'null', and if it does have a piece
+     *                 on it, the value is a character representing the color of the right side of the piece.
      * @return A string representing the state of the board as given.
      */
-    public static String getBoardString(List<Integer> values, List<Character> vertical, List<Character> left, List<Character> right){
+    public static String getBoardString(List<Integer> values, List<Character> vertical, List<Character> left, List<Character> right) {
         // All lists should have exactly 36 items.
-        if(!Stream.of(values, vertical, left, right).parallel().map(List::size).allMatch(n -> n == 36)){
+        if (!Stream.of(values, vertical, left, right).parallel().map(List::size).allMatch(n -> n == 36)) {
             throw new IllegalArgumentException("Input lists should all have 36 items, one for each field on the board.");
         }
         String template = "\n" +
@@ -109,9 +112,11 @@ public class SpectrangleBoardPrinter {
         return template;
     }
 
-    private static <K> Map<Integer, K> listToMap(List<K> inputList){
+    private static <K> Map<Integer, K> listToMap(List<K> inputList) {
         Map<Integer, K> indexed_values = new HashMap<>();
-        for(int i = 0; i < values.size(); i++){ indexed_values.put(i, inputList.get(i)); }
+        for (int i = 0; i < values.size(); i++) {
+            indexed_values.put(i, inputList.get(i));
+        }
         return indexed_values;
     }
 }

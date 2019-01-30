@@ -22,18 +22,18 @@ public class ClientMain {
             switch (choice) {
                 case 1:
                     multiplayer();
-                    choiceMade=true;
+                    choiceMade = true;
                     break;
                 case 2:
                     singleplayer();
-                    choiceMade=true;
+                    choiceMade = true;
                     break;
                 case 3:
                     playAsAI();
-                    choiceMade=true;
+                    choiceMade = true;
                     break;
                 case 4:
-                    choiceMade=true;
+                    choiceMade = true;
                     break;
                 default:
                     System.out.println("Input should be 1-4");
@@ -54,7 +54,7 @@ public class ClientMain {
         String name = scanner.nextLine();
 
         System.out.println("type preferred nr of players");
-        int preferredNrofPlayers= scanner.nextInt();
+        int preferredNrofPlayers = scanner.nextInt();
 
         System.out.println("Type preferred difficulty. 0: random, 1: best move, 2: best future move etc");
         double difficulty = scanner.nextInt();
@@ -62,10 +62,7 @@ public class ClientMain {
         Client clientObject = new Client(ip, "ai " + name + " " + preferredNrofPlayers + " " + difficulty + " " + "false");
 
 
-
-
-
-        while (clientObject.getRunning()){
+        while (clientObject.getRunning()) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -102,7 +99,7 @@ public class ClientMain {
             e.printStackTrace();
         }
         System.out.println("type preferred nr of players");
-        int preferredNrofPlayers= scanner.nextInt();
+        int preferredNrofPlayers = scanner.nextInt();
 
         System.out.println("Type preferred difficulty. 0: random, 1: best move, 2: best future move etc");
         double difficulty = scanner.nextInt();
@@ -118,6 +115,7 @@ public class ClientMain {
             int finalI = i;
             Thread aiThread = new Thread(new Runnable() {
                 final int j = finalI;
+
                 @Override
                 public void run() {
                     aiObject[0] = new Client("127.0.0.1", "ai Computer" + j + " " + preferredNrofPlayers + " " + difficulty + " " + "true");
@@ -128,11 +126,10 @@ public class ClientMain {
             aiThread.start();
         }
 
-        Client clientObject =  new Client("127.0.0.1", "singleplayer Player " + preferredNrofPlayers + " " + difficulty);
+        Client clientObject = new Client("127.0.0.1", "singleplayer Player " + preferredNrofPlayers + " " + difficulty);
 
 
-
-        while (clientObject.getRunning()){
+        while (clientObject.getRunning()) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -148,8 +145,6 @@ public class ClientMain {
                 e.printStackTrace();
             }
         }
-
-
 
 
         // go back to main menu on disconnect
@@ -169,7 +164,7 @@ public class ClientMain {
         String ip = scanner.nextLine();
         Client clientObject = new Client(ip, "");
 
-        while (clientObject.getRunning()){
+        while (clientObject.getRunning()) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -185,8 +180,7 @@ public class ClientMain {
 
         main(mainArgs);
     }
-    
-    
+
 
     private static void clearScreen() {
         System.out.print("\033[H\033[2J");

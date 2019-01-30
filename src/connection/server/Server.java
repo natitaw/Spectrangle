@@ -14,22 +14,16 @@ import java.util.List;
 
 public class Server implements Runnable, ClientOrServer {
     private static final Type type = ClientOrServer.Type.SERVER;
-
-    private Thread terminalInputHandlerThread;
     private final int port;
-    private String name;
-    private ServerSocket serverSock;
     private final List<Peer> peerList;
-    private volatile boolean running;
     private final Thread newConnectionThread;
     private final Room lobby;
     private final List<Room> roomList;
     private final PrintStream printer;
-
-
-    public synchronized boolean getRunning(){
-        return this.running;
-    }
+    private Thread terminalInputHandlerThread;
+    private String name;
+    private ServerSocket serverSock;
+    private volatile boolean running;
 
 
     public Server(String arg) {
@@ -55,7 +49,7 @@ public class Server implements Runnable, ClientOrServer {
         lobby = newRoom();
 
         if (arg.equals("singleplayer")) {
-            printer = new PrintStream(new OutputStream(){
+            printer = new PrintStream(new OutputStream() {
                 public void write(int b) {
                     // does nothing
                 }
@@ -71,6 +65,10 @@ public class Server implements Runnable, ClientOrServer {
         printer.println("Server successfully started on port " + port);
     }
 
+    public synchronized boolean getRunning() {
+        return this.running;
+    }
+
     public List<Peer> getPeerList() {
         return peerList;
     }
@@ -84,13 +82,13 @@ public class Server implements Runnable, ClientOrServer {
         return roomList;
     }
 
-    private Room newRoom(){
+    private Room newRoom() {
         Room tempRoom = new Room(roomList.size());
         roomList.add(tempRoom);
         return tempRoom;
     }
 
-    public GameRoom newGameRoom(){
+    public GameRoom newGameRoom() {
         GameRoom tempGameRoom = new GameRoom(roomList.size(), this);
         roomList.add(tempGameRoom);
         return tempGameRoom;
@@ -119,7 +117,7 @@ public class Server implements Runnable, ClientOrServer {
 
             } catch (IOException e) {
                 if (running) {
-                printer.println("Thread was unable to create socket on port " + port);
+                    printer.println("Thread was unable to create socket on port " + port);
                 }
             }
 
@@ -128,39 +126,39 @@ public class Server implements Runnable, ClientOrServer {
     }
 
 
-    public void sendMessageToAll(String s){
+    public void sendMessageToAll(String s) {
         for (Peer p : peerList) {
             p.sendMessage(s);
         }
     }
 
-    public void sendMessageToRoom(String command, Room room, String commandType){
+    public void sendMessageToRoom(String command, Room room, String commandType) {
         for (Peer p : room.getPeerList()) {
 
-                if (commandType.equals("chat")){
-                    if (p.getChatEnabled()){
-                        p.sendMessage(command);
-                    }
-                } else {
+            if (commandType.equals("chat")) {
+                if (p.getChatEnabled()) {
                     p.sendMessage(command);
                 }
+            } else {
+                p.sendMessage(command);
+            }
 
 
         }
     }
 
-    public Type getType(){
+    public Type getType() {
         return type;
-    }
-
-    @Override
-    public void setName(String s) {
-        this.name = s;
     }
 
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public void setName(String s) {
+        this.name = s;
     }
 
     public void shutDown() {

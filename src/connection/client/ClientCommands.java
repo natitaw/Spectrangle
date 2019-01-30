@@ -20,9 +20,9 @@ public class ClientCommands {
         clientObject = inputClientObject;
     }
 
-    public static void setTiles(String[] args){
-        String[] middleArgs = Arrays.copyOfRange(args, 0, args.length-2);
-        for (int peerNr=0; peerNr < middleArgs.length/5; peerNr++) {
+    public static void setTiles(String[] args) {
+        String[] middleArgs = Arrays.copyOfRange(args, 0, args.length - 2);
+        for (int peerNr = 0; peerNr < middleArgs.length / 5; peerNr++) {
             String name = middleArgs[peerNr * 5];
             if (name.equals(clientObject.getName())) {
 
@@ -32,7 +32,7 @@ public class ClientCommands {
 
             }
         }
-}
+    }
 
     public static void printTiles() {
         clientObject.getPrinter().println("You have tiles:");
@@ -45,7 +45,7 @@ public class ClientCommands {
             String[] pieceLines = pieceString.split(Pattern.quote("\n"));
             pieceLineList.add(pieceLines);
         }
-        resultArray = new String[]{"","","" ,"" ,"", "" };
+        resultArray = new String[] {"", "", "", "", "", ""};
 
         for (int lineNr = 0; lineNr < resultArray.length; lineNr++) {
             for (String[] tempPieceLines : pieceLineList) {
@@ -59,7 +59,7 @@ public class ClientCommands {
         clientObject.getPrinter().println("");
     }
 
-    public static void makeBoard(){
+    public static void makeBoard() {
         clientObject.setBoard(new Board());
     }
 
@@ -93,37 +93,38 @@ public class ClientCommands {
     }
 
 
-    public static TileBag generateBag(List<String> stringList){
+    public static TileBag generateBag(List<String> stringList) {
         TileBag result = new TileBag(4);
-        for (String s : stringList){
+        for (String s : stringList) {
             result.addPiece(new Piece(s));
         }
         return result;
     }
 
-    public static String bestMove(TileBag tileBag){
+    public static String bestMove(TileBag tileBag) {
         int result = 0;
         Piece bestPiece = null;
         int bestPos = 0;
         Iterator itr = tileBag.getBag().iterator();
 
-        while (itr.hasNext()){
+        while (itr.hasNext()) {
             Piece piece = (Piece) itr.next();
             List<Piece> pieceRotations = new ArrayList<>();
             pieceRotations.add(piece);
             pieceRotations.add(piece.getRotated());
             pieceRotations.add(piece.getRotated2x());
-            for   (Piece rotatedPiece : pieceRotations){
-                int i=0;
-                while (i<36) {
+            for (Piece rotatedPiece : pieceRotations) {
+                int i = 0;
+                while (i < 36) {
                     int thisScore = clientObject.getBoard().getPotentialMoveScore(i, rotatedPiece);
                     if (thisScore > result) {
                         result = thisScore;
-                        bestPiece=rotatedPiece;
-                        bestPos=i;
+                        bestPiece = rotatedPiece;
+                        bestPos = i;
                     }
                     i++;
-                }}
+                }
+            }
 
         }
 
@@ -139,7 +140,7 @@ public class ClientCommands {
             pieceRotations.add(piece);
             pieceRotations.add(piece.getRotated());
             pieceRotations.add(piece.getRotated2x());
-            for   (Piece rotatedPiece : pieceRotations){
+            for (Piece rotatedPiece : pieceRotations) {
                 int i = 0;
                 while (i < 36) {
                     if (clientObject.getBoard().isValidMove(i, rotatedPiece)) {
@@ -156,9 +157,8 @@ public class ClientCommands {
     }
 
 
-
     public static void aiTurn() {
-        if (clientObject.getDifficulty() < 1){
+        if (clientObject.getDifficulty() < 1) {
             clientObject.sendMessageToAll(randomMove(generateBag(clientTiles)));
         } else if (clientObject.getDifficulty() < 2) {
             clientObject.sendMessageToAll(bestMove(generateBag(clientTiles)));
@@ -172,17 +172,17 @@ public class ClientCommands {
         double random = Math.random();
 
 
-        if (random <= 0.5){
+        if (random <= 0.5) {
             clientObject.sendMessageToAll("skip");
         } else {
             TileBag tiles = generateBag(clientTiles);
             Piece tile;
             double secondRandom = Math.random();
-            if (secondRandom < 0.25){
+            if (secondRandom < 0.25) {
                 tile = tiles.viewPiece(0);
-            } else if (secondRandom < 0.5){
+            } else if (secondRandom < 0.5) {
                 tile = tiles.viewPiece(1);
-            } else if (secondRandom < 0.75){
+            } else if (secondRandom < 0.75) {
                 tile = tiles.viewPiece(2);
             } else {
                 tile = tiles.viewPiece(3);

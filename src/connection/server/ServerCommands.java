@@ -80,7 +80,6 @@ public class ServerCommands {
             sendWaiting(peer);
 
 
-
             List<Peer> peerList = serverObject.getPeerList();
 
             //Find other matching players and maybe start some games
@@ -114,7 +113,7 @@ public class ServerCommands {
         List<Peer> lobbyPeers = lobby.getPeerList();
         List<String> waitingList = new ArrayList<>();
         for (Peer otherPeer : lobbyPeers) {
-            if (otherPeer.getPreferredNrOfPlayers()==peer.getPreferredNrOfPlayers()) {
+            if (otherPeer.getPreferredNrOfPlayers() == peer.getPreferredNrOfPlayers()) {
                 waitingList.add(otherPeer.getName());
             }
         }

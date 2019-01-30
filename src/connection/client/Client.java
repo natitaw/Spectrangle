@@ -23,16 +23,15 @@ public class Client implements ClientOrServer {
     private static final Type type = ClientOrServer.Type.CLIENT;
 
 
-
     private final boolean isSilent;
     private final TerminalInputHandler terminalInputHandler;
+    private final boolean isAI;
     private Thread terminalInputHandlerThread;
     private Peer clientPeer;
     private volatile boolean running;
     private String name;
     private Board board;
     private int prefNrPlayers;
-    private final boolean isAI;
     private double difficulty;
     private PrintStream printer;
 
@@ -41,25 +40,25 @@ public class Client implements ClientOrServer {
      */
     public Client(String ip, String arg) {
         String[] argArray = arg.split(Pattern.quote(" "));
-        if (argArray[0].equals("singleplayer")){
-            this.prefNrPlayers= Integer.parseInt(argArray[2]);
+        if (argArray[0].equals("singleplayer")) {
+            this.prefNrPlayers = Integer.parseInt(argArray[2]);
             this.difficulty = Double.parseDouble(argArray[3]);
             terminalInputHandler = new TerminalInputHandler(this, TerminalInputHandler.InputState.SINGLEPLAYER);
-            name=argArray[1];
-            isAI=false;
-            isSilent=false;
-        } else if (arg.equals("")){
+            name = argArray[1];
+            isAI = false;
+            isSilent = false;
+        } else if (arg.equals("")) {
             terminalInputHandler = new TerminalInputHandler(this);
-            name="default";
-            isAI=false;
-            isSilent=false;
+            name = "default";
+            isAI = false;
+            isSilent = false;
         } else {
             terminalInputHandler = new TerminalInputHandler(this, TerminalInputHandler.InputState.AI_NAME);
-            this.name=argArray[1];
-            this.prefNrPlayers= Integer.parseInt(argArray[2]);
-            isAI=true;
+            this.name = argArray[1];
+            this.prefNrPlayers = Integer.parseInt(argArray[2]);
+            isAI = true;
             this.difficulty = Double.parseDouble(argArray[3]);
-            this.isSilent=Boolean.parseBoolean(argArray[4]);
+            this.isSilent = Boolean.parseBoolean(argArray[4]);
 
         }
 
@@ -91,7 +90,7 @@ public class Client implements ClientOrServer {
 
 
         if (isSilent) {
-            printer = new PrintStream(new OutputStream(){
+            printer = new PrintStream(new OutputStream() {
                 public void write(int b) {
                     // does nothing
                 }
@@ -160,7 +159,7 @@ public class Client implements ClientOrServer {
         return this.running;
     }
 
-    public Type getType(){
+    public Type getType() {
         return type;
     }
 
@@ -179,7 +178,6 @@ public class Client implements ClientOrServer {
             printer.println("Error in closing terminal input thread");
         }
         clientPeer.close();
-
 
 
     }
