@@ -147,8 +147,13 @@ public class Piece {
 		return (this.equals(p) || this.equals(p.getRotated()) || this.equals(p.getRotated2x()));
 	}
 
-	public int equalsRotated(Object obj) {
-		Piece p = (Piece) obj;
+	@Override
+	public boolean equals(Object obj) {
+	    Piece p = (Piece) obj;
+	    return (this.getColors().equals(p.getColors()) && this.getValue() == p.getValue());
+    }
+
+	public int equalsRotated(Piece p) {
 		if (this.equals(p) ){
 			return 0;
 		} else if (this.equals(p.getRotated())){
