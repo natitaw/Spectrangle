@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Board Class representing a Spectrangle board
- * 
+ *
  * @author Group4
  *
  */
@@ -63,7 +63,7 @@ public class Board {
 	/**
 	 * Get a BoardLocation object that can be used to get information on the
 	 * location
-	 * 
+	 *
 	 * @param location
 	 * @return
 	 */
@@ -77,7 +77,7 @@ public class Board {
 
 	/**
 	 * Get a Piece object that can be used to get information on the Piece
-	 * 
+	 *
 	 * @param location
 	 * @return
 	 */
@@ -91,7 +91,7 @@ public class Board {
 	 * Check validity of the move. Move is valid if location is valid AND: color
 	 * matches at least on one side (except for Joker) board is empty then
 	 * everywhere except for bonus spots board is not empty then move is valid if
-	 * 
+	 *
 	 * @param location
 	 * @param piece
 	 * @return
@@ -99,7 +99,7 @@ public class Board {
 
 	/**
 	 * Convert coordinates to index
-	 * 
+	 *
 	 * @param r
 	 * @param c
 	 * @return
@@ -110,7 +110,7 @@ public class Board {
 
 	/**
 	 * Convert index to coordinates to determine left, right, top and bottom pieces
-	 * 
+	 *
 	 * @param index
 	 * @return
 	 */
@@ -125,7 +125,7 @@ public class Board {
 
 	/**
 	 * Move piece according to the rules of Spectrangle
-	 * 
+	 *
 	 * @param location
 	 * @param piece
 	 * @return
@@ -185,15 +185,35 @@ public class Board {
 		if (isValidLocation(location) && piece.isJoker()) {
 			return true;
 		}
-		
+
 		ArrayList<Piece> neighbors = new ArrayList<>();
-		
-		Piece left = (this.getLeftPiece(location));
-		Piece right = (this.getRightPiece(location));
-		Piece top = (this.getTopPiece(location));
-		Piece bottom = (this.getBottomPiece(location));
-		
-		if (left != null) {
+
+        Piece left = null;
+        try {
+            left = (this.getLeftPiece(location));
+        } catch (NoPieceException e) {
+
+        }
+        Piece right = null;
+        try {
+            right = (this.getRightPiece(location));
+        } catch (NoPieceException e) {
+
+        }
+        Piece top = null;
+        try {
+            top = (this.getTopPiece(location));
+        } catch (NoPieceException e) {
+
+        }
+        Piece bottom = null;
+        try {
+            bottom = (this.getBottomPiece(location));
+        } catch (NoPieceException e) {
+
+        }
+
+        if (left != null) {
 			for (ColorDefinition c : left.getColors()) {
 				for (ColorDefinition d : piece.getColors()) {
 					if (d.equals(c)) {
@@ -202,7 +222,7 @@ public class Board {
 				}
 			}
 		}
-		
+
 		if (right != null) {
 			for (ColorDefinition c : right.getColors()) {
 				for (ColorDefinition d : piece.getColors()) {
@@ -212,7 +232,7 @@ public class Board {
 				}
 			}
 		}
-		
+
 		if (top != null) {
 			for (ColorDefinition c : top.getColors()) {
 				for (ColorDefinition d : piece.getColors()) {
@@ -222,7 +242,7 @@ public class Board {
 				}
 			}
 		}
-		
+
 		if (bottom != null) {
 			for (ColorDefinition c : bottom.getColors()) {
 				for (ColorDefinition d : piece.getColors()) {
@@ -232,7 +252,7 @@ public class Board {
 				}
 			}
 		}
-		
+
 
 		return false;
 	}
@@ -241,39 +261,47 @@ public class Board {
 
 	/**
 	 * Get left piece of a given piece
-	 * 
+	 *
 	 * @param piece
 	 * @return
 	 */
-	public Piece getLeftPiece(int index) {
+	public Piece getLeftPiece(int index) throws NoPieceException{
 		int r = getCoordinate(index).get(0);
 		int c = getCoordinate(index).get(1);
 		if ((c - 1) >= (-1 * r)) {
 			int a = getIndex(r, c - 1);
 			return this.getBoardLocation(a).getPiece();
-		}
-		return null;
-	}
+        } else {
+
+            throw new NoPieceException("No Piece Found");
+        }
+
+
+    }
 
 	/**
 	 * Get right piece of given piece
-	 * 
+	 *
 	 * @param piece
 	 * @return
 	 */
-	public Piece getRightPiece(int index) {
+	public Piece getRightPiece(int index) throws NoPieceException{
 		int r = getCoordinate(index).get(0);
 		int c = getCoordinate(index).get(1);
 		if ((c + 1) <= r) {
 			int a = getIndex(r, c + 1);
 			return this.getBoardLocation(a).getPiece();
-		}
-		return null;
-	}
+		} else {
+
+        throw new NoPieceException("No Piece Found");
+    }
+
+
+}
 
 	/**
 	 * Get bottom piece of given piece
-	 * 
+	 *
 	 * @param piece
 	 * @return
 	 */
@@ -286,16 +314,16 @@ public class Board {
 				return this.getBoardLocation(a).getPiece();
 			}
 		} else {
-			
+
 			throw new NoPieceException("No Piece Found");
 		}
-		
+
 		throw new NoPieceException("No Piece Found");
 	}
 
 	/**
 	 * Get top piece of given piece
-	 * 
+	 *
 	 * @param piece
 	 * @return
 	 */
@@ -312,7 +340,7 @@ public class Board {
 
 	/**
 	 * Check if the given location is valid
-	 * 
+	 *
 	 * @param location
 	 * @return
 	 */
@@ -322,7 +350,7 @@ public class Board {
 
 	/**
 	 * Check if the location is empty
-	 * 
+	 *
 	 * @param location
 	 * @return
 	 */
@@ -332,7 +360,7 @@ public class Board {
 
 	/**
 	 * check if Board is empty
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean boardIsEmpty() {
