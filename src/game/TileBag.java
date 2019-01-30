@@ -30,21 +30,30 @@ public class TileBag {
 	 * 
 	 * @return
 	 */
-	public Piece takeRandomPiece() {
-		int random = (int) (Math.random() * this.pieces.size() - 1);
-		Piece p = pieces.get(random);
-		pieces.remove(random);
-		return p;
+	public Piece takeRandomPiece() throws EmptyBagException {
+		if (pieces.size()!=0) {
+			int random = (int) (Math.random() * this.pieces.size() - 1);
+			Piece p = pieces.get(random);
+			pieces.remove(random);
+			return p;
+		}
+		else {
+			throw new EmptyBagException("Bag is empty!");
+		}
 	}
 
 	public Piece viewPiece(int i) {
 		return pieces.get(i);
 	}
 
-	public Piece takePiece(int index){
-		Piece p = pieces.get(index);
-		pieces.remove(index);
-		return p;
+	public Piece takePiece(int index) throws EmptyBagException{
+		if (pieces.size()!=0) {
+			Piece p = pieces.get(index);
+			pieces.remove(index);
+			return p;
+		}else {
+			throw new EmptyBagException("Bag is empty!");
+		}
 	}
 
 	public void addPiece(Piece p){

@@ -125,7 +125,7 @@ public class Server implements Runnable, ClientOrServer {
         }
     }
 
-    // TODO sort
+
     public void sendMessageToAll(String s){
         for (Peer p : peerList) {
             p.sendMessage(s);

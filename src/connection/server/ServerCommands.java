@@ -17,7 +17,7 @@ public class ServerCommands {
 
     public static void clientConnects(String[] args, Peer peer) {
         if (args.length > 2) {
-            peer.sendMessage("invalid name"); // TODO check if this is correct usage
+            peer.sendMessage("invalid name");
         } else {
             String name = args[0];
 

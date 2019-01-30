@@ -142,6 +142,7 @@ public class TerminalInputHandler implements Runnable{
                     if (((Client) parent).getBoard().isValidMove(Integer.parseInt(s),tileToPlace)){
                         parent.sendMessageToAll("place " + tileToPlace.toString() + " on " + s);
                     }
+                    state=COMMAND;
                     break;
                 case SKIP:
                     System.out.println("You have no valid moves.");
@@ -155,6 +156,7 @@ public class TerminalInputHandler implements Runnable{
                         Piece tileToReplace = new Piece(ClientCommands.getClientTiles()[Integer.parseInt(s)]);
                         parent.sendMessageToAll("exchange " + tileToReplace.toString());
                     }
+                    state=COMMAND;
                     break;
                 default:
                        s = readString();

@@ -129,7 +129,7 @@ public class CommandInterpreter {
                 case "place":
                         if (args[1].equals("on")) {
                             if (peer.getCurrentRoom() instanceof GameRoom) {
-                                ((GameRoom) peer.getCurrentRoom()).checkPlace(peer,args[1],Integer.parseInt(args[3]));
+                                ((GameRoom) peer.getCurrentRoom()).checkPlace(peer,args[0],Integer.parseInt(args[2]));
                             }
                         }
 

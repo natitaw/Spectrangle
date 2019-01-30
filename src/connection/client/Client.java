@@ -122,7 +122,7 @@ public class Client implements ClientOrServer {
         return this.type;
     }
 
-    // TODO Implement
+
     @Override
     public void shutDown() {
         this.running = false;
@@ -130,7 +130,7 @@ public class Client implements ClientOrServer {
 
         System.out.println("Trying to shut down");
         try {
-            terminalInputHandlerThread.interrupt(); // TODO this is not a very neat way of doing it
+            terminalInputHandlerThread.interrupt();
             System.out.println("Closed terminal input handling thread");
         } catch (Exception e) {
             Thread.currentThread().interrupt();

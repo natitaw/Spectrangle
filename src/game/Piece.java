@@ -140,10 +140,12 @@ public class Piece {
 	/**
 	 * Check if given Piece is the same as this Piece
 	 * 
-	 * @param p
+	 * @param obj
 	 * @return
 	 */
-	public boolean isSamePiece(Piece p) {
+	@Override
+	public boolean equals(Object obj) {
+	    Piece p = (Piece) obj;
 		return (this.equals(p) || this.equals(p.getRotated()) || this.equals(p.getRotated2x()));
 	}
 

@@ -6,8 +6,6 @@ import game.TileBag;
 import java.io.*;
 import java.net.Socket;
 
-//TODO fix exception on shutdown
-
 public class Peer implements Runnable, Comparable<Peer> {
     public static final String EXIT = "EXIT";
 
@@ -23,6 +21,7 @@ public class Peer implements Runnable, Comparable<Peer> {
     private int preferredNrOfPlayers;
     private Room currentRoom;
     private TileBag tileBag;
+    private int score;
 
     public Thread getStreamInputHandler() {
         return streamInputHandler;
@@ -36,6 +35,7 @@ public class Peer implements Runnable, Comparable<Peer> {
     {
         try {
             parent=parentInput;
+
             sock = sockArg;
             in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             out = new PrintWriter(sock.getOutputStream(), true);
@@ -60,6 +60,10 @@ public class Peer implements Runnable, Comparable<Peer> {
             System.out.println("Error in starting peer");
             e.printStackTrace();
         }
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public Room getCurrentRoom() {
@@ -96,6 +100,14 @@ public class Peer implements Runnable, Comparable<Peer> {
 
     public void setTileBag(TileBag tileBag) {
         this.tileBag = tileBag;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void incScore(int i){
+        this.score+=i;
     }
 
     /**
