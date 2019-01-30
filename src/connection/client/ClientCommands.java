@@ -59,7 +59,9 @@ public class ClientCommands {
         clientObject.getPrinter().println("");
     }
 
-
+    public static void makeBoard(){
+        clientObject.setBoard(new Board());
+    }
 
     public static void printBoard() {
         clientObject.getPrinter().println(clientObject.getBoard().toPrinterString());

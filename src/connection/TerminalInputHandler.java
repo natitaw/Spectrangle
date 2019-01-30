@@ -209,8 +209,6 @@ public class TerminalInputHandler implements Runnable{
                             tempPiece.rotate2x();
                             ClientCommands.getClientTiles().set(tempPieceIndex, tempPiece.toString());
                             state = TURN;
-
-                            // TODO it fails the line below
                         } else if (((Client) parent).getBoard().isValidMove(Integer.parseInt(s), tempPiece)) {
                                 parent.sendMessageToAll("place " + tempPiece.toString() + " on " + s);
                             state=COMMAND;

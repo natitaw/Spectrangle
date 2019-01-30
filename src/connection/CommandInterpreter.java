@@ -5,7 +5,6 @@ import connection.client.ClientCommands;
 import connection.server.GameRoom;
 import connection.server.Server;
 import connection.server.ServerCommands;
-import game.Board;
 import game.Piece;
 
 import java.util.Arrays;
@@ -52,7 +51,7 @@ public class CommandInterpreter {
 
                         TerminalInputHandler.clearScreen(parent);
                         parent.getPrinter().println("Starting new game with: " + String.join(", ", newargs));
-                        ((Client) parent).setBoard(new Board());
+                        ClientCommands.makeBoard();
                     }
                     break;
                 case "order":

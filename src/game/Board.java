@@ -161,7 +161,9 @@ public class Board {
 
 				result = boardLocations[location].isBonusLocation();
 
-			} else if (this.isValidColor(location, piece) && isEmptyLocation(location)) {
+			} else if (this.isValidColor(location, piece)
+
+					&& isEmptyLocation(location)) {
 
 				result = true;
 			}
@@ -185,10 +187,13 @@ public class Board {
 		}
 		
 		ArrayList<Piece> neighbors = new ArrayList<>();
-
-
-		if (this.getLeftPiece(location) != null) {
-			Piece left = this.getLeftPiece(location);
+		
+		Piece left = (this.getLeftPiece(location));
+		Piece right = (this.getRightPiece(location));
+		Piece top = (this.getTopPiece(location));
+		Piece bottom = (this.getBottomPiece(location));
+		
+		if (left != null) {
 			for (ColorDefinition c : left.getColors()) {
 				for (ColorDefinition d : piece.getColors()) {
 					if (d.equals(c)) {
@@ -197,9 +202,8 @@ public class Board {
 				}
 			}
 		}
-
-		if (this.getRightPiece(location) != null) {
-			Piece right = this.getRightPiece(location);
+		
+		if (right != null) {
 			for (ColorDefinition c : right.getColors()) {
 				for (ColorDefinition d : piece.getColors()) {
 					if (d.equals(c)) {
@@ -208,9 +212,8 @@ public class Board {
 				}
 			}
 		}
-
-		if (this.getTopPiece(location) != null) {
-			Piece top = this.getTopPiece(location);
+		
+		if (top != null) {
 			for (ColorDefinition c : top.getColors()) {
 				for (ColorDefinition d : piece.getColors()) {
 					if (d.equals(c)) {
@@ -220,8 +223,7 @@ public class Board {
 			}
 		}
 		
-		if (this.getBottomPiece(location) != null) {
-			Piece bottom = this.getBottomPiece(location);
+		if (bottom != null) {
 			for (ColorDefinition c : bottom.getColors()) {
 				for (ColorDefinition d : piece.getColors()) {
 					if (d.equals(c)) {
@@ -240,7 +242,7 @@ public class Board {
 	/**
 	 * Get left piece of a given piece
 	 * 
-	 * @param index
+	 * @param piece
 	 * @return
 	 */
 	public Piece getLeftPiece(int index) {
@@ -256,7 +258,7 @@ public class Board {
 	/**
 	 * Get right piece of given piece
 	 * 
-	 * @param index
+	 * @param piece
 	 * @return
 	 */
 	public Piece getRightPiece(int index) {
@@ -272,14 +274,14 @@ public class Board {
 	/**
 	 * Get bottom piece of given piece
 	 * 
-	 * @param index
+	 * @param piece
 	 * @return
 	 */
 	public Piece getBottomPiece(int index) {
 		int r = getCoordinate(index).get(0);
 		int c = getCoordinate(index).get(1);
 		if ((r + c) % 2 == 0) {
-			if (r + 1 < 5) {
+			if (r + 1 <= 5) {
 				int a = getIndex(r + 1, c);
 				return this.getBoardLocation(a).getPiece();
 			}
@@ -290,7 +292,7 @@ public class Board {
 	/**
 	 * Get top piece of given piece
 	 * 
-	 * @param index
+	 * @param piece
 	 * @return
 	 */
 	public Piece getTopPiece(int index) {
@@ -301,7 +303,7 @@ public class Board {
 			return this.getBoardLocation(a).getPiece();
 
 		}
-        return null;
+		return null;
 	}
 
 	/**
