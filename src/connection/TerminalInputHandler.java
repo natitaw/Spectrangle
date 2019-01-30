@@ -97,13 +97,15 @@ public class TerminalInputHandler implements Runnable{
                     break;
                 case AI_NUMBER_OF_PLAYERS:
                     parent.sendMessageToAll("request " + ((Client) parent).prefNrPlayers);
+                    state=AI;
                     break;
                 case AI_TURN:
                     ClientCommands.aiTurn();
-
+                    state=AI;
                     break;
                 case AI_SKIP:
                     ClientCommands.aiSkip();
+                    state=AI;
                     break;
                 case SINGLEPLAYER:
                     this.name = "Player";

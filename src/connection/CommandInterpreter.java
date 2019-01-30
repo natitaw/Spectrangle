@@ -78,7 +78,6 @@ public class CommandInterpreter {
                         ClientCommands.printBoard();
                         ClientCommands.otherTiles(args);
                         ClientCommands.printTiles(args);
-                        ((Client) parent).getTerminalInputHandlerThread().interrupt();
                         ((Client) parent).getTerminalInputHandler().interrupted=true;
 
 
@@ -97,7 +96,7 @@ public class CommandInterpreter {
                     System.out.println(args[0] + " replaced tile " + args[1] +" with new tile:" + args[3]);
                     break;
                 case "move":
-                    System.out.println(args[0] + " placed tile " + args[1] + " on position" + args[2] + ", earning " + args[3] + " points.");
+                    System.out.println(args[0] + " placed tile " + args[1] + " on position " + args[2] + ", earning " + args[3] + " points.");
                     ((Client) parent).getBoard().movePiece(Integer.parseInt(args[2]),new Piece(args[1]));
                     break;
                 case "game":
