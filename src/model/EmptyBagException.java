@@ -1,6 +1,10 @@
 package model;
 
-// TODO put this in multiple places and handle it elsewhere
+/**
+ * An exception handler when TileBag is empty
+ * @author Group4
+ *
+ */
 public class EmptyBagException extends Exception {
     public EmptyBagException(String s) {
         super(s);
