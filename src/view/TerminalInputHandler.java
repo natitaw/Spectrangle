@@ -212,6 +212,7 @@ public class TerminalInputHandler implements Runnable {
                             parent.sendMessageToAll("place " + tempPiece.toString() + " on " + s);
                             state = COMMAND;
                         } else {
+                            parent.getPrinter().println(" --- INVALID MOVE --- ");
                             state = TURN;
                         }
                     } catch (IndexOutOfBoundsException e) {
