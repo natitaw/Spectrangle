@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Tile Bag Generator. Generates a bag of Piece(tile)
  *
- * @author User
+ * @author Group4
  */
 
 public class TileBag {
@@ -16,15 +16,15 @@ public class TileBag {
      * TileBag This class generates a bag of size with 36 tiles according to the
      * rules of Spectrangle
      */
-    // TODO update javadoc here
+
     public TileBag(int sizeInput) {
         this.pieces = new ArrayList<>(sizeInput);
     }
 
     /**
-     * takeRandomPiece() returns a random tile from the tile bag generated
+     * This method returns a random tile from the tile bag generated
      *
-     * @return
+     * @return A random Piece
      */
     public Piece takeRandomPiece() throws EmptyBagException {
         if (pieces.size() != 0) {
@@ -37,10 +37,20 @@ public class TileBag {
         }
     }
 
+    /**
+     * Views a Piece object out of this TileBag from its ArrayList of pieces
+     * @param i Index to be used to view a Piece from the TileBag
+     * @return Piece object to be viewed from TileBag
+     */
     public Piece viewPiece(int i) {
         return pieces.get(i);
     }
 
+    /**
+     * Fetches a Piece object out of this TileBag from its ArrayList of pieces
+     * @param i Index to be used to fetch a Piece from the TileBag
+     * @return Piece object fetched from TileBag
+     */
     public Piece takePiece(int index) throws EmptyBagException {
         if (pieces.size() != 0) {
             Piece p = pieces.get(index);
@@ -51,6 +61,11 @@ public class TileBag {
         }
     }
 
+    /**
+     * Checks if a given Piece exists (matches with) in the TileBag
+     * @param inputPiece Piece to be checked against existing pieces in TileBag
+     * @return The location of the match in the TileBag
+     */
     public int findPiece(Piece inputPiece) {
         for (Piece piece : pieces) {
             if (piece.equalsRotated(inputPiece) >= 0) {
@@ -61,6 +76,10 @@ public class TileBag {
         return -1;
     }
 
+    /**
+     * Adds a piece in the TileBag
+     * @param p
+     */
     public void addPiece(Piece p) {
         pieces.add(p);
     }
@@ -153,7 +172,7 @@ public class TileBag {
      * Get an ArrayList<Piece> of Piece objects that will be used every time a Board
      * is generated
      *
-     * @return
+     * @return An ArrayList of Piece objects (the TileBag)
      */
     public ArrayList<Piece> getBag() {
         return this.pieces;
@@ -162,7 +181,7 @@ public class TileBag {
     /**
      * Method to get the number of pieces at any point in the model
      *
-     * @return
+     * @return An integer that indicates the number of pieces left in this TileBag
      */
     public int getNumberOfPieces() {
         return getBag().size();
