@@ -11,6 +11,7 @@ import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -34,6 +35,8 @@ public class Client implements ClientOrServer {
     private int prefNrPlayers;
     private double difficulty;
     private PrintStream printer;
+    private static List<String> clientTiles;
+    private static List<List<String>> otherTileList; // intend to use this for complicated AI
 
     /**
      * Starts a controller.client.Client application.
@@ -63,7 +66,6 @@ public class Client implements ClientOrServer {
         }
 
         connect(ip);
-        ClientCommands.setClientObject(this);
 
     }
 
@@ -81,6 +83,23 @@ public class Client implements ClientOrServer {
 
     public TerminalInputHandler getTerminalInputHandler() {
         return terminalInputHandler;
+    }
+
+
+    public List<String> getClientTiles() {
+        return clientTiles;
+    }
+
+    public void setClientTiles(List<String> clientTiles) {
+        this.clientTiles = clientTiles;
+    }
+
+    public List<List<String>> getOtherTileList() {
+        return otherTileList;
+    }
+
+    public void setOtherTileList(List<List<String>> otherTileList) {
+        this.otherTileList = otherTileList;
     }
 
     private void connect(String ip) {

@@ -9,7 +9,6 @@ import controller.server.GameRoom;
 import controller.server.Server;
 import controller.server.ServerCommands;
 import model.Piece;
-import view.TerminalInputHandler;
 
 import java.util.Arrays;
 
@@ -55,7 +54,7 @@ public class CommandInterpreter {
 
                         TerminalInputHandler.clearScreen(parent);
                         parent.getPrinter().println("Starting new model with: " + String.join(", ", newargs));
-                        ClientCommands.makeBoard();
+                        ClientCommands.makeBoard(((Client) parent));
                     }
                     break;
                 case "order":
@@ -63,13 +62,13 @@ public class CommandInterpreter {
                     break;
                 case "tiles":
                     if (((Client) parent).getBoard()==null){
-                        ClientCommands.makeBoard();
+                        ClientCommands.makeBoard(((Client) parent));
                     }
                     if (args[args.length - 1].equals(parent.getName())) {
                         parent.getPrinter().println(((Client) parent).getBoard().toPrinterString());
 
-                        ClientCommands.otherTiles(args);
-                        ClientCommands.setTiles(args);
+                        ClientCommands.otherTiles(args, ((Client) parent));
+                        ClientCommands.setTiles(args, ((Client) parent));
 
 
                         if (args[args.length - 2].equals("skip")) {

@@ -54,7 +54,7 @@ public class Board {
      * @param location
      * @return
      */
-    // TODO fix null pointer exception here
+
     private BoardLocation getBoardLocation(int location) {
         if (this.isValidLocation(location)) {
             return this.boardLocations[location];
