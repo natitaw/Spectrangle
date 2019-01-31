@@ -62,7 +62,9 @@ public class CommandInterpreter {
                     parent.getPrinter().println("Order of turns: " + String.join(", ", args));
                     break;
                 case "tiles":
-
+                    if (((Client) parent).getBoard()==null){
+                        ClientCommands.makeBoard();
+                    }
                     if (args[args.length - 1].equals(parent.getName())) {
                         parent.getPrinter().println(((Client) parent).getBoard().toPrinterString());
 

@@ -257,7 +257,12 @@ public class Board {
         int c = getCoordinate(index).get(1);
         if ((c - 1) >= (-1 * r)) {
             int a = getIndex(r, c - 1);
-            return Objects.requireNonNull(this.getBoardLocation(a)).getPiece();
+            Piece piece =  this.getBoardLocation(a).getPiece();
+            if (piece==null) {
+                return null;
+            } else {
+                return piece;
+            }
         } else {
 
             throw new NoPieceException("No Piece Found");
@@ -276,7 +281,12 @@ public class Board {
         int c = getCoordinate(index).get(1);
         if ((c + 1) <= r) {
             int a = getIndex(r, c + 1);
-            return Objects.requireNonNull(this.getBoardLocation(a)).getPiece();
+            Piece piece =  this.getBoardLocation(a).getPiece();
+            if (piece==null) {
+                return null;
+            } else {
+                return piece;
+            }
         } else {
 
             throw new NoPieceException("No Piece Found");
@@ -296,7 +306,12 @@ public class Board {
         if ((r + c) % 2 == 0) {
             if (r + 1 <= 5) {
                 int a = getIndex(r + 1, c);
-                return Objects.requireNonNull(this.getBoardLocation(a)).getPiece();
+                Piece piece =  this.getBoardLocation(a).getPiece();
+                if (piece==null) {
+                    return null;
+                } else {
+                    return piece;
+                }
             }
         } else {
 
@@ -316,7 +331,12 @@ public class Board {
         int c = getCoordinate(index).get(1);
         if ((r + c) % 2 != 0) {
             int a = getIndex(r - 1, c);
-            return Objects.requireNonNull(this.getBoardLocation(a)).getPiece();
+            Piece piece =  this.getBoardLocation(a).getPiece();
+            if (piece==null) {
+                return null;
+            } else {
+                return piece;
+            }
         } else {
             throw new NoPieceException("No Piece Found");
         }

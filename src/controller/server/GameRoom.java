@@ -131,6 +131,7 @@ public class GameRoom extends Room implements Runnable {
         if (hasFinished) {
             endGame();
         } else {
+            currentPlayernr = ((ArrayList) peerList).indexOf(startingPlayer);
             int newIndex = (currentPlayernr + 1) % (peerList.size());
             Peer newPeer = peerList.get(newIndex);
             newTurn(newPeer);
