@@ -73,7 +73,22 @@ public class GameRoom extends Room implements Runnable {
             }
         }
 
-        newTurn(startingPlayer);
+        while (!hasFinished){
+            newTurn(startingPlayer);
+
+            hasFinished = checkIfGameHasEnded();
+
+            if (hasFinished) {
+                endGame();
+            } else {
+                currentPlayernr = ((ArrayList) peerList).indexOf(startingPlayer);
+                int newIndex = (currentPlayernr + 1) % (peerList.size());
+                startingPlayer = peerList.get(newIndex);
+            }
+
+        }
+
+
 
     }
 
@@ -126,16 +141,7 @@ public class GameRoom extends Room implements Runnable {
 
         waitforMove();
 
-        hasFinished = checkIfGameHasEnded();
 
-        if (hasFinished) {
-            endGame();
-        } else {
-            currentPlayernr = ((ArrayList) peerList).indexOf(startingPlayer);
-            int newIndex = (currentPlayernr + 1) % (peerList.size());
-            Peer newPeer = peerList.get(newIndex);
-            newTurn(newPeer);
-        }
 
 
     }

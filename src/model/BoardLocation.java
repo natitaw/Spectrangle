@@ -41,7 +41,12 @@ class BoardLocation {
      * @return
      */
     public Piece getPiece() {
-        return this.piece;
+        if (this.piece==null){
+            return null;
+        } else {
+            return this.piece;
+        }
+
     }
 
     /**
