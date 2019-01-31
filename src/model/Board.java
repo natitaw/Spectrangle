@@ -104,8 +104,9 @@ public class Board {
      */
     private ArrayList<Integer> getCoordinate(int index) {
         ArrayList<Integer> tuple = new ArrayList<>();
-        int r = ((int) Math.floor((int) Math.sqrt(index)));
-        int c = (index - (((int) Math.pow(r, 2))));
+        int r = (int) Math.floor( Math.sqrt(index));
+        int rSquaredPlusR = (int) (Math.pow(r,2) + r);
+        int c = index- rSquaredPlusR;
         tuple.add(r);
         tuple.add(c);
         return tuple;
