@@ -147,6 +147,7 @@ public class CommandInterpreter {
                     }
                     break;
                 case "place":
+                    parent.getPrinter().println(inputString); // TODO remove this from debug
                     if (args.length > 2) {
                         if (args[1].equals("on")) {
 

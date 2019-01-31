@@ -54,6 +54,7 @@ public class Board {
      * @param location
      * @return
      */
+    // TODO fix null pointer exception here
     private BoardLocation getBoardLocation(int location) {
         if (this.isValidLocation(location)) {
             return this.boardLocations[location];
@@ -257,11 +258,15 @@ public class Board {
         int c = getCoordinate(index).get(1);
         if ((c - 1) >= (-1 * r)) {
             int a = getIndex(r, c - 1);
-            Piece piece =  this.getBoardLocation(a).getPiece();
-            if (piece==null) {
-                return null;
+            if (this.getBoardLocation(a)!=null){
+                Piece piece =  this.getBoardLocation(a).getPiece();
+                if (piece==null) {
+                    return null;
+                } else {
+                    return piece;
+                }
             } else {
-                return piece;
+                return null;
             }
         } else {
 
@@ -281,11 +286,15 @@ public class Board {
         int c = getCoordinate(index).get(1);
         if ((c + 1) <= r) {
             int a = getIndex(r, c + 1);
-            Piece piece =  this.getBoardLocation(a).getPiece();
-            if (piece==null) {
-                return null;
+            if (this.getBoardLocation(a)!=null){
+                Piece piece =  this.getBoardLocation(a).getPiece();
+                if (piece==null) {
+                    return null;
+                } else {
+                    return piece;
+                }
             } else {
-                return piece;
+                return null;
             }
         } else {
 
@@ -306,12 +315,17 @@ public class Board {
         if ((r + c) % 2 == 0) {
             if (r + 1 <= 5) {
                 int a = getIndex(r + 1, c);
-                Piece piece =  this.getBoardLocation(a).getPiece();
-                if (piece==null) {
-                    return null;
+                if (this.getBoardLocation(a)!=null){
+                    Piece piece =  this.getBoardLocation(a).getPiece();
+                    if (piece==null) {
+                        return null;
+                    } else {
+                        return piece;
+                    }
                 } else {
-                    return piece;
+                    return null;
                 }
+
             }
         } else {
 
@@ -331,11 +345,15 @@ public class Board {
         int c = getCoordinate(index).get(1);
         if ((r + c) % 2 != 0) {
             int a = getIndex(r - 1, c);
-            Piece piece =  this.getBoardLocation(a).getPiece();
-            if (piece==null) {
-                return null;
+            if (this.getBoardLocation(a)!=null){
+                Piece piece =  this.getBoardLocation(a).getPiece();
+                if (piece==null) {
+                    return null;
+                } else {
+                    return piece;
+                }
             } else {
-                return piece;
+                return null;
             }
         } else {
             throw new NoPieceException("No Piece Found");
