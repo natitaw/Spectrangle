@@ -79,7 +79,7 @@ public class Board {
 	 * @param c second part of the coordinate
 	 * @return the index based on the conversion of the coordinates
 	 */
-	private int getIndex(int r, int c) {
+	public int getIndex(int r, int c) {
 		return ((int) (Math.pow(r, 2) + r + c));
 	}
 
@@ -91,7 +91,7 @@ public class Board {
 	 * @return an ArrayList of integers that contains information about the
 	 *         coorinates computed from a given index
 	 */
-	private ArrayList<Integer> getCoordinate(int index) {
+	public ArrayList<Integer> getCoordinate(int index) {
 		ArrayList<Integer> tuple = new ArrayList<>();
 		int r = (int) Math.floor(Math.sqrt(index));
 		int rSquaredPlusR = (int) (Math.pow(r, 2) + r);
@@ -153,7 +153,7 @@ public class Board {
 
 				result = !boardLocations[location].isBonusLocation();
 
-			} else if (this.isValidColor(location, piece) && isEmptyLocation(location)) {
+			} else if (isValidColor(location, piece) && isEmptyLocation(location)) {
 
 				// isValidColor() implicitly ensures that the Piece is being placed next to
 				// another piece
@@ -173,7 +173,7 @@ public class Board {
 	 * @return A boolean that verifies the validity of the move based on the colors
 	 */
 	// TODO: Implement Properly
-	private boolean isValidColor(int location, Piece piece) {
+	public boolean isValidColor(int location, Piece piece) {
 
 		if (isValidLocation(location) && piece.isJoker()) {
 			return true;
@@ -259,7 +259,7 @@ public class Board {
 	 * @throws NoPieceException in case there is no Piece to be found next to the
 	 *                          given index
 	 */
-	private Piece getLeftPiece(int index) throws NoPieceException {
+	public Piece getLeftPiece(int index) throws NoPieceException {
 		int r = getCoordinate(index).get(0);
 		int c = getCoordinate(index).get(1);
 		if ((c - 1) >= (-1 * r)) {
@@ -397,7 +397,7 @@ public class Board {
 	 * Check if this Board object is empty
 	 * @return A boolean that verifies the emptiness of the Board
 	 */
-	private boolean boardIsEmpty() {
+	public boolean boardIsEmpty() {
 		boolean result = true;
 		for (int i = 0; i < this.boardLocations.length; i++) {
 			if (!boardLocations[i].isEmptySpot()) {

@@ -1,12 +1,16 @@
 package test.GameTest;
 
 import model.Board;
+import model.ColorDefinition;
 import model.EmptyBagException;
+import model.Piece;
 import model.TileBag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
 
 class BoardTest {
 
@@ -55,12 +59,134 @@ class BoardTest {
 
 	/**
 	 * Test if takePiece() method of Board works
-	 * @throws EmptyBagException 
+	 * 
+	 * @throws EmptyBagException
 	 */
 	@Test
 	void testGetPiece() throws EmptyBagException {
-		b.movePiece(0, tilebag.takeRandomPiece());
+		Object a = tilebag.takePiece(3);
+		b.movePiece(0, (Piece) a);
 		assertNotNull(b.getPiece(0));
+		assertEquals(b.getPiece(0), a);
+	}
+
+	/**
+	 * Test if setMove() method works properly
+	 * 
+	 * @throws EmptyBagException
+	 */
+	@Test
+	void testMovePiece() throws EmptyBagException {
+		assertTrue(b.isEmptyLocation(1));
+		b.movePiece(1, tilebag.takeRandomPiece());
+		assertEquals(b.getPiece(1), b.getBoardLocation(1).getPiece());
+		assertFalse(b.isEmptyLocation(1));
+	}
+
+	@Test
+	void testGetPotentialMoveScore() throws EmptyBagException {
+		Object a = tilebag.takeRandomPiece();
+		assertEquals(b.getPotentialMoveScore(0, (Piece) a), ((Piece) a).getValue());
+		Object b2 = tilebag.takeRandomPiece();
+		assertEquals(b.getPotentialMoveScore(0, (Piece) b2), ((Piece) b2).getValue());
+	}
+
+	/**
+	 * Test validity of a move
+	 * 
+	 * @throws EmptyBagException
+	 */
+	@Test
+	void testIsValidMove() throws EmptyBagException {
+		assertFalse(b.isValidMove(10, tilebag.takeRandomPiece()));
+		assertTrue(b.isValidMove(0, tilebag.takeRandomPiece()));
+
+		Piece p1 = new Piece(ColorDefinition.RED, ColorDefinition.RED, ColorDefinition.RED, 6);
+		Piece p2 = new Piece(ColorDefinition.WHITE, ColorDefinition.WHITE, ColorDefinition.WHITE, 1);
+		Piece p3 = new Piece(ColorDefinition.BLUE, ColorDefinition.RED, ColorDefinition.PURPLE, 2);
+		Piece p4 = new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.PURPLE, 1);
+		Piece p5 = new Piece(ColorDefinition.BLUE, ColorDefinition.YELLOW, ColorDefinition.GREEN, 1);
+
+		assertTrue(b.isValidMove(0, p1));
+
+		b.movePiece(0, p1);
+
+		assertFalse(b.isValidMove(2, p5));
+		assertTrue(b.isValidMove(2, p4));
+
+		b.movePiece(2, p4);
+		assertTrue(b.isValidMove(3, p5));
+		assertTrue(b.isValidMove(3, p2));
+		assertTrue(b.isValidMove(3, p3));
+
+	}
+
+	@Test
+	void testGetIndex() {
+		assertEquals(8, b.getIndex(2, 2));
+		assertEquals(24, b.getIndex(4, 4));
+	}
+
+	@Test
+	void testGetCoordinate() {
+		ArrayList<Integer> tuple = new ArrayList<>();
+		ArrayList<Integer> tuple2 = new ArrayList<>();
+		tuple.add(2);
+		tuple.add(2);
+		assertEquals(tuple, b.getCoordinate(8));
+		tuple2.add(4);
+		tuple2.add(4);
+		assertEquals(tuple2, b.getCoordinate(24));
+	}
+
+	@Test
+	void testIsValidColor() {
+		Piece p1 = new Piece(ColorDefinition.RED, ColorDefinition.RED, ColorDefinition.RED, 6);
+		Piece p2 = new Piece(ColorDefinition.WHITE, ColorDefinition.WHITE, ColorDefinition.WHITE, 1);
+		Piece p3 = new Piece(ColorDefinition.BLUE, ColorDefinition.RED, ColorDefinition.PURPLE, 2);
+		Piece p4 = new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.PURPLE, 1);
+		Piece p5 = new Piece(ColorDefinition.BLUE, ColorDefinition.YELLOW, ColorDefinition.GREEN, 1);
+		
+		assertTrue(b.isValidColor(0, p2));
+		b.movePiece(0, p1);
+		assertTrue(b.isValidColor(2, p3));
+		assertFalse(b.isValidColor(2, p5));
+		b.movePiece(2, p5);
+		assertFalse(b.isValidColor(1, p4));
+
+	}
+	//TODO: Something is not working here
+	@Test
+	void testGetLeftPiece() {
+		
+		Piece p1 = new Piece(ColorDefinition.WHITE, ColorDefinition.WHITE, ColorDefinition.WHITE, 1);
+		Piece p2 = new Piece(ColorDefinition.RED, ColorDefinition.RED, ColorDefinition.RED, 6);
+		Piece p3 = new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.PURPLE, 1);
+
+
+		b.movePiece(0, p1);
+		b.movePiece(2, p2);// R R R
+		b.movePiece(1, p3);// G R P
+		b.movePiece(3, p2);// G R P
+		b.movePiece(6, p1);
+		
+		try {
+			assertEquals(p3, b.getLeftPiece(2));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			assertEquals(p2, b.getLeftPiece(3));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	void testBoardIsEmpty() throws EmptyBagException {
+		assertTrue(b.boardIsEmpty());
+		b.movePiece(0, tilebag.takeRandomPiece());
+		assertFalse(b.boardIsEmpty());
 	}
 
 }
