@@ -5,7 +5,7 @@ package model;
  *
  * @author Group4
  */
-class BoardLocation {
+public class BoardLocation {
 
 	private final int location;
 	private final int scorePoint;

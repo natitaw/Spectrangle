@@ -1,8 +1,8 @@
 package test.GameTest;
 
-import game.Board;
-import game.BoardLocation;
-import game.TileBag;
+import model.Board;
+import model.BoardLocation;
+import model.TileBag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -52,7 +52,7 @@ public class Board {
 	 * @return The BoardLocation object at a given location
 	 */
 
-	private BoardLocation getBoardLocation(int location) {
+	public BoardLocation getBoardLocation(int location) {
 		if (this.isValidLocation(location)) {
 			return this.boardLocations[location];
 		} else {
@@ -66,7 +66,7 @@ public class Board {
 	 * @param location on the board
 	 * @return The Piece object that lies on the given location
 	 */
-	private Piece getPiece(int location) {
+	public Piece getPiece(int location) {
 		return this.boardLocations[location].getPiece();
 	}
 
@@ -151,7 +151,7 @@ public class Board {
 
 			if (boardIsEmpty()) {
 
-				result = boardLocations[location].isBonusLocation();
+				result = !boardLocations[location].isBonusLocation();
 
 			} else if (this.isValidColor(location, piece) && isEmptyLocation(location)) {
 
@@ -379,7 +379,7 @@ public class Board {
 	 * @param location A number representing a location on the board
 	 * @return A boolean that verifies the validity of the location
 	 */
-	private boolean isValidLocation(int location) {
+	public boolean isValidLocation(int location) {
 		return (location >= 0 && location < Board.DIM);
 	}
 
@@ -389,7 +389,7 @@ public class Board {
 	 * @param location A number representing a location on the board
 	 * @return A boolean that verifies the emptiness of the location
 	 */
-	private boolean isEmptyLocation(int location) {
+	public boolean isEmptyLocation(int location) {
 		return (this.boardLocations[location].isEmptySpot());
 	}
 
