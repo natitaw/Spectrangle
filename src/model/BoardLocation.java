@@ -67,7 +67,7 @@ public class BoardLocation {
 	 * @return Boolean verifying the emptiness of the location
 	 */
 	public boolean isEmptySpot() {
-		return (this.piece == null);
+		return piece == null;
 	}
 	
 	/**

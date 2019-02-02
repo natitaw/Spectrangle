@@ -289,7 +289,7 @@ public class Board {
 	 * @throws NoPieceException in case there is no Piece to be found next to the
 	 *                          given index
 	 */
-	private Piece getRightPiece(int index) throws NoPieceException {
+	public Piece getRightPiece(int index) throws NoPieceException {
 		int r = getCoordinate(index).get(0);
 		int c = getCoordinate(index).get(1);
 		if ((c + 1) <= r) {
@@ -319,7 +319,7 @@ public class Board {
 	 * @throws NoPieceException in case there is no Piece to be found next to the
 	 *                          given index
 	 */
-	private Piece getBottomPiece(int index) throws NoPieceException {
+	public Piece getBottomPiece(int index) throws NoPieceException {
 		int r = getCoordinate(index).get(0);
 		int c = getCoordinate(index).get(1);
 		if ((r + c) % 2 == 0) {
@@ -353,7 +353,7 @@ public class Board {
 	 * @throws NoPieceException in case there is no Piece to be found next to the
 	 *                          given index
 	 */
-	private Piece getTopPiece(int index) throws NoPieceException {
+	public Piece getTopPiece(int index) throws NoPieceException {
 		int r = getCoordinate(index).get(0);
 		int c = getCoordinate(index).get(1);
 		if ((r + c) % 2 != 0) {
