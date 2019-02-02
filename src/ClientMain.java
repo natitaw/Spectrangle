@@ -2,6 +2,7 @@ import controller.client.Client;
 import controller.server.Server;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -98,8 +99,17 @@ class ClientMain {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("type preferred nr of players");
-        int preferredNrofPlayers = scanner.nextInt();
+        boolean prefNrPlayersSelected=false;
+
+        while (!prefNrPlayersSelected) {
+            try {
+            System.out.println("Please type your preferred nr of players");
+            int preferredNrofPlayers = scanner.nextInt();
+            prefNrPlayersSelected=true;
+        } catch (InputMismatchException e){
+            System.out.println("Please enter an integer");
+            }
+        }
 
         System.out.println("Type preferred difficulty. 0: random, 1: best move, 2: best future move etc");
         double difficulty = scanner.nextInt();
