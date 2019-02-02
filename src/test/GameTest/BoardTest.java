@@ -89,6 +89,7 @@ class BoardTest {
 		assertEquals(b.getPotentialMoveScore(0, (Piece) a), ((Piece) a).getValue());
 		Object b2 = tilebag.takeRandomPiece();
 		assertEquals(b.getPotentialMoveScore(0, (Piece) b2), ((Piece) b2).getValue());
+		assertEquals(0, b.getPotentialMoveScore(100, (Piece) a));
 	}
 
 	/**
@@ -153,6 +154,11 @@ class BoardTest {
 		assertFalse(b.isValidColor(2, p5));
 		b.movePiece(2, p5);
 		assertFalse(b.isValidColor(1, p4));
+		
+		assertTrue(b.isValidColor(2, p3));
+		Board testB = new Board();
+		testB.movePiece(30, p2);
+		assertTrue(b.isValidColor(20, p2));
 
 	}
 	
@@ -175,13 +181,19 @@ class BoardTest {
 			assertTrue(p3.equals(b.getLeftPiece(2)));
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 		}
 		try {
 			//assertEquals(p2, b.getLeftPiece(3));
 			assertTrue(p3.equals(b.getLeftPiece(3)));
 		} catch (Exception e) {
-			e.printStackTrace();
+			
+		}
+		
+		try {
+			assertNull(b.getLeftPiece(31));
+		} catch (Exception e) {
+			
 		}
 	}
 
@@ -263,13 +275,13 @@ class BoardTest {
 			assertTrue(p2.equals(b.getTopPiece(2)));
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+
 		}
 		try {
 			//assertEquals(p2, b.getLeftPiece(3));
 			assertTrue(p3.equals(b.getTopPiece(7)));
 		} catch (Exception e) {
-			e.printStackTrace();
+
 		}
 	}
 	
@@ -278,6 +290,12 @@ class BoardTest {
 		assertTrue(b.boardIsEmpty());
 		b.movePiece(0, tilebag.takeRandomPiece());
 		assertFalse(b.boardIsEmpty());
+	}
+	
+	@Test
+	void testGetBoardLocation() {
+		assertNotNull(b.getBoardLocation(0));
+		assertNull(b.getBoardLocation(100));
 	}
 
 }
