@@ -175,26 +175,27 @@ class BoardTest {
 		b.movePiece(1, p3);
 		b.movePiece(3, p3);
 		b.movePiece(6, p1);
-		
+
+
 		try {
-			//assertEquals(p3, b.getLeftPiece(2));
 			assertEquals(p3, b.getLeftPiece(2));
-			
+
 		} catch (Exception e) {
-			
+
 		}
 		try {
 			//assertEquals(p2, b.getLeftPiece(3));
 			assertEquals(p3, b.getLeftPiece(3));
 		} catch (Exception e) {
-			
+
 		}
-		
+
 		try {
 			assertNull(b.getLeftPiece(31));
 		} catch (Exception e) {
-			
+
 		}
+
 	}
 
 	

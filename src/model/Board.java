@@ -203,10 +203,6 @@ public class Board {
 	//@ pure
 	public boolean isValidColor(int location, Piece piece) {
 
-		if (isValidLocation(location) && piece.isJoker()) {
-			return true;
-		}
-
 		ArrayList<Piece> neighbors = new ArrayList<>();
 		ColorDefinition c;
 		ColorDefinition d;
@@ -240,7 +236,7 @@ public class Board {
 		if (left != null) {
 			c=left.getColors().get(2);
 			d=piece.getColors().get(1);
-			if (!d.equals(c)) {
+			if (!d.equals(c) && !left.isJoker()) {
 				return false;
 			}
 
@@ -250,7 +246,7 @@ public class Board {
 		if (right != null) {
 			c=right.getColors().get(1);
 			d=piece.getColors().get(2);
-			if (!d.equals(c)) {
+			if (!d.equals(c) && !right.isJoker()) {
 				return false;
 			}
 
@@ -260,7 +256,7 @@ public class Board {
 		if (top != null) {
 			c=top.getColors().get(0);
 			d=piece.getColors().get(0);
-			if (!d.equals(c)) {
+			if (!d.equals(c) && !top.isJoker()) {
 				return false;
 			}
 
@@ -270,7 +266,7 @@ public class Board {
 			c=bottom.getColors().get(0);
 			d=piece.getColors().get(0);
 			//noinspection RedundantIfStatement
-			if (!d.equals(c)) {
+			if (!d.equals(c) && !bottom.isJoker()) {
 				return false;
 			}
 
