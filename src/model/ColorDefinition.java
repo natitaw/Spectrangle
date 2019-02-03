@@ -1,7 +1,7 @@
 package model;
 
 /**
- * Enum that describes colors of piecs that may be placed on the board/
+ * Enum that describes colors of pieces that may be placed on the board/
  * @author Bit 4 - Group 4
  */
 public enum ColorDefinition {

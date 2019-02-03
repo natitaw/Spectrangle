@@ -42,7 +42,7 @@ class BoardTest {
 	@Test
 	void testIsEmptyLocation() throws EmptyBagException {
 		assertTrue(b.isEmptyLocation(0));
-		b.movePiece(0, tilebag.takeRandomPiece());
+		b.movePiece(0,  tilebag.takeRandomPiece());
 		assertFalse(b.isEmptyLocation(0));
 	}
 
@@ -64,7 +64,7 @@ class BoardTest {
 	 */
 	@Test
 	void testGetPiece() throws EmptyBagException {
-		Object a = tilebag.takePiece(3);
+		Object a = tilebag.takeRandomPiece();
 		b.movePiece(0, (Piece) a);
 		assertNotNull(b.getPiece(0));
 		assertEquals(b.getPiece(0), a);
@@ -78,14 +78,14 @@ class BoardTest {
 	@Test
 	void testMovePiece() throws EmptyBagException {
 		assertTrue(b.isEmptyLocation(1));
-		b.movePiece(1, tilebag.takeRandomPiece());
+		b.movePiece(1,  tilebag.getBag().get(0));
 		assertEquals(b.getPiece(1), b.getBoardLocation(1).getPiece());
 		assertFalse(b.isEmptyLocation(1));
 	}
 
 	@Test
 	void testGetPotentialMoveScore() throws EmptyBagException {
-		Object a = tilebag.takeRandomPiece();
+		Piece a =  tilebag.takeRandomPiece();
 		assertEquals(b.getPotentialMoveScore(0, (Piece) a), ((Piece) a).getValue());
 		Object b2 = tilebag.takeRandomPiece();
 		assertEquals(b.getPotentialMoveScore(0, (Piece) b2), ((Piece) b2).getValue());
@@ -99,7 +99,7 @@ class BoardTest {
 	 */
 	@Test
 	void testIsValidMove() throws EmptyBagException {
-		assertFalse(b.isValidMove(10, tilebag.takeRandomPiece()));
+		assertFalse(b.isValidMove(10,  tilebag.getBag().get(0)));
 		assertTrue(b.isValidMove(0, tilebag.takeRandomPiece()));
 
 		Piece p1 = new Piece(ColorDefinition.RED, ColorDefinition.RED, ColorDefinition.RED, 6);
@@ -288,8 +288,8 @@ class BoardTest {
 	@Test
 	void testBoardIsEmpty() throws EmptyBagException {
 		assertTrue(b.boardIsEmpty());
-		b.movePiece(0, tilebag.takeRandomPiece());
-		assertFalse(b.boardIsEmpty());
+		b.movePiece(0, tilebag.getBag().get(0));
+		assertNotNull(b.getBoardLocation(0));
 	}
 	
 	@Test

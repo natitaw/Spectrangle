@@ -178,7 +178,7 @@ public class Board {
 
 			if (boardIsEmpty()) {
 
-				result = boardLocations[location].isBonusLocation();
+				result = !boardLocations[location].isBonusLocation();
 
 			} else if (isValidColor(location, piece) && isEmptyLocation(location)) {
 
