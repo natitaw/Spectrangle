@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Tile Bag Generator. Generates a "bag" (array) of Pieces
@@ -19,6 +20,19 @@ public class TileBag {
 
     public TileBag(int sizeInput) {
         this.pieces = new ArrayList<>(sizeInput);
+    }
+
+    /**
+     * Generates a new TileBag from a list of tiles in shortened string form (e.g. RRR6)
+     * @param stringList List of strings of tiles
+     * @return a new TileBag that contains these tiles as Piece objects
+     */
+    public static TileBag generateBag(List<String> stringList) {
+        TileBag result = new TileBag(4);
+        for (String s : stringList) {
+            result.addPiece(new Piece(s));
+        }
+        return result;
     }
 
     /**
@@ -48,7 +62,7 @@ public class TileBag {
 
     /**
      * Fetches a Piece object out of this TileBag from its ArrayList of pieces
-     * @param i Index to be used to fetch a Piece from the TileBag
+     * @param index Index to be used to fetch a Piece from the TileBag
      * @return Piece object fetched from TileBag
      */
     public Piece takePiece(int index) throws EmptyBagException {

@@ -63,7 +63,7 @@ public class PiecePrinter {
 
         List<String[]> pieceLineList = new ArrayList<>();
         String[] resultArray;
-        for (String t : ClientCommands.getClientTiles(clientObject)) {
+        for (String t : clientObject.getClientTiles()) {
             Piece tempPiece = new Piece(t);
             String pieceString = tempPiece.toPrinterString();
             String[] pieceLines = pieceString.split(Pattern.quote("\n"));
