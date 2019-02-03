@@ -34,7 +34,7 @@ class PieceTest {
 		this.tilebag = new TileBag(36);
 		this.p = new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.PURPLE, 1);
 		p2 = new Piece("null");
-		anotherPiece = new Piece("RRRY");
+		anotherPiece = new Piece("RRR6");
 		left = p.getColors().get(0); // Green
 		right = p.getColors().get(1); // Red
 		bottom = p.getColors().get(2); // Purple

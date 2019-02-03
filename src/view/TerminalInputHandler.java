@@ -279,7 +279,7 @@ public class TerminalInputHandler implements Runnable {
                                 moveFinished2 = true;
                             }
                         } catch (IndexOutOfBoundsException e) {
-                            e.printStackTrace(); // TODO Fix exception here
+                            e.printStackTrace();
                         }
                     }
                     state = COMMAND;
