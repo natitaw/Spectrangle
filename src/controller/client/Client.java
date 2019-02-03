@@ -36,8 +36,15 @@ public class Client implements ClientOrServer {
     private PrintStream printer;
 
     /**
-     * @param ip
-     * @param arg
+     * Constructor for client class.
+     * If argument 0 is singleplayer, starts TerminalInputHandler in SINGLEPLAYER state.
+     * Elseif argument is AI starts in AI state. Checks other args for difficulty and whether
+     * print statements should be silenced
+     * Else (normal) starts it normally
+     * Then executes connect method
+     *
+     * @param ip ip address to connect to in string format
+     * @param arg Arguments for construction in string format
      */
     public Client(String ip, String arg) {
         String[] argArray = arg.split(Pattern.quote(" "));
@@ -68,80 +75,128 @@ public class Client implements ClientOrServer {
     }
 
     /**
-     * @return
+     * Gets type
+     *
+     * @return value of type
      */
-    public int getPrefNrPlayers() {
-        return prefNrPlayers;
+    public Type getType() {
+        return type;
     }
 
     /**
-     * @return
+     * Gets clientTiles
+     *
+     * @return value of clientTiles
      */
-    public boolean isAI() {
-        return isAI;
+    public static List<String> getClientTiles() {
+        return clientTiles;
     }
 
     /**
-     * @return
+     * Sets clientTiles to clientTiles
+     *
+     * @param clientTiles new value of clientTiles
      */
-    public double getDifficulty() {
-        return difficulty;
+    public static void setClientTiles(List<String> clientTiles) {
+        Client.clientTiles = clientTiles;
     }
 
     /**
-     * @return
+     * Gets otherTileList
+     *
+     * @return value of otherTileList
+     */
+    public static List<List<String>> getOtherTileList() {
+        return otherTileList;
+    }
+
+    /**
+     * Sets otherTileList to otherTileList
+     *
+     * @param otherTileList new value of otherTileList
+     */
+    public static void setOtherTileList(List<List<String>> otherTileList) {
+        Client.otherTileList = otherTileList;
+    }
+
+    /**
+     * Gets terminalInputHandler
+     *
+     * @return value of terminalInputHandler
      */
     public TerminalInputHandler getTerminalInputHandler() {
         return terminalInputHandler;
     }
 
     /**
-     * @return
-     */
-    public List<String> getClientTiles() {
-        return clientTiles;
-    }
-
-    /**
-     * @param clientTiles
-     */
-    public void setClientTiles(List<String> clientTiles) {
-        this.clientTiles = clientTiles;
-    }
-
-    /**
-     * @return
-     */
-    public List<List<String>> getOtherTileList() {
-        return otherTileList;
-    }
-
-    /**
-     * @param otherTileList
-     */
-    public void setOtherTileList(List<List<String>> otherTileList) {
-        this.otherTileList = otherTileList;
-    }
-
-    /**
+     * Gets isAI
      *
-     * @return
+     * @return value of isAI
+     */
+    public boolean isAI() {
+        return isAI;
+    }
+
+    /**
+     * Gets name
+     *
+     * @return value of name
+     */
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets name to name
+     *
+     * @param name new value of name
+     */
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Gets board
+     *
+     * @return value of board
      */
     public Board getBoard() {
         return board;
     }
 
     /**
+     * Sets board to board
      *
-     * @param board
+     * @param board new value of board
      */
     public void setBoard(Board board) {
         this.board = board;
     }
 
     /**
+     * Gets prefNrPlayers
      *
-     * @return
+     * @return value of prefNrPlayers
+     */
+    public int getPrefNrPlayers() {
+        return prefNrPlayers;
+    }
+
+    /**
+     * Gets difficulty
+     *
+     * @return value of difficulty
+     */
+    public double getDifficulty() {
+        return difficulty;
+    }
+
+    /**
+     * Gets printer
+     *
+     * @return value of printer
      */
     @Override
     public PrintStream getPrinter() {
@@ -149,49 +204,12 @@ public class Client implements ClientOrServer {
     }
 
     /**
-     *
-     * @param s
-     */
-    public void sendMessageToAll(String s) {
-        clientPeer.sendMessage(s);
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     *
-     * @param name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     *
-     * @return
-     */
-    @Override
-    public synchronized boolean getRunning() {
-        return this.running;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Type getType() {
-        return type;
-    }
-
-    /**
-     *
-     * @param ip
+     * Connect method.
+     * Creates a new PrintStream that is either silent or just a regular System.out depending
+     * on constructor args.
+     * Tries to connect to the IP and open a socket.
+     * Starts a new thread on the terminalInputHandler.
+     * @param ip ip address to connect to in sring format
      */
     private void connect(String ip) {
         InetAddress addr = null;
@@ -240,6 +258,23 @@ public class Client implements ClientOrServer {
     }
 
 
+    /**
+     * Sends message to all peers (in this case, the only peer: server)
+     * @param s message to send
+     */
+    public void sendMessageToAll(String s) {
+        clientPeer.sendMessage(s);
+    }
+
+    @Override
+    public boolean getRunning() {
+        return running;
+    }
+
+    /**
+     * Shuts down server by setting running fields to false.
+     * Closes terminalInputHandler thread. Then closes peer object.
+     */
     @Override
     public void shutDown() {
         this.running = false;
@@ -247,7 +282,8 @@ public class Client implements ClientOrServer {
 
         printer.println("Trying to shut down");
         try {
-            terminalInputHandlerThread.interrupt();
+            terminalInputHandler.setInterrupted(true);
+            terminalInputHandlerThread.join();
             printer.println("Closed terminal input handling thread");
         } catch (Exception e) {
             Thread.currentThread().interrupt();

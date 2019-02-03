@@ -308,7 +308,7 @@ public class GameRoom extends Room implements Runnable {
     }
 
     /**
-     * Checks if all peers are still connected. If a peer has disconnected (has its isRunning field
+     * Checks if all peers are still connected. If a peer has disconnected (has its running field
      * set to false by another thread that handles connections) then it is removed from the peerList
      * and afterwards the game is ended using the peerDisconnected method.
      */

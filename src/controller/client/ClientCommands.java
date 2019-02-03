@@ -42,9 +42,16 @@ public class ClientCommands {
         }
     }
 
+
+
+    /**
+     * Sets the client's board to a new, empty board
+     * @param clientObject client to do this for
+     */
     public static void makeBoard(Client clientObject) {
         clientObject.setBoard(new Board());
     }
+
 
 
     /**
