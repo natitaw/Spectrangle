@@ -1,7 +1,6 @@
 package controller.client;
 
 import model.Board;
-import model.BoardLocation;
 import model.Piece;
 import model.TileBag;
 

@@ -50,9 +50,9 @@ public class BoardLocation {
     }
 
 	/**
-	 * Set a piece on this spot
+	 * Set a piece on this BoardLocation
 	 *
-	 * @param moves a Piece to this Object
+	 * @param p the piece to move here
 	 */
 	public void movePiece(Piece p) {
 		this.piece = p;

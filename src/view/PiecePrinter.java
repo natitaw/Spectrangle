@@ -1,7 +1,6 @@
 package view;
 
 import controller.client.Client;
-import controller.client.ClientCommands;
 import model.Piece;
 
 import java.util.ArrayList;

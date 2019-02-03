@@ -38,8 +38,8 @@ class TileBagTest {
     void testViewPiece() throws EmptyBagException {
     	assertNotNull(tg.viewPiece(randomInt));
     	assertEquals(tg.viewPiece(randomInt), tg.takePiece(randomInt));
-    	
-    	assertTrue(tg.viewPiece(randomInt).equals(tg.takePiece(randomInt)));
+
+        assertEquals(tg.viewPiece(randomInt), tg.takePiece(randomInt));
     }
     
     @Test

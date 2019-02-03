@@ -5,16 +5,12 @@ import model.EmptyBagException;
 import model.Piece;
 import model.TileBag;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.rules.ExpectedException;
+
+import static org.junit.Assert.*;
 
 class PieceTest {
 
@@ -63,18 +59,18 @@ class PieceTest {
 		Piece testPiece = p;
 		Piece anotherPiece = new Piece(ColorDefinition.YELLOW, ColorDefinition.RED, ColorDefinition.PURPLE, 1);
 
-		assertTrue(p.getColors().equals(testPiece.getColors()));
+		assertEquals(p.getColors(), testPiece.getColors());
 		testPiece.rotate();
-		assertTrue(p.getColors().equals(testPiece.getColors()));
-		assertFalse(p.getColors().equals(anotherPiece.getColors()));
+		assertEquals(p.getColors(), testPiece.getColors());
+		assertNotEquals(p.getColors(), anotherPiece.getColors());
 
 	}
 
 	@Test
 	void testGetColors() {
 		assertNotNull(p.getColors());
-		assertTrue(p.getColors().get(0).equals(left));
-		assertFalse(p.getColors().get(0).equals(right));
+		assertEquals(p.getColors().get(0), left);
+		assertNotEquals(p.getColors().get(0), right);
 	}
 
 	@Test
@@ -95,13 +91,13 @@ class PieceTest {
 	void testEquals() {
 		Piece joker = new Piece(ColorDefinition.WHITE, ColorDefinition.WHITE, ColorDefinition.WHITE, 1);
 
-		assertTrue(p.equals(p));
-		assertFalse(p.equals(joker));
+		assertEquals(p, p);
+		assertNotEquals(p, joker);
 
-		assertTrue(p.equals(p.getRotated().getRotated2x()));
-		assertFalse(p.equals(p.getRotated2x()));
+		assertEquals(p, p.getRotated().getRotated2x());
+		assertNotEquals(p, p.getRotated2x());
 
-		assertFalse(p.equals(joker.getRotated2x()));
+		assertNotEquals(p, joker.getRotated2x());
 
 	}
 

@@ -178,14 +178,14 @@ class BoardTest {
 		
 		try {
 			//assertEquals(p3, b.getLeftPiece(2));
-			assertTrue(p3.equals(b.getLeftPiece(2)));
+			assertEquals(p3, b.getLeftPiece(2));
 			
 		} catch (Exception e) {
 			
 		}
 		try {
 			//assertEquals(p2, b.getLeftPiece(3));
-			assertTrue(p3.equals(b.getLeftPiece(3)));
+			assertEquals(p3, b.getLeftPiece(3));
 		} catch (Exception e) {
 			
 		}
@@ -206,22 +206,23 @@ class BoardTest {
 		Piece p3 = new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.PURPLE, 1);
 
 
+
+
 		b.movePiece(0, p2);
 		b.movePiece(2, p3);
 		b.movePiece(1, p3);
 		b.movePiece(3, p3);
 		b.movePiece(6, p1);
-		
+
 		try {
-			//assertEquals(p3, b.getLeftPiece(2));
-			assertTrue(p3.equals(b.getRightPiece(2)));
+			assertEquals(p3, b.getRightPiece(2));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		try {
 			//assertEquals(p2, b.getLeftPiece(3));
-			assertTrue(p3.equals(b.getRightPiece(1)));
+			assertEquals(p3, b.getRightPiece(1));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -243,14 +244,14 @@ class BoardTest {
 		
 		try {
 			//assertEquals(p3, b.getLeftPiece(2));
-			assertTrue(p3.equals(b.getBottomPiece(0)));
+			assertEquals(p3, b.getBottomPiece(0));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		try {
 			//assertEquals(p2, b.getLeftPiece(3));
-			assertTrue(p1.equals(b.getBottomPiece(3)));
+			assertEquals(p1, b.getBottomPiece(3));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -272,14 +273,14 @@ class BoardTest {
 		
 		try {
 			//assertEquals(p3, b.getLeftPiece(2));
-			assertTrue(p2.equals(b.getTopPiece(2)));
+			assertEquals(p2, b.getTopPiece(2));
 			
 		} catch (Exception e) {
 
 		}
 		try {
 			//assertEquals(p2, b.getLeftPiece(3));
-			assertTrue(p3.equals(b.getTopPiece(7)));
+			assertEquals(p3, b.getTopPiece(7));
 		} catch (Exception e) {
 
 		}

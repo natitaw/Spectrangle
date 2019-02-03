@@ -23,7 +23,6 @@ public class GameRoom extends Room implements Runnable {
     private Board board;
     private boolean waitingforMove;
     private Peer currentPlayer;
-    private int currentPlayernr;
     private boolean mustSkip;
 
     /**
@@ -115,7 +114,7 @@ public class GameRoom extends Room implements Runnable {
                 endGame();
             } else {
                 newTurn(startingPlayer);
-                currentPlayernr = ((ArrayList) peerList).indexOf(startingPlayer);
+                int currentPlayernr = ((ArrayList) peerList).indexOf(startingPlayer);
                 int newIndex = (currentPlayernr + 1) % (peerList.size());
                 startingPlayer = peerList.get(newIndex);
             }
@@ -458,7 +457,7 @@ public class GameRoom extends Room implements Runnable {
 
 
                 if (cont) {
-                    Piece newTile = null;
+                    Piece newTile;
                     try {
                         newTile = roomBag.takeRandomPiece();
                         peer.getTileBag().addPiece(newTile);

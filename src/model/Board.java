@@ -5,7 +5,6 @@ import view.SpectrangleBoardPrinter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Board Class representing a Spectrangle board.
@@ -270,6 +269,7 @@ public class Board {
 		if (bottom != null) {
 			c=bottom.getColors().get(0);
 			d=piece.getColors().get(0);
+			//noinspection RedundantIfStatement
 			if (!d.equals(c)) {
 				return false;
 			}
