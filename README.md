@@ -14,3 +14,14 @@ In order to play the game simply download the zip file and run CliantMain.java. 
 # Prerequisites
 
 This is a program written in Java, and thus the latest Java Runtime Environment (JDE)
+
+
+# Built With
+
+eclipse 
+
+# Authors
+
+F. Nijweide
+
+N.T. Shenkute
