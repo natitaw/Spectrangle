@@ -10,6 +10,7 @@ class ClientMain {
 
     private static final String[] mainArgs = {""};
 
+
     public static void main(String[] args) {
         System.out.println("");
         System.out.println("Welcome to our Spectrangle client. ");
@@ -100,11 +101,13 @@ class ClientMain {
             e.printStackTrace();
         }
         boolean prefNrPlayersSelected=false;
+        int preferredNrofPlayers=2;
+        // needs to be protected because we make a thread as subclass 20 lines down
 
         while (!prefNrPlayersSelected) {
             try {
             System.out.println("Please type your preferred nr of players");
-            int preferredNrofPlayers = scanner.nextInt();
+            preferredNrofPlayers = scanner.nextInt();
             prefNrPlayersSelected=true;
         } catch (InputMismatchException e){
             System.out.println("Please enter an integer");
@@ -123,12 +126,13 @@ class ClientMain {
             final Client[] aiObject = new Client[1]; // needed weird final array because of inner class
 
             int finalI = i;
+            int finalPreferredNrofPlayers = preferredNrofPlayers;
             Thread aiThread = new Thread(new Runnable() {
                 final int j = finalI;
 
                 @Override
                 public void run() {
-                    aiObject[0] = new Client("127.0.0.1", "ai Computer" + j + " " + preferredNrofPlayers + " " + difficulty + " " + "true");
+                    aiObject[0] = new Client("127.0.0.1", "ai Computer" + j + " " + finalPreferredNrofPlayers + " " + difficulty + " " + "true");
                     aiObjects.add(aiObject[0]);
                 }
             });
