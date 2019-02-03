@@ -2,7 +2,6 @@ package view;
 
 import controller.ClientOrServer;
 import controller.Peer;
-import controller.Settings;
 import controller.client.Client;
 import controller.client.ClientCommands;
 import controller.server.GameRoom;
@@ -128,9 +127,9 @@ public class CommandInterpreter {
                     parent.getPrinter().println(inputString);
                     break;
                 default:
-                    if (Settings.debug) {
+
                         parent.getPrinter().println(peer.getName() + " sent an unknown command that was ignored: " + inputString);
-                    }
+
                     break;
             }
         } else if (this.parentType == ClientOrServer.Type.SERVER) {
@@ -171,9 +170,9 @@ public class CommandInterpreter {
                     ServerCommands.sendChat(args, peer);
                     break;
                 default:
-                    if (controller.Settings.debug) {
+
                         parent.getPrinter().println(peer.getName() + " sent an unknown command that was ignored: " + inputString);
-                    }
+
                     break;
             }
         }
