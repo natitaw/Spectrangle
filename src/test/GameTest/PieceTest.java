@@ -1,16 +1,20 @@
 package test.GameTest;
 
 import model.ColorDefinition;
+import model.EmptyBagException;
 import model.Piece;
 import model.TileBag;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.rules.ExpectedException;
 
 class PieceTest {
 
@@ -123,4 +127,18 @@ class PieceTest {
 		String printed = p.toString();
 		assertNotNull(printed);
 	}
+	
+	
+	@Test
+	public void testExpectedException(){
+	    TileBag tbg = new TileBag(1);
+	    assertNotNull(tbg);
+	    try {
+			tbg.takeRandomPiece();
+		} catch (EmptyBagException expected) {
+			assertNotNull(expected.getMessage());
+		}
+	}
+	
+
 }
