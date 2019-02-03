@@ -7,14 +7,34 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * ServerCommands class. Contains some static commands that can be executed on the server.
+ * Are usually called from the CommandInterpreter.
+ *
+ * @author Bit 4 - Group 4
+ */
 public class ServerCommands {
 
     private static Server serverObject;
 
+    /**
+     * ServerCommands constructor.
+     *
+     * @author Bit 4 - Group 4
+     * @param inputServerObject Parent server object.
+     */
     public static void setServerObject(Server inputServerObject) {
         serverObject = inputServerObject;
     }
 
+    /**
+     * Method to be exected if a client executes the "connect" command.
+     * Changes client's name and (maybe) enables chat.
+     *
+     * @author Bit 4 - Group 4
+     * @param args Arguments sent after the "connect" command by the client
+     * @param peer The peer that sent the command
+     */
     public static void clientConnects(String[] args, Peer peer) {
         if (args.length > 2) {
             peer.sendMessage("invalid name");
@@ -34,7 +54,7 @@ public class ServerCommands {
                 }
             }
 
-            // Set name
+            // Set name if it's unique
             if (nameIsStillUnique) {
                 serverObject.getPrinter().println(peer.getName() + " changed name to " + name);
                 peer.setName(name);
@@ -46,6 +66,7 @@ public class ServerCommands {
                         peer.sendMessage("welcome chat");
                         serverObject.getPrinter().println(name + " enabled chat");
                     } else {
+                        // If second argument is not chat, something is wrong.
                         peer.sendMessage("invalid name");
                     }
                 } else {
@@ -60,6 +81,14 @@ public class ServerCommands {
 
     }
 
+    /**
+     * method used when a peer tries to send chat. Sends chat to all peers in the room
+     * that want to receive chat.
+     *
+     * @author Bit 4 - Group 4
+     * @param args Arguments sent after the "connect" command by the client
+     * @param sendingPeer The peer that sent the command
+     */
     public static void sendChat(String[] args, Peer sendingPeer) {
         if (sendingPeer.getChatEnabled()) {
             Room room = sendingPeer.getCurrentRoom();
@@ -71,10 +100,20 @@ public class ServerCommands {
         }
     }
 
+    /**
+     * method used when a peer tries sends the "request" command.
+     * Sends the appropriate "waiting" command with sendWaiting.
+     * Checks if other players are waiting for games with the same amount of players.
+     * If so, runs createGame. Repeats this until there are no new games that can be created.
+     *
+     * @author Bit 4 - Group 4
+     * @param args Arguments sent after the "connect" command by the client
+     * @param peer The peer that sent the command
+     */
     public static void clientRequests(String[] args, Peer peer) {
         int preferredNrOfPlayers = Integer.parseInt(args[0]);
 
-        if (preferredNrOfPlayers >= 1 && preferredNrOfPlayers <= 4) {
+        if (preferredNrOfPlayers >= 2 && preferredNrOfPlayers <= 4) {
             peer.setPreferredNrOfPlayers(preferredNrOfPlayers);
 
             sendWaiting(peer);
@@ -86,15 +125,25 @@ public class ServerCommands {
             boolean endOfList = false;
             int nrOfMatchingPlayers = 0;
             List<Peer> matchingPeerList = new ArrayList<>();
+
+            // Start loop
             while (!endOfList) {
+
+                // Check the full peerList from start to end
                 for (Peer p : peerList) {
+                    // If we reached the end of the list without starting a game, end the loop
                     if (p == peerList.get(peerList.size() - 1)) {
                         endOfList = true;
                     }
+                    // If another player is waiting for a game of the same size
                     if (p.getCurrentRoom().getRoomNumber() == 0 && p.getPreferredNrOfPlayers() == preferredNrOfPlayers) {
+                        // Increase the number of matching players
                         nrOfMatchingPlayers++;
+                        // Add this peer to list of matching peers
                         matchingPeerList.add(p);
+                        // If the amount of waiting peers equals the game size
                         if (nrOfMatchingPlayers == preferredNrOfPlayers) {
+                            // Start game
                             createGame(matchingPeerList);
                             break;
                         }
@@ -108,6 +157,14 @@ public class ServerCommands {
 
     }
 
+    /**
+     * Method used when a peer has sent the "request" command and the amount they sent is valid
+     * Sends to them which other peers are waiting for a game of the same size
+     *
+     * @author Bit 4 - Group 4
+
+     * @param peer The peer that sent the command
+     */
     private static void sendWaiting(Peer peer) {
         Room lobby = serverObject.getRoomList().get(0);
         List<Peer> lobbyPeers = lobby.getPeerList();
@@ -121,6 +178,15 @@ public class ServerCommands {
         peer.sendMessage("waiting " + arg);
     }
 
+    /**
+     * method used when X players are waiting for a game of size X
+     * Creates a new GameRoom. Fills it with these players.
+     * Sends them the "start with" command with the list of all playernames in this room.
+     * Start a new thread on this room to handle all game logic.
+     *
+     * @author Bit 4 - Group 4
+     * @param peerList The list of peers to be included in this game
+     */
     private static void createGame(List<Peer> peerList) {
 
         GameRoom gameRoom = serverObject.newGameRoom();
