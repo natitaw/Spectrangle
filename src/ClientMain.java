@@ -6,11 +6,19 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * ClientMain class. Main method starts the game, in the main menu.
+ * Also has some other methods used for actually starting different gamemodes.
+ */
 class ClientMain {
 
     private static final String[] mainArgs = {""};
 
-
+    /**
+     * Starts the main menu
+     *
+     * @param args Arguments passed from the command line. Not used.
+     */
     public static void main(String[] args) {
         System.out.println("");
         System.out.println("Welcome to our Spectrangle client. ");
@@ -44,11 +52,12 @@ class ClientMain {
         }
     }
 
+    /**
+     * Lets the user play as AI. Used for the tournament.
+     */
     private static void playAsAI() {
         System.out.println("Type the IP of a server to continue");
         Scanner scanner = new Scanner(System.in);
-        //TODO Fix error when entering faulty ip
-
 
         String ip = scanner.nextLine();
 
@@ -82,7 +91,9 @@ class ClientMain {
 
     }
 
-
+    /**
+     * Lets the user play locally against AI without starting a server.
+     */
     private static void singleplayer() {
         Scanner scanner = new Scanner(System.in);
         final Server[] serverObject = new Server[1]; // needed weird final array because of inner class
@@ -100,17 +111,17 @@ class ClientMain {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        boolean prefNrPlayersSelected=false;
-        int preferredNrofPlayers=2;
+        boolean prefNrPlayersSelected = false;
+        int preferredNrofPlayers = 2;
         // needs to be protected because we make a thread as subclass 20 lines down
 
         while (!prefNrPlayersSelected) {
             try {
-            System.out.println("Please type your preferred nr of players");
-            preferredNrofPlayers = scanner.nextInt();
-            prefNrPlayersSelected=true;
-        } catch (InputMismatchException e){
-            System.out.println("Please enter an integer");
+                System.out.println("Please type your preferred nr of players");
+                preferredNrofPlayers = scanner.nextInt();
+                prefNrPlayersSelected = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter an integer");
             }
         }
 
@@ -170,10 +181,12 @@ class ClientMain {
 
     }
 
+    /**
+     * Lets the user connect to an IP and play a game.
+     */
     private static void multiplayer() {
         System.out.println("Type the IP of a server to continue");
         Scanner scanner = new Scanner(System.in);
-        //TODO Fix error when entering faulty ip
 
         String ip = scanner.nextLine();
         Client clientObject = new Client(ip, "");
@@ -195,7 +208,9 @@ class ClientMain {
         main(mainArgs);
     }
 
-
+    /**
+     * Clear screen in main menu
+     */
     private static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
