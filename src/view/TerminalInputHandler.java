@@ -156,7 +156,7 @@ public class TerminalInputHandler implements Runnable {
 
                     break;
                 case NUMBER_OF_PLAYERS:
-                    parent.getPrinter().println("If you'd like to play a model, just type \"request <number>\"");
+                    parent.getPrinter().println("If you'd like to play a game, just type \"request <number>\"");
                     parent.getPrinter().println("Where <number> is the amount of players to play with, from 1-4");
                     if (wantsChat) {
                         parent.getPrinter().println("Type \"chat <your message> \" to chat with others");

@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Board Class representing a Spectrangle board
+ * Board Class representing a Spectrangle board.
+ * Has some methods for checking moves and applying them to the board.
  *
- * @author Group4
+ * @author Bit 4 - Group 4
+ * @version 1.0
  */
 public class Board {
 

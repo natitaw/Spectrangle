@@ -45,7 +45,7 @@ public class CommandInterpreter {
                     }
                     break;
                 case "waiting":
-                    parent.getPrinter().println("Waiting for model with requested amount of players.");
+                    parent.getPrinter().println("Waiting for game with requested amount of players.");
                     parent.getPrinter().println("Players in queue: " + String.join(", ", args));
                     break;
                 case "start":
@@ -53,7 +53,7 @@ public class CommandInterpreter {
                         String[] newargs = Arrays.copyOfRange(args, 1, args.length);
 
                         TerminalInputHandler.clearScreen(parent);
-                        parent.getPrinter().println("Starting new model with: " + String.join(", ", newargs));
+                        parent.getPrinter().println("Starting new game with: " + String.join(", ", newargs));
                         ClientCommands.makeBoard(((Client) parent));
                     }
                     break;
@@ -97,7 +97,7 @@ public class CommandInterpreter {
                         parent.getPrinter().print("Player " + args[1] + " skipped turn.");
                     } else if (args[1].equals("left")) {
                         TerminalInputHandler.clearScreen(parent);
-                        parent.getPrinter().println("Player " + args[0] + " left mid-model. Returned to lobby");
+                        parent.getPrinter().println("Player " + args[0] + " left mid-game. Returned to lobby");
                     }
                     break;
                 case "replace":
@@ -107,7 +107,7 @@ public class CommandInterpreter {
                     parent.getPrinter().println(args[0] + " placed tile " + args[1] + " on position " + args[2] + ", earning " + args[3] + " points.");
                     ((Client) parent).getBoard().movePiece(Integer.parseInt(args[2]), new Piece(args[1]));
                     break;
-                case "model":
+                case "game":
                     if (args[0].equals("finished")) {
                         TerminalInputHandler.clearScreen(parent);
                         parent.getPrinter().println("Game finished");

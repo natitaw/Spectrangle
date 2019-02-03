@@ -1,9 +1,10 @@
 package model;
 
 /**
- * Class representing information on a location of a Spectrangle Board
+ * Class representing information on a "location" of a Spectrangle Board.
+ * A location is a place where pieces may be placed.
  *
- * @author Group4
+ * @author Bit 4 - Group 4
  */
 class BoardLocation {
 
