@@ -107,13 +107,14 @@ public class GameRoom extends Room implements Runnable {
         }
 
         while (!hasFinished) {
-            newTurn(startingPlayer);
+
 
             hasFinished = checkIfGameHasEnded();
 
             if (hasFinished) {
                 endGame();
             } else {
+                newTurn(startingPlayer);
                 currentPlayernr = ((ArrayList) peerList).indexOf(startingPlayer);
                 int newIndex = (currentPlayernr + 1) % (peerList.size());
                 startingPlayer = peerList.get(newIndex);
@@ -165,7 +166,7 @@ public class GameRoom extends Room implements Runnable {
      * @author Bit 4 - Group 4
      */
     private boolean checkIfGameHasEnded() {
-        boolean result = false;
+        boolean result = true;
         Iterator itr = peerList.iterator();
         while ((result) && itr.hasNext()) {
             Peer p = (Peer) itr.next();

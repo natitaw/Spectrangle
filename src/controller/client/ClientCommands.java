@@ -105,23 +105,24 @@ public class ClientCommands {
 
         while (itr.hasNext()) {
             Piece piece = (Piece) itr.next();
-            List<Piece> pieceRotations = new ArrayList<>();
-            pieceRotations.add(piece);
-            pieceRotations.add(piece.getRotated());
-            pieceRotations.add(piece.getRotated2x());
-            for (Piece rotatedPiece : pieceRotations) {
-                int i = 0;
-                while (i < 36) {
-                    int thisScore = clientObject.getBoard().getPotentialMoveScore(i, rotatedPiece);
-                    if (thisScore > result) {
-                        result = thisScore;
-                        bestPiece = rotatedPiece;
-                        bestPos = i;
+            if (piece.getValue()>0) {
+                List<Piece> pieceRotations = new ArrayList<>();
+                pieceRotations.add(piece);
+                pieceRotations.add(piece.getRotated());
+                pieceRotations.add(piece.getRotated2x());
+                for (Piece rotatedPiece : pieceRotations) {
+                    int i = 0;
+                    while (i < 36) {
+                        int thisScore = clientObject.getBoard().getPotentialMoveScore(i, rotatedPiece);
+                        if (thisScore > result) {
+                            result = thisScore;
+                            bestPiece = rotatedPiece;
+                            bestPos = i;
+                        }
+                        i++;
                     }
-                    i++;
                 }
             }
-
         }
 
         return "place " + bestPiece.toString() + " on " + bestPos;
