@@ -11,43 +11,35 @@ import java.util.List;
 
 public class ClientCommands {
 
-    private static Client clientObject;
-    private static List<String> clientTiles;
-    private static List<List<String>> otherTileList; // intend to use this for complicated AI
-
-    public static void setClientObject(Client inputClientObject) {
-        clientObject = inputClientObject;
-    }
-
-    public static void setTiles(String[] args) {
+    public static void setTiles(String[] args, Client clientObject) {
         String[] middleArgs = Arrays.copyOfRange(args, 0, args.length - 2);
         for (int peerNr = 0; peerNr < middleArgs.length / 5; peerNr++) {
             String name = middleArgs[peerNr * 5];
             if (name.equals(clientObject.getName())) {
 
                 String[] tileArgs = Arrays.copyOfRange(middleArgs, (peerNr * 5) + 1, (peerNr * 5) + 5);
-                clientTiles = Arrays.asList(tileArgs);
+                clientObject.setClientTiles(Arrays.asList(tileArgs));
 
 
             }
         }
     }
 
-    public static void makeBoard() {
+    public static void makeBoard(Client clientObject) {
         clientObject.setBoard(new Board());
     }
 
 
     // prints other people's tiles in a shortened way
-    public static void otherTiles(String[] args) {
+    public static void otherTiles(String[] args, Client clientObject) {
         clientObject.getPrinter().println("Other players have tiles:");
-        otherTileList = new ArrayList<>();
+        clientObject.setOtherTileList(new ArrayList<>());
         String[] middleArgs = Arrays.copyOfRange(args, 0, args.length - 3);
         for (int peerNr = 0; peerNr < middleArgs.length / 5; peerNr++) {
             String name = middleArgs[peerNr * 5];
             if (!name.equals(clientObject.getName())) {
                 String[] printArgs = Arrays.copyOfRange(args, peerNr * 5 + 1, peerNr * 5 + 5);
-                otherTileList.add(Arrays.asList(printArgs));
+                clientObject.getOtherTileList().add(Arrays.asList(printArgs));
                 String printString = String.join(" ", printArgs);
                 printString = name + ": " + printString;
 
@@ -59,8 +51,8 @@ public class ClientCommands {
 
     }
 
-    public static List<String> getClientTiles() {
-        return clientTiles;
+    public static List<String> getClientTiles(Client clientObject) {
+        return clientObject.getClientTiles();
     }
 
 
@@ -72,7 +64,7 @@ public class ClientCommands {
         return result;
     }
 
-    public static String bestMove(TileBag tileBag) {
+    public static String bestMove(TileBag tileBag, Client clientObject) {
         int result = 0;
         Piece bestPiece = null;
         int bestPos = 0;
@@ -102,7 +94,7 @@ public class ClientCommands {
         return "place " + bestPiece.toString() + " on " + bestPos;
     }
 
-    private static String randomMove(TileBag tileBag) {
+    private static String randomMove(TileBag tileBag, Client clientObject) {
         Iterator itr = tileBag.getBag().iterator();
 
         while (itr.hasNext()) {
@@ -128,25 +120,25 @@ public class ClientCommands {
     }
 
 
-    public static void aiTurn() {
+    public static void aiTurn(Client clientObject) {
         if (clientObject.getDifficulty() < 1) {
-            clientObject.sendMessageToAll(randomMove(generateBag(clientTiles)));
+            clientObject.sendMessageToAll(randomMove(generateBag(clientObject.getClientTiles()), clientObject));
         } else if (clientObject.getDifficulty() < 2) {
-            clientObject.sendMessageToAll(bestMove(generateBag(clientTiles)));
+            clientObject.sendMessageToAll(bestMove(generateBag(clientObject.getClientTiles()), clientObject));
         }
 
         // TODO add calculation based on enemy tiles and future board states
         // TODO cap off this calculation after difficulty in seconds has passed
     }
 
-    public static void aiSkip() {
+    public static void aiSkip(Client clientObject) {
         double random = Math.random();
 
 
         if (random <= 0.5) {
             clientObject.sendMessageToAll("skip");
         } else {
-            TileBag tiles = generateBag(clientTiles);
+            TileBag tiles = generateBag(clientObject.getClientTiles());
             Piece tile;
             double secondRandom = Math.random();
             if (secondRandom < 0.25) {

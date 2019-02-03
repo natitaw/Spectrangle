@@ -63,7 +63,7 @@ public class PiecePrinter {
 
         List<String[]> pieceLineList = new ArrayList<>();
         String[] resultArray;
-        for (String t : ClientCommands.getClientTiles()) {
+        for (String t : ClientCommands.getClientTiles(clientObject)) {
             Piece tempPiece = new Piece(t);
             String pieceString = tempPiece.toPrinterString();
             String[] pieceLines = pieceString.split(Pattern.quote("\n"));
@@ -79,7 +79,7 @@ public class PiecePrinter {
         String tilesPrinted = String.join("\n", resultArray);
         clientObject.getPrinter().println(tilesPrinted);
         clientObject.getPrinter().println("");
-        clientObject.getPrinter().println("    [1]    " + " " + "    [2]    " + " " + "    [3]    " + " " + "    [4]    ");
+        clientObject.getPrinter().println("     [1]    " + " " + "    [2]    " + " " + "    [3]    " + " " + "    [4]    ");
         clientObject.getPrinter().println("");
     }
 }

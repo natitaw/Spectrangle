@@ -9,7 +9,6 @@ import controller.server.GameRoom;
 import controller.server.Server;
 import controller.server.ServerCommands;
 import model.Piece;
-import view.TerminalInputHandler;
 
 import java.util.Arrays;
 
@@ -46,7 +45,7 @@ public class CommandInterpreter {
                     }
                     break;
                 case "waiting":
-                    parent.getPrinter().println("Waiting for model with requested amount of players.");
+                    parent.getPrinter().println("Waiting for game with requested amount of players.");
                     parent.getPrinter().println("Players in queue: " + String.join(", ", args));
                     break;
                 case "start":
@@ -54,20 +53,22 @@ public class CommandInterpreter {
                         String[] newargs = Arrays.copyOfRange(args, 1, args.length);
 
                         TerminalInputHandler.clearScreen(parent);
-                        parent.getPrinter().println("Starting new model with: " + String.join(", ", newargs));
-                        ClientCommands.makeBoard();
+                        parent.getPrinter().println("Starting new game with: " + String.join(", ", newargs));
+                        ClientCommands.makeBoard(((Client) parent));
                     }
                     break;
                 case "order":
                     parent.getPrinter().println("Order of turns: " + String.join(", ", args));
                     break;
                 case "tiles":
-
+                    if (((Client) parent).getBoard()==null){
+                        ClientCommands.makeBoard(((Client) parent));
+                    }
                     if (args[args.length - 1].equals(parent.getName())) {
                         parent.getPrinter().println(((Client) parent).getBoard().toPrinterString());
 
-                        ClientCommands.otherTiles(args);
-                        ClientCommands.setTiles(args);
+                        ClientCommands.otherTiles(args, ((Client) parent));
+                        ClientCommands.setTiles(args, ((Client) parent));
 
 
                         if (args[args.length - 2].equals("skip")) {
@@ -96,7 +97,7 @@ public class CommandInterpreter {
                         parent.getPrinter().print("Player " + args[1] + " skipped turn.");
                     } else if (args[1].equals("left")) {
                         TerminalInputHandler.clearScreen(parent);
-                        parent.getPrinter().println("Player " + args[0] + " left mid-model. Returned to lobby");
+                        parent.getPrinter().println("Player " + args[0] + " left mid-game. Returned to lobby");
                     }
                     break;
                 case "replace":
@@ -106,7 +107,7 @@ public class CommandInterpreter {
                     parent.getPrinter().println(args[0] + " placed tile " + args[1] + " on position " + args[2] + ", earning " + args[3] + " points.");
                     ((Client) parent).getBoard().movePiece(Integer.parseInt(args[2]), new Piece(args[1]));
                     break;
-                case "model":
+                case "game":
                     if (args[0].equals("finished")) {
                         TerminalInputHandler.clearScreen(parent);
                         parent.getPrinter().println("Game finished");
@@ -145,6 +146,7 @@ public class CommandInterpreter {
                     }
                     break;
                 case "place":
+                    parent.getPrinter().println(peer.getName() + " :" + inputString);
                     if (args.length > 2) {
                         if (args[1].equals("on")) {
 

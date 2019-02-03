@@ -3,9 +3,9 @@ package model;
 import java.util.ArrayList;
 
 /**
- * Tile Bag Generator. Generates a bag of Piece(tile)
+ * Tile Bag Generator. Generates a "bag" (array) of Pieces
  *
- * @author Group4
+ * @author Bit 4 - Group 4
  */
 
 public class TileBag {

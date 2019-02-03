@@ -99,11 +99,11 @@ public class TerminalInputHandler implements Runnable {
                     state = AI;
                     break;
                 case AI_TURN:
-                    ClientCommands.aiTurn();
+                    ClientCommands.aiTurn(((Client) parent));
                     state = AI;
                     break;
                 case AI_SKIP:
-                    ClientCommands.aiSkip();
+                    ClientCommands.aiSkip(((Client) parent));
                     state = AI;
                     break;
                 case SINGLEPLAYER:
@@ -156,7 +156,7 @@ public class TerminalInputHandler implements Runnable {
 
                     break;
                 case NUMBER_OF_PLAYERS:
-                    parent.getPrinter().println("If you'd like to play a model, just type \"request <number>\"");
+                    parent.getPrinter().println("If you'd like to play a game, just type \"request <number>\"");
                     parent.getPrinter().println("Where <number> is the amount of players to play with, from 1-4");
                     if (wantsChat) {
                         parent.getPrinter().println("Type \"chat <your message> \" to chat with others");
@@ -178,11 +178,11 @@ public class TerminalInputHandler implements Runnable {
                             parent.getPrinter().println("Or type \"hint\" for a hint");
                             s = readString();
                             if (s.equals("hint") || s.equals("Hint") || s.equals("h") || s.equals("H")) {
-                                parent.getPrinter().println(ClientCommands.bestMove(ClientCommands.generateBag(ClientCommands.getClientTiles())));
+                                parent.getPrinter().println(ClientCommands.bestMove(ClientCommands.generateBag(ClientCommands.getClientTiles(((Client) parent))), ((Client) parent)));
                                 state = TURN;
                             } else {
                                 tempPieceIndex = Integer.parseInt(s) - 1;
-                                tempPiece = new Piece(ClientCommands.getClientTiles().get(tempPieceIndex));
+                                tempPiece = new Piece(ClientCommands.getClientTiles(((Client) parent)).get(tempPieceIndex));
                                 inputFinished = true;
                                 state = TURN2;
                             }
@@ -201,17 +201,18 @@ public class TerminalInputHandler implements Runnable {
                         s = readString();
                         if (s.equals("R") || s.equals("r")) {
                             tempPiece.rotate();
-                            ClientCommands.getClientTiles().set(tempPieceIndex, tempPiece.toString());
+                            ClientCommands.getClientTiles(((Client) parent)).set(tempPieceIndex, tempPiece.toString());
 
                             state = TURN;
                         } else if (s.equals("RR") || s.equals("rr")) {
                             tempPiece.rotate2x();
-                            ClientCommands.getClientTiles().set(tempPieceIndex, tempPiece.toString());
+                            ClientCommands.getClientTiles(((Client) parent)).set(tempPieceIndex, tempPiece.toString());
                             state = TURN;
                         } else if (((Client) parent).getBoard().isValidMove(Integer.parseInt(s), tempPiece)) {
                             parent.sendMessageToAll("place " + tempPiece.toString() + " on " + s);
                             state = COMMAND;
                         } else {
+                            parent.getPrinter().println(" --- INVALID MOVE --- ");
                             state = TURN;
                         }
                     } catch (IndexOutOfBoundsException e) {
@@ -234,7 +235,7 @@ public class TerminalInputHandler implements Runnable {
                             } else if (s.equals("EXIT")) {
 
                             } else {
-                                Piece tileToReplace = new Piece(ClientCommands.getClientTiles().get(Integer.parseInt(s) - 1));
+                                Piece tileToReplace = new Piece(ClientCommands.getClientTiles(((Client) parent)).get(Integer.parseInt(s) - 1));
                                 parent.sendMessageToAll("exchange " + tileToReplace.toString());
                                 moveFinished2 = true;
                             }

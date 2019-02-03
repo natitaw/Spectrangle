@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Java Class representing a Piece (tile) of a Spectrangle model
  *
- * @author Group4
+ * @author Bit 4 - Group 4
  */
 public class Piece {
 
