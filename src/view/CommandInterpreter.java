@@ -11,12 +11,19 @@ import model.Piece;
 
 import java.util.Arrays;
 
+/**
+ * Has a read method that "interprets" commands sent by a peer.
+ * Runs methods (usually in ServerCommands or ClientCommands), depending on the command received.
+ */
 public class CommandInterpreter {
 
     private final ClientOrServer parent;
     private final ClientOrServer.Type parentType;
 
-
+    /**
+     * CommandInterpreter constructor. Takes a ClientOrServer as input as its "parent".
+     * @param parentInput parent of this class.
+     */
     public CommandInterpreter(ClientOrServer parentInput) {
         this.parent = parentInput;
         this.parentType = parent.getType();
@@ -26,6 +33,13 @@ public class CommandInterpreter {
 
     }
 
+    /**
+     * Reads input from networked peer. Seperates it into arguments (by spaces).
+     * Then, depending on the "type' (server/client) of the parent, interprets the commands
+     * And prints things to terminal, or executes a method somewhere else with the arguments.
+     * @param inputString The string that was received from the peer.
+     * @param peer The peer this was received from.
+     */
     public void read(String inputString, Peer peer) {
         // separate by spaces
         // get first command
@@ -60,16 +74,21 @@ public class CommandInterpreter {
                     parent.getPrinter().println("Order of turns: " + String.join(", ", args));
                     break;
                 case "tiles":
+                    // if parent does not have a board, make it
                     if (((Client) parent).getBoard()==null){
                         ClientCommands.makeBoard(((Client) parent));
                     }
+
                     if (args[args.length - 1].equals(parent.getName())) {
+                        // Print the board
                         parent.getPrinter().println(((Client) parent).getBoard().toPrinterString());
 
+                        // run these methods
                         ClientCommands.otherTiles(args, ((Client) parent));
                         ClientCommands.setTiles(args, ((Client) parent));
 
-
+                        // then, set the TerminalInputHandler to the appropriate state depending on
+                        // if player must skip or not, and if player is an AI or not
                         if (args[args.length - 2].equals("skip")) {
                             if (((Client) parent).isAI()) {
                                 ((Client) parent).getTerminalInputHandler().setState(TerminalInputHandler.InputState.AI_SKIP);
@@ -85,6 +104,7 @@ public class CommandInterpreter {
                             }
                         }
 
+                        // interrupt the TerminalInputHandler to make it change state
                         ((Client) parent).getTerminalInputHandler().setInterrupted(true);
 
 
