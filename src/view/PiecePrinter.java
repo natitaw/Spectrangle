@@ -15,8 +15,6 @@ public class PiecePrinter {
         System.out.println(printPiece("RGB3"));
     }
 
-    // TODO add method for WWW1 input
-
     private static String printPiece(String s) {
         int val = Integer.parseInt(String.valueOf(s.charAt(3)));
         return printPiece(val, s.charAt(0), s.charAt(1), s.charAt(2));
@@ -63,7 +61,7 @@ public class PiecePrinter {
 
         List<String[]> pieceLineList = new ArrayList<>();
         String[] resultArray;
-        for (String t : ClientCommands.getClientTiles(clientObject)) {
+        for (String t : clientObject.getClientTiles()) {
             Piece tempPiece = new Piece(t);
             String pieceString = tempPiece.toPrinterString();
             String[] pieceLines = pieceString.split(Pattern.quote("\n"));
