@@ -90,7 +90,7 @@ public class ServerCommands {
      * @param sendingPeer The peer that sent the command
      */
     public static void sendChat(String[] args, Peer sendingPeer) {
-        if (sendingPeer.getChatEnabled()) {
+        if (sendingPeer.isChatEnabled()) {
             Room room = sendingPeer.getCurrentRoom();
             String content = String.join(" ", args);
             String command = "chat " + sendingPeer.getName() + " " + content;

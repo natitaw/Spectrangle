@@ -239,7 +239,7 @@ public class Server implements Runnable, ClientOrServer {
         for (Peer p : room.getPeerList()) {
 
             if (commandType.equals("chat")) {
-                if (p.getChatEnabled()) {
+                if (p.isChatEnabled()) {
                     p.sendMessage(command);
                 }
             } else {
