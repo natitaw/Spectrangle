@@ -131,11 +131,13 @@ public class CommandInterpreter {
                         TerminalInputHandler.clearScreen(parent);
                         parent.getPrinter().println("Game finished");
                         parent.getPrinter().println("Scoreboard:");
-                        for (int i = 1; i < ((args.length - 1) / 2); i++) {
-                            parent.getPrinter().println(args[i] + ": " + args[i + 1]);
+                        for (int i = 1; i <= ((args.length - 2) / 2); i++) {
+                            parent.getPrinter().println(args[i*2] + ": " + args[(i*2) + 1]);
                         }
+                        parent.getPrinter().println("Going back to lobby");
                     }
-
+                    ((Client) parent).getTerminalInputHandler().setState(TerminalInputHandler.InputState.COMMAND);
+                    ((Client) parent).getTerminalInputHandler().setInterrupted(true);
                     break;
                 case "chat":
                     String sender = args[0];
