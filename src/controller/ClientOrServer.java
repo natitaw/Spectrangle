@@ -16,15 +16,15 @@ public interface ClientOrServer {
 
     boolean getRunning();
 
-    enum Type {
-        CLIENT, SERVER
-    }
-
     PrintStream getPrinter();
 
     Type getType();
 
+    String getName();
+
     void setName(String s);
 
-    String getName();
+    enum Type {
+        CLIENT, SERVER
+    }
 }

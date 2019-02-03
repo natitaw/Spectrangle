@@ -1,6 +1,5 @@
 package test.GameTest;
 
-import model.Board;
 import model.BoardLocation;
 import model.ColorDefinition;
 import model.Piece;
@@ -12,39 +11,39 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BoardLocationTest {
 
-	private TileBag tilebag;
-	private BoardLocation b1;
-	private BoardLocation b2;
-	private Piece p1;
-	private Piece p2;
-	private Piece p3;
+    private TileBag tilebag;
+    private BoardLocation b1;
+    private BoardLocation b2;
+    private Piece p1;
+    private Piece p2;
+    private Piece p3;
 
 
     @BeforeEach
-	public void setup() {
-		this.tilebag = new TileBag(36);
-		tilebag.populateBag();
-		this.b1 = new BoardLocation(0, 1);
-		this.b2 = new BoardLocation(2, 6);
-		
-		Piece p1 = new Piece(ColorDefinition.WHITE, ColorDefinition.WHITE, ColorDefinition.WHITE, 1);
-		Piece p2 = new Piece(ColorDefinition.RED, ColorDefinition.RED, ColorDefinition.RED, 6);
-		Piece p3 = new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.PURPLE, 1);
+    public void setup() {
+        this.tilebag = new TileBag(36);
+        tilebag.populateBag();
+        this.b1 = new BoardLocation(0, 1);
+        this.b2 = new BoardLocation(2, 6);
 
-	}
+        Piece p1 = new Piece(ColorDefinition.WHITE, ColorDefinition.WHITE, ColorDefinition.WHITE, 1);
+        Piece p2 = new Piece(ColorDefinition.RED, ColorDefinition.RED, ColorDefinition.RED, 6);
+        Piece p3 = new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.PURPLE, 1);
+
+    }
 
     @Test
     void testGetScorePoint() {
         assertEquals(1, b1.getScorePoint());
         assertEquals(6, b2.getScorePoint());
     }
-    
+
     @Test
     void testGetPiece() {
-    	b1.movePiece(p1);
-    	b2.movePiece(p2);
-    	assertEquals(b1.getPiece(), p1);
-    	assertEquals(b2.getPiece(), p2);
+        b1.movePiece(p1);
+        b2.movePiece(p2);
+        assertEquals(b1.getPiece(), p1);
+        assertEquals(b2.getPiece(), p2);
     }
 
     @Test
@@ -70,10 +69,10 @@ class BoardLocationTest {
 
     @Test
     void testIsEmptySpot() {
-    	Piece p1 = new Piece(ColorDefinition.WHITE, ColorDefinition.WHITE, ColorDefinition.WHITE, 1);
-		
-		BoardLocation b1 = new BoardLocation(0, 1);
-		b1.movePiece(p1);
+        Piece p1 = new Piece(ColorDefinition.WHITE, ColorDefinition.WHITE, ColorDefinition.WHITE, 1);
+
+        BoardLocation b1 = new BoardLocation(0, 1);
+        b1.movePiece(p1);
         assertFalse(b1.isEmptySpot());
     }
 

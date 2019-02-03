@@ -20,12 +20,12 @@ import java.util.regex.Pattern;
  * @author Bit 4 - Group 4
  */
 public class Client implements ClientOrServer {
-    private  final Type type = ClientOrServer.Type.CLIENT;
-    private List<String> clientTiles;
-    private List<List<String>> otherTileList; // intend to use this for complicated AI
+    private final Type type = ClientOrServer.Type.CLIENT;
     private final boolean isSilent;
     private final TerminalInputHandler terminalInputHandler;
     private final boolean isAI;
+    private List<String> clientTiles;
+    private List<List<String>> otherTileList; // intend to use this for complicated AI
     private Thread terminalInputHandlerThread;
     private Peer clientPeer;
     private volatile boolean running;
@@ -43,7 +43,7 @@ public class Client implements ClientOrServer {
      * Else (normal) starts it normally
      * Then executes connect method
      *
-     * @param ip ip address to connect to in string format
+     * @param ip  ip address to connect to in string format
      * @param arg Arguments for construction in string format
      */
     public Client(String ip, String arg) {
@@ -209,6 +209,7 @@ public class Client implements ClientOrServer {
      * on constructor args.
      * Tries to connect to the IP and open a socket.
      * Starts a new thread on the terminalInputHandler.
+     *
      * @param ip ip address to connect to in sring format
      */
     private void connect(String ip) {
@@ -260,6 +261,7 @@ public class Client implements ClientOrServer {
 
     /**
      * Sends message to all peers (in this case, the only peer: server)
+     *
      * @param s message to send
      */
     public void sendMessageToAll(String s) {

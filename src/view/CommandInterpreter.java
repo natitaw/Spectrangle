@@ -22,6 +22,7 @@ public class CommandInterpreter {
 
     /**
      * CommandInterpreter constructor. Takes a ClientOrServer as input as its "parent".
+     *
      * @param parentInput parent of this class.
      */
     public CommandInterpreter(ClientOrServer parentInput) {
@@ -37,8 +38,9 @@ public class CommandInterpreter {
      * Reads input from networked peer. Seperates it into arguments (by spaces).
      * Then, depending on the "type' (server/client) of the parent, interprets the commands
      * And prints things to terminal, or executes a method somewhere else with the arguments.
+     *
      * @param inputString The string that was received from the peer.
-     * @param peer The peer this was received from.
+     * @param peer        The peer this was received from.
      */
     public void read(String inputString, Peer peer) {
         // separate by spaces
@@ -75,7 +77,7 @@ public class CommandInterpreter {
                     break;
                 case "tiles":
                     // if parent does not have a board, make it
-                    if (((Client) parent).getBoard()==null){
+                    if (((Client) parent).getBoard() == null) {
                         ClientCommands.makeBoard(((Client) parent));
                     }
 
@@ -132,7 +134,7 @@ public class CommandInterpreter {
                         parent.getPrinter().println("Game finished");
                         parent.getPrinter().println("Scoreboard:");
                         for (int i = 1; i <= ((args.length - 2) / 2); i++) {
-                            parent.getPrinter().println(args[i*2] + ": " + args[(i*2) + 1]);
+                            parent.getPrinter().println(args[i * 2] + ": " + args[(i * 2) + 1]);
                         }
                         parent.getPrinter().println("Going back to lobby");
                     }
@@ -150,7 +152,7 @@ public class CommandInterpreter {
                     break;
                 default:
 
-                        parent.getPrinter().println(peer.getName() + " sent an unknown command that was ignored: " + inputString);
+                    parent.getPrinter().println(peer.getName() + " sent an unknown command that was ignored: " + inputString);
 
                     break;
             }
@@ -193,7 +195,7 @@ public class CommandInterpreter {
                     break;
                 default:
 
-                        parent.getPrinter().println(peer.getName() + " sent an unknown command that was ignored: " + inputString);
+                    parent.getPrinter().println(peer.getName() + " sent an unknown command that was ignored: " + inputString);
 
                     break;
             }

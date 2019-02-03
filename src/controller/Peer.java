@@ -36,8 +36,8 @@ public class Peer implements Runnable, Comparable<Peer> {
      * Constructor. Creates a Peer object based in the given parameters
      * And starts a thread on itself for reading lines from the socket
      *
-     * @param sockArg Socket to be used for communication with this peer
-     * @param type Whether the parent is a client or server
+     * @param sockArg     Socket to be used for communication with this peer
+     * @param type        Whether the parent is a client or server
      * @param parentInput The parent to be used for this peer
      */
     public Peer(Socket sockArg, ClientOrServer.Type type, ClientOrServer parentInput) {
@@ -188,6 +188,7 @@ public class Peer implements Runnable, Comparable<Peer> {
 
     /**
      * Increment score by i
+     *
      * @param i Value to be added to score
      */
     public void incScore(int i) {
@@ -221,10 +222,9 @@ public class Peer implements Runnable, Comparable<Peer> {
     }
 
 
-
-
     /**
      * Sends a message over network to the peer.
+     *
      * @param s String to be sent
      */
     public void sendMessage(String s) {
@@ -234,6 +234,7 @@ public class Peer implements Runnable, Comparable<Peer> {
     /**
      * If the peer is in a room, removes it from this room. Then adds it to the new room, and
      * sets the peer's currentRoom field to this new room.
+     *
      * @param room The room the peer should be moved to.
      */
     public void moveToRoom(Room room) {
@@ -246,6 +247,7 @@ public class Peer implements Runnable, Comparable<Peer> {
 
     /**
      * Override of Comparable.compareTo for sorting reasons. GameRoom sorts the peers by name.
+     *
      * @param p Peer to be compared to
      * @return returns result of compareTo of name Strings.
      */

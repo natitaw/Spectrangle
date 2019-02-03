@@ -24,9 +24,9 @@ public class ClientCommands {
      * Method some time after client receives the "tiles" command from the server
      * Saves the parent client's current tiles in the Client "clientTiles" field.
      *
-     * @author Bit 4 - Group 4
-     * @param args Arguments sent with the "tiles" command
+     * @param args         Arguments sent with the "tiles" command
      * @param clientObject Parent client object.
+     * @author Bit 4 - Group 4
      */
     public static void setTiles(String[] args, Client clientObject) {
         String[] middleArgs = Arrays.copyOfRange(args, 0, args.length - 2);
@@ -43,9 +43,9 @@ public class ClientCommands {
     }
 
 
-
     /**
      * Sets the client's board to a new, empty board
+     *
      * @param clientObject client to do this for
      */
     public static void makeBoard(Client clientObject) {
@@ -53,15 +53,14 @@ public class ClientCommands {
     }
 
 
-
     /**
      * Method some time after client receives the "tiles" command from the server
      * Sets opponents' current tiles in the Client "otherTiles" field.
      * Prints them in the shortened format specified in protocol, e.g. WWW1 or RRR6.
      *
-     * @author Bit 4 - Group 4
-     * @param args Arguments sent with the "tiles" command
+     * @param args         Arguments sent with the "tiles" command
      * @param clientObject Parent client object.
+     * @author Bit 4 - Group 4
      */
     public static void otherTiles(String[] args, Client clientObject) {
         clientObject.getPrinter().println("Other players have tiles:");
@@ -94,7 +93,7 @@ public class ClientCommands {
      * Then returns the move (as string "place XX on YY") with highest score.
      *
      * @param clientObject Client to generate this move for
-     * @param tileBag Client's tiles to generate this move for
+     * @param tileBag      Client's tiles to generate this move for
      * @return the best move possible in string representation i.e. "place RRR6 on 20"
      */
     public static String bestMove(TileBag tileBag, Client clientObject) {
@@ -105,7 +104,7 @@ public class ClientCommands {
 
         while (itr.hasNext()) {
             Piece piece = (Piece) itr.next();
-            if (piece.getValue()>0) {
+            if (piece.getValue() > 0) {
                 List<Piece> pieceRotations = new ArrayList<>();
                 pieceRotations.add(piece);
                 pieceRotations.add(piece.getRotated());
@@ -137,7 +136,7 @@ public class ClientCommands {
      * Then returns that move
      *
      * @param clientObject Client to generate this move for
-     * @param tileBag Client's tiles to generate this move for
+     * @param tileBag      Client's tiles to generate this move for
      * @return the first move found in string representation i.e. "place RRR6 on 20"
      */
     private static String randomMove(TileBag tileBag, Client clientObject) {
@@ -199,9 +198,9 @@ public class ClientCommands {
         int totalTilesOnBoardAndPlayers = 36;
 
         // for every empty location on board, subtract a tile from it
-        for (int i =0; i<36; i++){
-            if (clientObject.getBoard().isEmptyLocation(i)){
-                totalTilesOnBoardAndPlayers-=1;
+        for (int i = 0; i < 36; i++) {
+            if (clientObject.getBoard().isEmptyLocation(i)) {
+                totalTilesOnBoardAndPlayers -= 1;
             }
         }
 
@@ -211,34 +210,34 @@ public class ClientCommands {
 
         // or if random value <= 0.5, or room tilebag must be empty,
         // or player tilebag empty, skip turn
-        if (random <= 0.5 || totalTilesOnBoardAndPlayers >=36 ||
+        if (random <= 0.5 || totalTilesOnBoardAndPlayers >= 36 ||
             tiles.equals(TileBag.generateBag(Arrays.asList("null", "null", "null", "null")))) {
             clientObject.sendMessageToAll("skip");
         } else {
 
-            Piece tile=null;
-            boolean tileFound=false;
+            Piece tile = null;
+            boolean tileFound = false;
             while (!tileFound) {
                 double secondRandom = Math.random();
                 if (secondRandom < 0.25) {
-                    if (tiles.viewPiece(0)!=null && tiles.viewPiece(0).getValue()>0) {
+                    if (tiles.viewPiece(0) != null && tiles.viewPiece(0).getValue() > 0) {
                         tile = tiles.viewPiece(0);
-                        tileFound=true;
+                        tileFound = true;
                     }
                 } else if (secondRandom < 0.5) {
-                    if (tiles.viewPiece(1)!=null && tiles.viewPiece(1).getValue()>0) {
+                    if (tiles.viewPiece(1) != null && tiles.viewPiece(1).getValue() > 0) {
                         tile = tiles.viewPiece(1);
-                        tileFound=true;
+                        tileFound = true;
                     }
                 } else if (secondRandom < 0.75) {
-                    if (tiles.viewPiece(2)!=null && tiles.viewPiece(2).getValue()>0) {
+                    if (tiles.viewPiece(2) != null && tiles.viewPiece(2).getValue() > 0) {
                         tile = tiles.viewPiece(2);
-                        tileFound=true;
+                        tileFound = true;
                     }
                 } else {
-                    if (tiles.viewPiece(3)!=null && tiles.viewPiece(3).getValue()>0) {
+                    if (tiles.viewPiece(3) != null && tiles.viewPiece(3).getValue() > 0) {
                         tile = tiles.viewPiece(3);
-                        tileFound=true;
+                        tileFound = true;
                     }
                 }
             }

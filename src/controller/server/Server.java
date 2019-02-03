@@ -38,8 +38,8 @@ public class Server implements Runnable, ClientOrServer {
      * which is the "lobby". Checks the arguments. If the server was started as part of a
      * singleplayer game, its print statements are silenced.
      *
-     * @author Bit 4 - Group 4
      * @param arg Arguments for starting server, such as "singleplayer"
+     * @author Bit 4 - Group 4
      * @see TerminalInputHandler
      */
     public Server(String arg) {
@@ -163,6 +163,7 @@ public class Server implements Runnable, ClientOrServer {
      * Method used for creating a new instance of Room, to put peers in.
      * Its index will be equal to the current size of roomList (thus, one higher than the highest)
      * Then adds it to the list of rooms.
+     *
      * @return the room that was created.
      * @author Bit 4 - Group 4
      */
@@ -176,6 +177,7 @@ public class Server implements Runnable, ClientOrServer {
      * Method used for creating a new instance of GameRoom, to put peers in and play a game.
      * Its index will be equal to the current size of roomList (thus, one higher than the highest)
      * Then adds it to the list of rooms.
+     *
      * @return the GameRoom that was created.
      * @author Bit 4 - Group 4
      */
@@ -221,6 +223,7 @@ public class Server implements Runnable, ClientOrServer {
 
     /**
      * Sends a message to all peers in peerList
+     *
      * @param s The message to send
      */
     public void sendMessageToAll(String s) {
@@ -232,8 +235,8 @@ public class Server implements Runnable, ClientOrServer {
     /**
      * Sends a message to all peers in a room
      *
-     * @param command The command to be sent
-     * @param room The room of which the players must receive the commands
+     * @param command     The command to be sent
+     * @param room        The room of which the players must receive the commands
      * @param commandType Type of command (because not all players want to receive chat)
      */
     void sendMessageToRoom(String command, Room room, String commandType) {
@@ -256,7 +259,6 @@ public class Server implements Runnable, ClientOrServer {
      * Cloes connections to all peers.
      * Closes the server socket.
      * Closes the terminal input handler.
-     *
      */
     public void shutDown() {
         this.running = false;

@@ -25,6 +25,7 @@ public class TileBag {
 
     /**
      * Generates a new TileBag from a list of tiles in shortened string form (e.g. RRR6)
+     *
      * @param stringList List of strings of tiles
      * @return a new TileBag that contains these tiles as Piece objects
      */
@@ -56,6 +57,7 @@ public class TileBag {
 
     /**
      * Views a Piece object out of this TileBag from its ArrayList of pieces
+     *
      * @param i Index to be used to view a Piece from the TileBag
      * @return Piece object to be viewed from TileBag
      */
@@ -68,6 +70,7 @@ public class TileBag {
 
     /**
      * Fetches a Piece object out of this TileBag from its ArrayList of pieces
+     *
      * @param index Index to be used to fetch a Piece from the TileBag
      * @return Piece object fetched from TileBag
      */
@@ -85,6 +88,7 @@ public class TileBag {
 
     /**
      * Checks if a given Piece exists (matches with) in the TileBag
+     *
      * @param inputPiece Piece to be checked against existing pieces in TileBag
      * @return The location of the match in the TileBag
      */
@@ -104,9 +108,10 @@ public class TileBag {
 
     /**
      * Adds a piece in the TileBag
+     *
      * @param p
      */
-    
+
     //@ requires p != null;
     //@ ensures \old(this.pieces.size() + 1) == this.pieces.size();
     public void addPiece(Piece p) {
@@ -116,10 +121,11 @@ public class TileBag {
     /**
      * equals method for checking if this bag equals another
      * Just compars the inner ArrayLists for equality
+     *
      * @param obj The other object (usuall a TileBag) to compare to
      * @return boolean that specifies whether they are equal
      */
-   //@ also requires obj != null;
+    //@ also requires obj != null;
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof TileBag) {

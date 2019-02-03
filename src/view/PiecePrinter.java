@@ -17,6 +17,7 @@ public class PiecePrinter {
     /**
      * Alternate method for printPiece. Allows using a short string representation as
      * specified in the protocol (RRR6 for example) to represent a piece.
+     *
      * @param s String representation of piece
      * @return ASCII art of piece.
      */
@@ -27,10 +28,11 @@ public class PiecePrinter {
 
     /**
      * Method that returns ASCII art of piece.
-     * @param value value of piece
+     *
+     * @param value      value of piece
      * @param verticalIn vertical color (Character) of piece
-     * @param leftIn left color (Character) of piece
-     * @param rightIn right color (Character) of piece
+     * @param leftIn     left color (Character) of piece
+     * @param rightIn    right color (Character) of piece
      * @return ASCII art of piece
      */
     public static String printPiece(Integer value, Character verticalIn, Character leftIn, Character rightIn) {
@@ -58,6 +60,7 @@ public class PiecePrinter {
 
     /**
      * Returns a string for printing an "empty" piece in the printTiles method
+     *
      * @return a strng of 6 lines with the same amount of spaces.
      */
     public static String printEmptyPiece() {
@@ -73,6 +76,7 @@ public class PiecePrinter {
      * Prints 4 ASCII art representations of pieces next to each other
      * And adds numbers [1] [2] [3] [4] below it
      * For use in choosing a piece in TerminalInputHandler
+     *
      * @param clientObject client that this is called from
      */
     public static void printTiles(Client clientObject) {

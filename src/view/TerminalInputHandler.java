@@ -30,6 +30,7 @@ public class TerminalInputHandler implements Runnable {
      * Constructor. Sets fields as specified in parameters.
      * If parent is a server, starts in the COMMAND state.
      * If it's a client, start in NAME state.
+     *
      * @param inputParent The parent of this object.
      */
     public TerminalInputHandler(ClientOrServer inputParent) {
@@ -44,8 +45,9 @@ public class TerminalInputHandler implements Runnable {
     /**
      * Constructor that sets the fields as specified in parameters
      * Also sets the state as specified in parameters.
+     *
      * @param inputParent parent of this object
-     * @param firstState state this handler should start in.
+     * @param firstState  state this handler should start in.
      */
     public TerminalInputHandler(ClientOrServer inputParent, InputState firstState) {
         this(inputParent);
@@ -54,6 +56,7 @@ public class TerminalInputHandler implements Runnable {
 
     /**
      * Clears the terminal (does not work in IntelliJ run/debug windows)
+     *
      * @param parent Parent to clear the screen of
      */
     public static void clearScreen(ClientOrServer parent) {
@@ -90,6 +93,7 @@ public class TerminalInputHandler implements Runnable {
 
     /**
      * Set the state of this handler
+     *
      * @param state the new state
      */
     public void setState(InputState state) {
@@ -306,6 +310,7 @@ public class TerminalInputHandler implements Runnable {
 
     /**
      * Setter for interrupted field
+     *
      * @param interrupted new value of interrupted field
      */
     public void setInterrupted(boolean interrupted) {

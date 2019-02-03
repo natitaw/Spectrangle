@@ -2,6 +2,7 @@ package model;
 
 /**
  * Enum that describes colors of pieces that may be placed on the board/
+ *
  * @author Bit 4 - Group 4
  */
 public enum ColorDefinition {
@@ -11,11 +12,11 @@ public enum ColorDefinition {
      * Each Definition has its own toString() method
      */
 
-	RED,
-	BLUE,
-	GREEN,
-	YELLOW,
-	PURPLE,
-	WHITE
+    RED,
+    BLUE,
+    GREEN,
+    YELLOW,
+    PURPLE,
+    WHITE
 
 }

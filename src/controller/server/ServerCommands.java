@@ -20,8 +20,8 @@ public class ServerCommands {
     /**
      * ServerCommands constructor.
      *
-     * @author Bit 4 - Group 4
      * @param inputServerObject Parent server object.
+     * @author Bit 4 - Group 4
      */
     public static void setServerObject(Server inputServerObject) {
         serverObject = inputServerObject;
@@ -31,9 +31,9 @@ public class ServerCommands {
      * Method to be exected if a client executes the "connect" command.
      * Changes client's name and (maybe) enables chat.
      *
-     * @author Bit 4 - Group 4
      * @param args Arguments sent after the "connect" command by the client
      * @param peer The peer that sent the command
+     * @author Bit 4 - Group 4
      */
     public static void clientConnects(String[] args, Peer peer) {
         if (args.length > 2) {
@@ -85,9 +85,9 @@ public class ServerCommands {
      * method used when a peer tries to send chat. Sends chat to all peers in the room
      * that want to receive chat.
      *
-     * @author Bit 4 - Group 4
-     * @param args Arguments sent after the "connect" command by the client
+     * @param args        Arguments sent after the "connect" command by the client
      * @param sendingPeer The peer that sent the command
+     * @author Bit 4 - Group 4
      */
     public static void sendChat(String[] args, Peer sendingPeer) {
         if (sendingPeer.isChatEnabled()) {
@@ -106,9 +106,9 @@ public class ServerCommands {
      * Checks if other players are waiting for games with the same amount of players.
      * If so, runs createGame. Repeats this until there are no new games that can be created.
      *
-     * @author Bit 4 - Group 4
      * @param args Arguments sent after the "connect" command by the client
      * @param peer The peer that sent the command
+     * @author Bit 4 - Group 4
      */
     public static void clientRequests(String[] args, Peer peer) {
         int preferredNrOfPlayers = Integer.parseInt(args[0]);
@@ -161,9 +161,8 @@ public class ServerCommands {
      * Method used when a peer has sent the "request" command and the amount they sent is valid
      * Sends to them which other peers are waiting for a game of the same size
      *
-     * @author Bit 4 - Group 4
-
      * @param peer The peer that sent the command
+     * @author Bit 4 - Group 4
      */
     private static void sendWaiting(Peer peer) {
         Room lobby = serverObject.getRoomList().get(0);
@@ -184,8 +183,8 @@ public class ServerCommands {
      * Sends them the "start with" command with the list of all playernames in this room.
      * Start a new thread on this room to handle all game logic.
      *
-     * @author Bit 4 - Group 4
      * @param peerList The list of peers to be included in this game
+     * @author Bit 4 - Group 4
      */
     private static void createGame(List<Peer> peerList) {
 
