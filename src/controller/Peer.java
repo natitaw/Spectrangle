@@ -11,7 +11,11 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
+ * Peer class. Is runnable so that a thread can run on it for networked communication in parallel
+ * to the rest of the program.
+ * Represents a connection to another computer.
  *
+ * @author Bit 4 - Group 4
  */
 public class Peer implements Runnable, Comparable<Peer> {
     private Socket sock;
@@ -29,9 +33,12 @@ public class Peer implements Runnable, Comparable<Peer> {
     private int score;
 
     /**
-     * Constructor. creates a peer object based in the given parameters.
+     * Constructor. Creates a Peer object based in the given parameters
+     * And starts a thread on itself for reading lines from the socket
      *
-     * @param sockArg Socket of the controller.Peer-proces
+     * @param sockArg Socket to be used for communication with this peer
+     * @param type Whether the parent is a client or server
+     * @param parentInput The parent to be used for this peer
      */
     public Peer(Socket sockArg, ClientOrServer.Type type, ClientOrServer parentInput) {
         try {
@@ -49,7 +56,7 @@ public class Peer implements Runnable, Comparable<Peer> {
 
             if (type == ClientOrServer.Type.CLIENT) {
                 name = "Server";
-                chatEnabled = true; // Client leaves all communication with its "Peer", the server, enabled by default
+                chatEnabled = true; // Client leaves all communication with  "Peer" (Server) enabled
             } else {
                 name = "Unknown client";
                 chatEnabled = false;
@@ -188,10 +195,13 @@ public class Peer implements Runnable, Comparable<Peer> {
     }
 
     /**
-     *
+     * If the peer and its parent aren't shutting down, tries to read the next line
+     * from the socket's BufferedReader. If it reads empty data, it shuts down the peer.
+     * Else it sends it to the peer's CommandInterpreter instance.
      */
     public void run() {
         while (running && parent.getRunning()) {
+
             try {
                 String s1 = in.readLine();
                 if (s1 == null || s1.equals("")) {
@@ -211,17 +221,20 @@ public class Peer implements Runnable, Comparable<Peer> {
     }
 
 
+
+
     /**
-     *
-     * @param s
+     * Sends a message over network to the peer.
+     * @param s String to be sent
      */
     public void sendMessage(String s) {
         out.println(s);
     }
 
     /**
-     *
-     * @param room
+     * If the peer is in a room, removes it from this room. Then adds it to the new room, and
+     * sets the peer's currentRoom field to this new room.
+     * @param room The room the peer should be moved to.
      */
     public void moveToRoom(Room room) {
         if (this.currentRoom != null) {
@@ -231,15 +244,21 @@ public class Peer implements Runnable, Comparable<Peer> {
         currentRoom = room;
     }
 
+    /**
+     * Override of Comparable.compareTo for sorting reasons. GameRoom sorts the peers by name.
+     * @param p Peer to be compared to
+     * @return returns result of compareTo of name Strings.
+     */
+    @Override
+    public int compareTo(Peer p) {
+        return this.name.compareTo(p.getName());
+    }
 
     /**
-     * Closes the controller, the sockets will be terminated
+     * Ends the thread running on the peer, and closes the socket.
      */
     public void close() {
         this.running = false;
-
-        streamInputHandler.interrupt();
-        parent.getPrinter().println("Connection reading thread for " + name + " closed");
         try {
             sock.close();
             parent.getPrinter().println("Socket for controller " + name + " closed");
@@ -247,19 +266,14 @@ public class Peer implements Runnable, Comparable<Peer> {
             parent.getPrinter().println("Error in closing socket for " + name);
 
         }
-        // TODO if server, remove peer from lists, rooms and such. Close any model rooms it is in
+        parent.getPrinter().println("Connection reading thread for " + name + " closed");
+
+        streamInputHandler.interrupt();
 
     }
 
-    /**
-     *
-     * @param p
-     * @return
-     */
-    // used for sorting reasons in model logic
-    @Override
-    public int compareTo(Peer p) {
-        return this.name.compareTo(p.getName());
-    }
 }
+
+
+
 
