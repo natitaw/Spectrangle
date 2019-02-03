@@ -39,6 +39,7 @@ public class Server implements Runnable, ClientOrServer {
      * singleplayer game, its print statements are silenced.
      *
      * @author Bit 4 - Group 4
+     * @param arg Arguments for starting server, such as "singleplayer"
      * @see TerminalInputHandler
      */
     public Server(String arg) {
