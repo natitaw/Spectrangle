@@ -2,8 +2,8 @@ package controller.client;
 
 import controller.ClientOrServer;
 import controller.Peer;
-import view.TerminalInputHandler;
 import model.Board;
+import view.TerminalInputHandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,15 +15,14 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * controller.client.Client class for a simple client-server application
+ * Client class. Used for connecting to a server
  *
- * @author Theo Ruys
- * @version 2005.02.21
+ * @author Bit 4 - Group 4
  */
 public class Client implements ClientOrServer {
     private static final Type type = ClientOrServer.Type.CLIENT;
-
-
+    private static List<String> clientTiles;
+    private static List<List<String>> otherTileList; // intend to use this for complicated AI
     private final boolean isSilent;
     private final TerminalInputHandler terminalInputHandler;
     private final boolean isAI;
@@ -35,11 +34,10 @@ public class Client implements ClientOrServer {
     private int prefNrPlayers;
     private double difficulty;
     private PrintStream printer;
-    private static List<String> clientTiles;
-    private static List<List<String>> otherTileList; // intend to use this for complicated AI
 
     /**
-     * Starts a controller.client.Client application.
+     * @param ip
+     * @param arg
      */
     public Client(String ip, String arg) {
         String[] argArray = arg.split(Pattern.quote(" "));
@@ -69,39 +67,132 @@ public class Client implements ClientOrServer {
 
     }
 
+    /**
+     * @return
+     */
     public int getPrefNrPlayers() {
         return prefNrPlayers;
     }
 
+    /**
+     * @return
+     */
     public boolean isAI() {
         return isAI;
     }
 
+    /**
+     * @return
+     */
     public double getDifficulty() {
         return difficulty;
     }
 
+    /**
+     * @return
+     */
     public TerminalInputHandler getTerminalInputHandler() {
         return terminalInputHandler;
     }
 
-
+    /**
+     * @return
+     */
     public List<String> getClientTiles() {
         return clientTiles;
     }
 
+    /**
+     * @param clientTiles
+     */
     public void setClientTiles(List<String> clientTiles) {
         this.clientTiles = clientTiles;
     }
 
+    /**
+     * @return
+     */
     public List<List<String>> getOtherTileList() {
         return otherTileList;
     }
 
+    /**
+     * @param otherTileList
+     */
     public void setOtherTileList(List<List<String>> otherTileList) {
         this.otherTileList = otherTileList;
     }
 
+    /**
+     *
+     * @return
+     */
+    public Board getBoard() {
+        return board;
+    }
+
+    /**
+     *
+     * @param board
+     */
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public PrintStream getPrinter() {
+        return printer;
+    }
+
+    /**
+     *
+     * @param s
+     */
+    public void sendMessageToAll(String s) {
+        clientPeer.sendMessage(s);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     *
+     * @param name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public synchronized boolean getRunning() {
+        return this.running;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Type getType() {
+        return type;
+    }
+
+    /**
+     *
+     * @param ip
+     */
     private void connect(String ip) {
         InetAddress addr = null;
         int port = 4000;
@@ -146,40 +237,6 @@ public class Client implements ClientOrServer {
         terminalInputHandlerThread = new Thread(terminalInputHandler);
         terminalInputHandlerThread.start();
         printer.println("Connected to server");
-    }
-
-    public Board getBoard() {
-        return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-
-    @Override
-    public PrintStream getPrinter() {
-        return printer;
-    }
-
-    public void sendMessageToAll(String s) {
-        clientPeer.sendMessage(s);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public synchronized boolean getRunning() {
-        return this.running;
-    }
-
-    public Type getType() {
-        return type;
     }
 
 

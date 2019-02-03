@@ -99,6 +99,21 @@ public class TileBag {
     }
 
     /**
+     * equals method for checking if this bag equals another
+     * Just compars the inner ArrayLists for equality
+     * @param obj The other object (usuall a TileBag) to compare to
+     * @return boolean that specifies whether they are equal
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof TileBag) {
+            return ((TileBag) obj).getBag().equals(getBag());
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * This function will be called in the constructor and it will populate the bag
      * according to the rules of Spectrangle and includes Joker
      */
