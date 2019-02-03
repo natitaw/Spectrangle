@@ -297,5 +297,12 @@ class BoardTest {
 		assertNotNull(b.getBoardLocation(0));
 		assertNull(b.getBoardLocation(100));
 	}
+	
+	@Test
+	void testToPrinterString() {
+		String printed = b.toPrinterString();
+		assertNotNull(printed);
+	}
+	
 
 }

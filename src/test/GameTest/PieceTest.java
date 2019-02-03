@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 class PieceTest {
 
 	private Piece p;
+	private Piece p2;
+	private Piece anotherPiece;
 	private Piece rotated1x;
 	private Piece rotated2x;
 	private TileBag tilebag;
@@ -27,7 +29,8 @@ class PieceTest {
 	public void setup() {
 		this.tilebag = new TileBag(36);
 		this.p = new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.PURPLE, 1);
-
+		p2 = new Piece("null");
+		anotherPiece = new Piece("RRRY");
 		left = p.getColors().get(0); // Green
 		right = p.getColors().get(1); // Red
 		bottom = p.getColors().get(2); // Purple
@@ -108,5 +111,16 @@ class PieceTest {
 		Piece joker = new Piece(ColorDefinition.WHITE, ColorDefinition.WHITE, ColorDefinition.WHITE, 1);
 
 		assertEquals(-1, p.equalsRotated(joker));
+	}
+	@Test
+	void testToPrinterString() {
+		String printed = p.toPrinterString();
+		assertNotNull(printed);
+	}
+	
+	@Test
+	void testToString() {
+		String printed = p.toString();
+		assertNotNull(printed);
 	}
 }
