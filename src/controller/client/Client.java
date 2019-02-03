@@ -2,8 +2,8 @@ package controller.client;
 
 import controller.ClientOrServer;
 import controller.Peer;
-import view.TerminalInputHandler;
 import model.Board;
+import view.TerminalInputHandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,15 +15,14 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * controller.client.Client class for a simple client-server application
+ * Client class. Used for connecting to a server
  *
- * @author Theo Ruys
- * @version 2005.02.21
+ * @author Bit 4 - Group 4
  */
 public class Client implements ClientOrServer {
     private static final Type type = ClientOrServer.Type.CLIENT;
-
-
+    private static List<String> clientTiles;
+    private static List<List<String>> otherTileList; // intend to use this for complicated AI
     private final boolean isSilent;
     private final TerminalInputHandler terminalInputHandler;
     private final boolean isAI;
@@ -35,11 +34,17 @@ public class Client implements ClientOrServer {
     private int prefNrPlayers;
     private double difficulty;
     private PrintStream printer;
-    private static List<String> clientTiles;
-    private static List<List<String>> otherTileList; // intend to use this for complicated AI
 
     /**
-     * Starts a controller.client.Client application.
+     * Constructor for client class.
+     * If argument 0 is singleplayer, starts TerminalInputHandler in SINGLEPLAYER state.
+     * Elseif argument is AI starts in AI state. Checks other args for difficulty and whether
+     * print statements should be silenced
+     * Else (normal) starts it normally
+     * Then executes connect method
+     *
+     * @param ip ip address to connect to in string format
+     * @param arg Arguments for construction in string format
      */
     public Client(String ip, String arg) {
         String[] argArray = arg.split(Pattern.quote(" "));
@@ -69,39 +74,143 @@ public class Client implements ClientOrServer {
 
     }
 
-    public int getPrefNrPlayers() {
-        return prefNrPlayers;
+    /**
+     * Gets type
+     *
+     * @return value of type
+     */
+    public Type getType() {
+        return type;
     }
 
-    public boolean isAI() {
-        return isAI;
+    /**
+     * Gets clientTiles
+     *
+     * @return value of clientTiles
+     */
+    public static List<String> getClientTiles() {
+        return clientTiles;
     }
 
-    public double getDifficulty() {
-        return difficulty;
+    /**
+     * Sets clientTiles to clientTiles
+     *
+     * @param clientTiles new value of clientTiles
+     */
+    public static void setClientTiles(List<String> clientTiles) {
+        Client.clientTiles = clientTiles;
     }
 
+    /**
+     * Gets otherTileList
+     *
+     * @return value of otherTileList
+     */
+    public static List<List<String>> getOtherTileList() {
+        return otherTileList;
+    }
+
+    /**
+     * Sets otherTileList to otherTileList
+     *
+     * @param otherTileList new value of otherTileList
+     */
+    public static void setOtherTileList(List<List<String>> otherTileList) {
+        Client.otherTileList = otherTileList;
+    }
+
+    /**
+     * Gets terminalInputHandler
+     *
+     * @return value of terminalInputHandler
+     */
     public TerminalInputHandler getTerminalInputHandler() {
         return terminalInputHandler;
     }
 
-
-    public List<String> getClientTiles() {
-        return clientTiles;
+    /**
+     * Gets isAI
+     *
+     * @return value of isAI
+     */
+    public boolean isAI() {
+        return isAI;
     }
 
-    public void setClientTiles(List<String> clientTiles) {
-        this.clientTiles = clientTiles;
+    /**
+     * Gets name
+     *
+     * @return value of name
+     */
+    @Override
+    public String getName() {
+        return name;
     }
 
-    public List<List<String>> getOtherTileList() {
-        return otherTileList;
+    /**
+     * Sets name to name
+     *
+     * @param name new value of name
+     */
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setOtherTileList(List<List<String>> otherTileList) {
-        this.otherTileList = otherTileList;
+    /**
+     * Gets board
+     *
+     * @return value of board
+     */
+    public Board getBoard() {
+        return board;
     }
 
+    /**
+     * Sets board to board
+     *
+     * @param board new value of board
+     */
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    /**
+     * Gets prefNrPlayers
+     *
+     * @return value of prefNrPlayers
+     */
+    public int getPrefNrPlayers() {
+        return prefNrPlayers;
+    }
+
+    /**
+     * Gets difficulty
+     *
+     * @return value of difficulty
+     */
+    public double getDifficulty() {
+        return difficulty;
+    }
+
+    /**
+     * Gets printer
+     *
+     * @return value of printer
+     */
+    @Override
+    public PrintStream getPrinter() {
+        return printer;
+    }
+
+    /**
+     * Connect method.
+     * Creates a new PrintStream that is either silent or just a regular System.out depending
+     * on constructor args.
+     * Tries to connect to the IP and open a socket.
+     * Starts a new thread on the terminalInputHandler.
+     * @param ip ip address to connect to in sring format
+     */
     private void connect(String ip) {
         InetAddress addr = null;
         int port = 4000;
@@ -148,41 +257,24 @@ public class Client implements ClientOrServer {
         printer.println("Connected to server");
     }
 
-    public Board getBoard() {
-        return board;
-    }
 
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-
-    @Override
-    public PrintStream getPrinter() {
-        return printer;
-    }
-
+    /**
+     * Sends message to all peers (in this case, the only peer: server)
+     * @param s message to send
+     */
     public void sendMessageToAll(String s) {
         clientPeer.sendMessage(s);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @Override
-    public synchronized boolean getRunning() {
-        return this.running;
+    public boolean getRunning() {
+        return running;
     }
 
-    public Type getType() {
-        return type;
-    }
-
-
+    /**
+     * Shuts down server by setting running fields to false.
+     * Closes terminalInputHandler thread. Then closes peer object.
+     */
     @Override
     public void shutDown() {
         this.running = false;
@@ -190,7 +282,8 @@ public class Client implements ClientOrServer {
 
         printer.println("Trying to shut down");
         try {
-            terminalInputHandlerThread.interrupt();
+            terminalInputHandler.setInterrupted(true);
+            terminalInputHandlerThread.join();
             printer.println("Closed terminal input handling thread");
         } catch (Exception e) {
             Thread.currentThread().interrupt();

@@ -6,6 +6,8 @@ import model.EmptyBagException;
 import model.Piece;
 import model.TileBag;
 
+import java.io.IOException;
+import java.net.SocketException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -128,6 +130,7 @@ public class GameRoom extends Room implements Runnable {
      *
      * @param player The Peer instance to check the valid moves for
      * @author Bit 4 - Group 4
+     * @return the boolean that specifies if the player has valid moves
      */
     private boolean hasValidMoves(Peer player) {
         boolean result = false;
@@ -159,6 +162,7 @@ public class GameRoom extends Room implements Runnable {
      * can place tiles.
      *
      * @author Bit 4 - Group 4
+     * @return The boolean that specified if the game has ended
      */
     private boolean checkIfGameHasEnded() {
         boolean result = false;
@@ -304,7 +308,7 @@ public class GameRoom extends Room implements Runnable {
     }
 
     /**
-     * Checks if all peers are still connected. If a peer has disconnected (has its isRunning field
+     * Checks if all peers are still connected. If a peer has disconnected (has its running field
      * set to false by another thread that handles connections) then it is removed from the peerList
      * and afterwards the game is ended using the peerDisconnected method.
      */
@@ -316,6 +320,8 @@ public class GameRoom extends Room implements Runnable {
                 allRunning = false;
                 disconnectedPeerName = p.getName();
                 peerList.remove(p);
+                serverObject.getPeerList().remove(p);
+                p.close();
             }
         }
         if (!allRunning) {

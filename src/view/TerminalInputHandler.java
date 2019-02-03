@@ -4,6 +4,7 @@ import controller.ClientOrServer;
 import controller.client.Client;
 import controller.client.ClientCommands;
 import model.Piece;
+import model.TileBag;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -178,11 +179,13 @@ public class TerminalInputHandler implements Runnable {
                             parent.getPrinter().println("Or type \"hint\" for a hint");
                             s = readString();
                             if (s.equals("hint") || s.equals("Hint") || s.equals("h") || s.equals("H")) {
-                                parent.getPrinter().println(ClientCommands.bestMove(ClientCommands.generateBag(ClientCommands.getClientTiles(((Client) parent))), ((Client) parent)));
+                                parent.getPrinter().println(ClientCommands.bestMove(
+                                    TileBag.generateBag(((Client) parent).getClientTiles()),
+                                    (Client) parent));
                                 state = TURN;
                             } else {
                                 tempPieceIndex = Integer.parseInt(s) - 1;
-                                tempPiece = new Piece(ClientCommands.getClientTiles(((Client) parent)).get(tempPieceIndex));
+                                tempPiece = new Piece(((Client) parent).getClientTiles().get(tempPieceIndex));
                                 inputFinished = true;
                                 state = TURN2;
                             }
@@ -201,12 +204,12 @@ public class TerminalInputHandler implements Runnable {
                         s = readString();
                         if (s.equals("R") || s.equals("r")) {
                             tempPiece.rotate();
-                            ClientCommands.getClientTiles(((Client) parent)).set(tempPieceIndex, tempPiece.toString());
+                            ((Client) parent).getClientTiles().set(tempPieceIndex, tempPiece.toString());
 
                             state = TURN;
                         } else if (s.equals("RR") || s.equals("rr")) {
                             tempPiece.rotate2x();
-                            ClientCommands.getClientTiles(((Client) parent)).set(tempPieceIndex, tempPiece.toString());
+                            ((Client) parent).getClientTiles().set(tempPieceIndex, tempPiece.toString());
                             state = TURN;
                         } else if (((Client) parent).getBoard().isValidMove(Integer.parseInt(s), tempPiece)) {
                             parent.sendMessageToAll("place " + tempPiece.toString() + " on " + s);
@@ -235,7 +238,7 @@ public class TerminalInputHandler implements Runnable {
                             } else if (s.equals("EXIT")) {
 
                             } else {
-                                Piece tileToReplace = new Piece(ClientCommands.getClientTiles(((Client) parent)).get(Integer.parseInt(s) - 1));
+                                Piece tileToReplace = new Piece(((Client) parent).getClientTiles().get(Integer.parseInt(s) - 1));
                                 parent.sendMessageToAll("exchange " + tileToReplace.toString());
                                 moveFinished2 = true;
                             }

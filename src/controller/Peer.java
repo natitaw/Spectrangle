@@ -10,6 +10,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+/**
+ *
+ */
 public class Peer implements Runnable, Comparable<Peer> {
     private Socket sock;
     private BufferedReader in;
@@ -59,60 +62,134 @@ public class Peer implements Runnable, Comparable<Peer> {
         }
     }
 
-    public Room getCurrentRoom() {
-        return currentRoom;
-    }
-
-    public boolean getChatEnabled() {
-        return this.chatEnabled;
-    }
-
-    public void setChatEnabled(boolean b) {
-        this.chatEnabled = b;
-    }
-
-    public int getPreferredNrOfPlayers() {
-        return preferredNrOfPlayers;
-    }
-
-    public void setPreferredNrOfPlayers(int preferredNrOfPlayers) {
-        this.preferredNrOfPlayers = preferredNrOfPlayers;
-    }
-
+    /**
+     * Gets running
+     *
+     * @return value of running
+     */
     public boolean isRunning() {
         return running;
     }
 
+    /**
+     * Sets running to running
+     *
+     * @param running new value of running
+     */
     public void setRunning(boolean running) {
         this.running = running;
     }
 
+    /**
+     * Gets name
+     *
+     * @return value of name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets name to name
+     *
+     * @param name new value of name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Gets chatEnabled
+     *
+     * @return value of chatEnabled
+     */
+    public boolean isChatEnabled() {
+        return chatEnabled;
+    }
+
+    /**
+     * Sets chatEnabled to chatEnabled
+     *
+     * @param chatEnabled new value of chatEnabled
+     */
+    public void setChatEnabled(boolean chatEnabled) {
+        this.chatEnabled = chatEnabled;
+    }
+
+    /**
+     * Gets preferredNrOfPlayers
+     *
+     * @return value of preferredNrOfPlayers
+     */
+    public int getPreferredNrOfPlayers() {
+        return preferredNrOfPlayers;
+    }
+
+    /**
+     * Sets preferredNrOfPlayers to preferredNrOfPlayers
+     *
+     * @param preferredNrOfPlayers new value of preferredNrOfPlayers
+     */
+    public void setPreferredNrOfPlayers(int preferredNrOfPlayers) {
+        this.preferredNrOfPlayers = preferredNrOfPlayers;
+    }
+
+    /**
+     * Gets currentRoom
+     *
+     * @return value of currentRoom
+     */
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
+
+    /**
+     * Gets tileBag
+     *
+     * @return value of tileBag
+     */
     public TileBag getTileBag() {
         return tileBag;
     }
 
+    /**
+     * Sets tileBag to tileBag
+     *
+     * @param tileBag new value of tileBag
+     */
     public void setTileBag(TileBag tileBag) {
         this.tileBag = tileBag;
     }
 
+    /**
+     * Gets score
+     *
+     * @return value of score
+     */
     public int getScore() {
         return score;
     }
 
+    /**
+     * Sets score to score
+     *
+     * @param score new value of score
+     */
     public void setScore(int score) {
         this.score = score;
     }
 
+    /**
+     *
+     * @param i
+     */
     public void incScore(int i) {
         this.score += i;
     }
 
     /**
-     * Reads strings of the stream of the socket-controller and
-     * writes the characters to the default output.
+     *
      */
-
-
     public void run() {
         while (running && parent.getRunning()) {
             try {
@@ -133,19 +210,19 @@ public class Peer implements Runnable, Comparable<Peer> {
         }
     }
 
-    public String getName() {
-        return this.name;
-    }
 
-    public void setName(String newName) {
-        this.name = newName;
-    }
-
-
+    /**
+     *
+     * @param s
+     */
     public void sendMessage(String s) {
         out.println(s);
     }
 
+    /**
+     *
+     * @param room
+     */
     public void moveToRoom(Room room) {
         if (this.currentRoom != null) {
             currentRoom.removePeer(this);
@@ -174,6 +251,11 @@ public class Peer implements Runnable, Comparable<Peer> {
 
     }
 
+    /**
+     *
+     * @param p
+     * @return
+     */
     // used for sorting reasons in model logic
     @Override
     public int compareTo(Peer p) {
