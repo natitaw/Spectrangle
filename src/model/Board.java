@@ -15,8 +15,9 @@ import java.util.Objects;
  * @version 1.0
  */
 public class Board {
-
+	//@ private invariant boardLocations.length == DIM;
 	private static final int DIM = 36; // loop t/m 35
+	
 	private final BoardLocation[] boardLocations;
 
 	/**
@@ -53,7 +54,9 @@ public class Board {
 	 * @param location on the board
 	 * @return The BoardLocation object at a given location
 	 */
-
+	//@ requires location >= 0 && location < 36;
+	//@ pure
+	
 	public BoardLocation getBoardLocation(int location) {
 		if (this.isValidLocation(location)) {
 			return this.boardLocations[location];
@@ -68,11 +71,13 @@ public class Board {
 	 * @param location on the board
 	 * @return The Piece object that lies on the given location
 	 */
+	
+	//@ requires location >= 0 && location < 36;
+	//@ ensures \result != null;
+	//@ pure	
 	public Piece getPiece(int location) {
 		return this.boardLocations[location].getPiece();
 	}
-
-	// Queries
 
 	/**
 	 * Convert coordinates to index
@@ -81,6 +86,10 @@ public class Board {
 	 * @param c second part of the coordinate
 	 * @return the index based on the conversion of the coordinates
 	 */
+	//@ requires r >= 0 && c >= 0;
+	//@ ensures \result >=  0;
+	
+	//@ pure
 	public int getIndex(int r, int c) {
 		return ((int) (Math.pow(r, 2) + r + c));
 	}
@@ -93,6 +102,11 @@ public class Board {
 	 * @return an ArrayList of integers that contains information about the
 	 *         coorinates computed from a given index
 	 */
+	
+	//@ requires index >= 0 && index <= 36;
+	//@ ensures \result !=  null;
+	//@ ensures !\result.isEmpty();
+	//@ pure
 	public ArrayList<Integer> getCoordinate(int index) {
 		ArrayList<Integer> tuple = new ArrayList<>();
 		int r = (int) Math.floor(Math.sqrt(index));
@@ -110,6 +124,10 @@ public class Board {
 	 * @param piece    a Piece object that will be moved to the given locatoin
 	 * @return the amount of points gained by performing such move
 	 */
+	//@ requires location >= 0 && location <= 36;
+	//@ requires piece != null;
+	//@ ensures \result >= 0 && \result <= 6;
+	//@ ensures this.getPiece(location) == piece;
 	public int movePiece(int location, Piece piece) {
 		int point = 0;
 		if (isValidLocation(location) && isValidMove(location, piece)) {
@@ -129,6 +147,10 @@ public class Board {
 	 * @param piece    a Piece object that will be moved to the given location
 	 * @return potential amounts of points that can be gained by such a move
 	 */
+	//@ requires location >= 0 && location <= 36;
+	//@ requires piece != null;
+	//@ ensures \result >= 0;
+	//@ pure
 	public int getPotentialMoveScore(int location, Piece piece) {
 		if (isValidMove(location, piece)) {
 			return boardLocations[location].getScorePoint() * piece.getValue();
@@ -145,6 +167,9 @@ public class Board {
 	 * @param piece    a Piece object that will be moved to the given location
 	 * @return A boolean that verifies the validity of the move
 	 */
+	//@ requires location >= 0 && location <= 36;
+	//@ requires piece != null;
+	//@ pure
 	public boolean isValidMove(int location, Piece piece) {
 
 		boolean result = false;
@@ -174,7 +199,9 @@ public class Board {
 	 * @param piece    a Piece object that will be moved to the given location
 	 * @return A boolean that verifies the validity of the move based on the colors
 	 */
-	// TODO: Implement Properly
+	//@ requires location >= 0 && location <= 36;
+	//@ requires piece != null;
+	//@ pure
 	public boolean isValidColor(int location, Piece piece) {
 
 		if (isValidLocation(location) && piece.isJoker()) {
@@ -251,7 +278,6 @@ public class Board {
 		return false;
 	}
 
-	// TODO: Check for left, right and bottom neighbors
 
 	/**
 	 * Get the piece that lies on the left of the given index
@@ -261,6 +287,9 @@ public class Board {
 	 * @throws NoPieceException in case there is no Piece to be found next to the
 	 *                          given index
 	 */
+	//@ requires index >= 0 && index <= 36;
+	//@ ensures \result != null;
+	//@ pure
 	public Piece getLeftPiece(int index) throws NoPieceException {
 		int r = getCoordinate(index).get(0);
 		int c = getCoordinate(index).get(1);
@@ -291,6 +320,9 @@ public class Board {
 	 * @throws NoPieceException in case there is no Piece to be found next to the
 	 *                          given index
 	 */
+	//@ requires index >= 0 && index <= 36;
+	//@ ensures \result != null;
+	//@ pure
 	public Piece getRightPiece(int index) throws NoPieceException {
 		int r = getCoordinate(index).get(0);
 		int c = getCoordinate(index).get(1);
@@ -321,6 +353,9 @@ public class Board {
 	 * @throws NoPieceException in case there is no Piece to be found next to the
 	 *                          given index
 	 */
+	//@ requires index >= 0 && index <= 36;
+	//@ ensures \result != null;
+	//@ pure
 	public Piece getBottomPiece(int index) throws NoPieceException {
 		int r = getCoordinate(index).get(0);
 		int c = getCoordinate(index).get(1);
@@ -355,6 +390,9 @@ public class Board {
 	 * @throws NoPieceException in case there is no Piece to be found next to the
 	 *                          given index
 	 */
+	//@ requires index >= 0 && index <= 36;
+	//@ ensures \result != null;
+	//@ pure
 	public Piece getTopPiece(int index) throws NoPieceException {
 		int r = getCoordinate(index).get(0);
 		int c = getCoordinate(index).get(1);
@@ -381,6 +419,8 @@ public class Board {
 	 * @param location A number representing a location on the board
 	 * @return A boolean that verifies the validity of the location
 	 */
+	//@ requires location >= 0 && location <= 36;
+	//@ pure
 	public boolean isValidLocation(int location) {
 		return (location >= 0 && location < Board.DIM);
 	}
@@ -391,6 +431,8 @@ public class Board {
 	 * @param location A number representing a location on the board
 	 * @return A boolean that verifies the emptiness of the location
 	 */
+	//@ requires location >= 0 && location <= 36;
+	//@ pure
 	public boolean isEmptyLocation(int location) {
 		return (this.boardLocations[location].isEmptySpot());
 	}
@@ -399,6 +441,7 @@ public class Board {
 	 * Check if this Board object is empty
 	 * @return A boolean that verifies the emptiness of the Board
 	 */
+	//@ pure;
 	public boolean boardIsEmpty() {
 		boolean result = true;
 		for (int i = 0; i < this.boardLocations.length; i++) {
@@ -413,6 +456,8 @@ public class Board {
 	 * This function prints the Board in a presentable manner
 	 * @return A String object that can be clearly printed
 	 */
+	//@ ensures \result != null;
+	//@ pure
 	public String toPrinterString() {
 		List<Integer> values = Arrays.asList(null, null, null, null, null, null, null, null, null, null, null, null,
 				null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
