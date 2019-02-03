@@ -91,6 +91,10 @@ public class Piece {
 	 * 
 	 * @return Rotated Piece object
 	 */
+	//@ requires this != null;
+	//@ ensures \result != null;
+	//@ ensures this.equals(\result);
+	//@ pure
 	public Piece getRotated() {
 		List<ColorDefinition> tempOrientation = new ArrayList<>(orientation);
 		Collections.rotate(tempOrientation, 1);
@@ -102,6 +106,10 @@ public class Piece {
 	 * 
 	 * @return Rotated (twice) Piece object
 	 */
+	//@ requires this != null;
+	//@ ensures \result != null;
+	//@ ensures this.equals(\result);
+	//@ pure
 	public Piece getRotated2x() {
 		List<ColorDefinition> tempOrientation = new ArrayList<>(orientation);
 		Collections.rotate(tempOrientation, 2);
@@ -114,6 +122,7 @@ public class Piece {
 	 *
 	 * @return Adjusts the orientation of this Piece object
 	 */
+	//@ requires this != null;
 	public void rotate() {
 
 		this.orientation = getRotated().getColors();
@@ -125,7 +134,7 @@ public class Piece {
 	 *
 	 * @return Adjusts the orientation of this Piece object
 	 */
-
+	//@ requires this != null;
 	public void rotate2x() {
 
 		this.orientation = getRotated2x().getColors();
@@ -138,6 +147,10 @@ public class Piece {
 	 * @return ArrayList of ColorDefinition objects that define the color
 	 *         orientation of this Piece
 	 */
+	//@ requires this != null;
+	//@ ensures \result != null;
+	//@ ensures !\result.isEmpty();
+	//@ pure
 	public ArrayList<ColorDefinition> getColors() {
 		return this.orientation;
 	}
@@ -147,6 +160,9 @@ public class Piece {
 	 *
 	 * @return An integer with the given points of the Piece
 	 */
+	//@ requires this != null;
+	//@ ensures \result >= 0 && \result <= 6;
+	//@ pure
 	public int getValue() {
 		return value;
 	}
@@ -156,6 +172,8 @@ public class Piece {
 	 *
 	 * @return Boolean verifying if a Piece object is Joker
 	 */
+	//@ requires this != null;
+	//@ pure
 	public boolean isJoker() {
 		return (orientation.get(0).equals(ColorDefinition.WHITE));
 	}
@@ -163,6 +181,8 @@ public class Piece {
 	/**
 	 * Checks if the given Object is equivalent to this Piece
 	 */
+	//@ also requires this != null;
+	//@ pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Piece) {
@@ -178,6 +198,9 @@ public class Piece {
 	 * @param p Piece object to be checked against this Piece
 	 * @return An integer indicating in which direction the equality occurs
 	 */
+	//@ requires this != null;
+	//@ ensures \result >= 0 && \result <= -1;
+	//@ pure
 	public int equalsRotated(Piece p) {
 		if (this.equals(p)) {
 			return 0;
@@ -193,6 +216,8 @@ public class Piece {
 	/**
 	 * A method that will print this object in a redable manner
 	 */
+	//@ also ensures \result != null;
+	//@ pure
 	@Override
 	public String toString() {
 		String result = "";
