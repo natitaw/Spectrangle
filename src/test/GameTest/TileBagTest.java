@@ -1,37 +1,75 @@
 package test.GameTest;
 
-import game.Board;
-import game.TileBag;
+
+import model.Board;
+import model.ColorDefinition;
+import model.EmptyBagException;
+import model.Piece;
+import model.TileBag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TileBagTest {
 
     private TileBag tg;
     private Board b;
+    private int randomInt;
 
     @BeforeEach
     public void setup() {
-        this.b = new Board(new TileBag(36));
-        b.getTileBag().populateBag();
-        this.tg = b.getTileBag();
+        this.b = new Board();
+        this.tg = new TileBag(36);
+        tg.populateBag();
+        randomInt = (int)(Math.random() * 35);
 
     }
 
     @Test
-    void testGetRandomPiece() {
+    void testGetRandomPiece() throws EmptyBagException {
         int a = tg.getBag().size();
         assertEquals(a, tg.getBag().size());
         assertNotNull(tg.takeRandomPiece());
         assertEquals(a - 1, tg.getBag().size());
     }
-
+    
+    @Test
+    void testViewPiece() throws EmptyBagException {
+    	assertNotNull(tg.viewPiece(randomInt));
+    	assertEquals(tg.viewPiece(randomInt), tg.takePiece(randomInt));
+    	
+    	assertTrue(tg.viewPiece(randomInt).equals(tg.takePiece(randomInt)));
+    }
+    
+    @Test
+    void testTakePiece() throws EmptyBagException {
+    	assertNotNull(tg.takePiece(randomInt));
+    	assertEquals(35, tg.getBag().size());
+    }
+    
+    @Test
+    void testFindPiece() throws EmptyBagException {
+    	Piece joker = new Piece(ColorDefinition.WHITE, ColorDefinition.WHITE, ColorDefinition.WHITE, 1);
+    	assertNotNull(tg.findPiece(joker));
+    	int a = tg.findPiece(joker);
+    	tg.takePiece(a);
+    	assertEquals(-1, tg.findPiece(joker));
+    }
+    
+    @Test
+    void testAddPiece() throws EmptyBagException {
+    	Piece joker = new Piece(ColorDefinition.WHITE, ColorDefinition.WHITE, ColorDefinition.WHITE, 1);
+    	
+    	tg.takePiece(randomInt);
+    	assertEquals(35, tg.getBag().size());
+    	tg.addPiece(joker);
+    	assertEquals(36, tg.getBag().size());
+    }
     @Test
     void testPopulateBag() {
         assertNotNull(tg.getBag());
+        assertEquals(36, tg.getBag().size());
     }
 
     @Test
@@ -40,7 +78,7 @@ class TileBagTest {
     }
 
     @Test
-    void testGetNumberOfPieces() {
+    void testGetNumberOfPieces() throws EmptyBagException {
         assertEquals(36, tg.getBag().size());
         tg.takeRandomPiece();
         assertEquals(35, tg.getBag().size());
