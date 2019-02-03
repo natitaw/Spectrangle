@@ -168,23 +168,21 @@ class BoardTest {
 		Piece p1 = new Piece(ColorDefinition.WHITE, ColorDefinition.WHITE, ColorDefinition.WHITE, 1);
 		Piece p2 = new Piece(ColorDefinition.RED, ColorDefinition.RED, ColorDefinition.RED, 6);
 		Piece p3 = new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.PURPLE, 1);
+		Piece p4 = new Piece(ColorDefinition.PURPLE, ColorDefinition.PURPLE, ColorDefinition.PURPLE, 6);
 
-
-		b.movePiece(0, p2);
+		b.movePiece(0, p1);
 		b.movePiece(2, p3);
-		b.movePiece(1, p3);
-		b.movePiece(3, p3);
-		b.movePiece(6, p1);
+		b.movePiece(1, p2);
+		b.movePiece(3, p4);
 
 
 		try {
-			assertEquals(p3, b.getLeftPiece(2));
+			assertEquals(p2, b.getLeftPiece(2));
 
 		} catch (Exception e) {
 
 		}
 		try {
-			//assertEquals(p2, b.getLeftPiece(3));
 			assertEquals(p3, b.getLeftPiece(3));
 		} catch (Exception e) {
 
@@ -201,28 +199,24 @@ class BoardTest {
 	
 	@Test
 	void testGetRightPiece() {
-		
+
 		Piece p1 = new Piece(ColorDefinition.WHITE, ColorDefinition.WHITE, ColorDefinition.WHITE, 1);
 		Piece p2 = new Piece(ColorDefinition.RED, ColorDefinition.RED, ColorDefinition.RED, 6);
 		Piece p3 = new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.PURPLE, 1);
+		Piece p4 = new Piece(ColorDefinition.PURPLE, ColorDefinition.PURPLE, ColorDefinition.PURPLE, 6);
 
-
-
-
-		b.movePiece(0, p2);
+		b.movePiece(0, p1);
 		b.movePiece(2, p3);
-		b.movePiece(1, p3);
-		b.movePiece(3, p3);
-		b.movePiece(6, p1);
+		b.movePiece(1, p2);
+		b.movePiece(3, p4);
 
 		try {
-			assertEquals(p3, b.getRightPiece(2));
+			assertEquals(p4, b.getRightPiece(2));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		try {
-			//assertEquals(p2, b.getLeftPiece(3));
 			assertEquals(p3, b.getRightPiece(1));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -231,17 +225,18 @@ class BoardTest {
 	
 	@Test
 	void testBottomPiece() {
-		
+
 		Piece p1 = new Piece(ColorDefinition.WHITE, ColorDefinition.WHITE, ColorDefinition.WHITE, 1);
 		Piece p2 = new Piece(ColorDefinition.RED, ColorDefinition.RED, ColorDefinition.RED, 6);
 		Piece p3 = new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.PURPLE, 1);
+		Piece p4 = new Piece(ColorDefinition.PURPLE, ColorDefinition.PURPLE, ColorDefinition.PURPLE, 6);
 
 
-		b.movePiece(0, p2);
+		b.movePiece(0, p1);
 		b.movePiece(2, p3);
-		b.movePiece(1, p3);
-		b.movePiece(3, p3);
-		b.movePiece(7, p1);
+		b.movePiece(1, p2);
+		b.movePiece(3, p4);
+		b.movePiece(6, p1);
 		
 		try {
 			//assertEquals(p3, b.getLeftPiece(2));

@@ -177,7 +177,7 @@ public class Board {
 
 			if (boardIsEmpty()) {
 
-				result = !boardLocations[location].isBonusLocation();
+				result = boardLocations[location].isBonusLocation();
 
 			} else if (isValidColor(location, piece) && isEmptyLocation(location)) {
 
@@ -206,6 +206,7 @@ public class Board {
 		ArrayList<Piece> neighbors = new ArrayList<>();
 		ColorDefinition c;
 		ColorDefinition d;
+		boolean touchesAtLeastOne=false;
 
 		Piece left = null;
 		try {
@@ -234,6 +235,7 @@ public class Board {
 
 
 		if (left != null) {
+			touchesAtLeastOne=true;
 			c=left.getColors().get(2);
 			d=piece.getColors().get(1);
 			if (!d.equals(c) && !left.isJoker()) {
@@ -244,6 +246,7 @@ public class Board {
 		}
 
 		if (right != null) {
+			touchesAtLeastOne=true;
 			c=right.getColors().get(1);
 			d=piece.getColors().get(2);
 			if (!d.equals(c) && !right.isJoker()) {
@@ -254,6 +257,7 @@ public class Board {
 		}
 
 		if (top != null) {
+			touchesAtLeastOne=true;
 			c=top.getColors().get(0);
 			d=piece.getColors().get(0);
 			if (!d.equals(c) && !top.isJoker()) {
@@ -263,6 +267,7 @@ public class Board {
 		}
 
 		if (bottom != null) {
+			touchesAtLeastOne=true;
 			c=bottom.getColors().get(0);
 			d=piece.getColors().get(0);
 			//noinspection RedundantIfStatement
@@ -272,7 +277,7 @@ public class Board {
 
 		}
 
-		return true;
+		return touchesAtLeastOne;
 	}
 
 
