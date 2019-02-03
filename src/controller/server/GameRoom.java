@@ -6,8 +6,6 @@ import model.EmptyBagException;
 import model.Piece;
 import model.TileBag;
 
-import java.io.IOException;
-import java.net.SocketException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -47,6 +45,8 @@ public class GameRoom extends Room implements Runnable {
      * @param peers       List of peers that the room contains.
      * @author Bit 4 - Group 4
      */
+
+    //@ ensures
     private GameRoom(int nr, List<Peer> peers, Server inputServer) {
         super(nr, peers);
         this.serverObject = inputServer;
@@ -129,8 +129,8 @@ public class GameRoom extends Room implements Runnable {
      * and the current board state.
      *
      * @param player The Peer instance to check the valid moves for
-     * @author Bit 4 - Group 4
      * @return the boolean that specifies if the player has valid moves
+     * @author Bit 4 - Group 4
      */
     private boolean hasValidMoves(Peer player) {
         boolean result = false;
@@ -161,8 +161,8 @@ public class GameRoom extends Room implements Runnable {
      * Because players must always take a new tile if they can, we only have to check if any player
      * can place tiles.
      *
-     * @author Bit 4 - Group 4
      * @return The boolean that specified if the game has ended
+     * @author Bit 4 - Group 4
      */
     private boolean checkIfGameHasEnded() {
         boolean result = false;
@@ -254,7 +254,7 @@ public class GameRoom extends Room implements Runnable {
      * "skip playerName" or "turn playerName" depending on if the player, whose name is playerName,
      * should skip their turn or not (specified in mustSkip param).
      *
-     * @param mustSkip Whether the player must skip their turn
+     * @param mustSkip       Whether the player must skip their turn
      * @param startingPlayer Peer instance that is to start this turn
      */
     private void sendTilesCommand(Peer startingPlayer, boolean mustSkip) {
@@ -268,8 +268,15 @@ public class GameRoom extends Room implements Runnable {
             for (int peerPieceIndex = 0; peerPieceIndex < p.getTileBag().getNumberOfPieces(); peerPieceIndex++) {
                 String pieceString = p.getTileBag().viewPiece(peerPieceIndex).toString();
                 peerArgs.add(pieceString);
+
             }
             // concatenate all peerargs to one peerString
+            if (peerArgs.size() < 5) {
+                int diff = 5 - peerArgs.size();
+                for (int i = 1; i <= diff; i++) {
+                    peerArgs.add("null");
+                }
+            }
             middleArgs.addAll(peerArgs);
         }
 
@@ -331,6 +338,7 @@ public class GameRoom extends Room implements Runnable {
 
     /**
      * Sends to all the players that player "name" left. Then moves them to lobby.
+     *
      * @param name Name of the player who left, who is no longer in the peerList.
      */
     private void peerDisconnected(String name) {
@@ -356,9 +364,9 @@ public class GameRoom extends Room implements Runnable {
      * Then executes the move. Removes the tile from the player's bag, and tries to move
      * a piece from the room bag to the player's bag.
      *
-     * @param peer Player who tried to execute this move
+     * @param peer       Player who tried to execute this move
      * @param tileString String representation (e.g. RRR6) of tile to be placed
-     * @param index Index representation (0-35) of where the tile is to be placed on the board.
+     * @param index      Index representation (0-35) of where the tile is to be placed on the board.
      */
     public void checkPlace(Peer peer, String tileString, int index) {
         Piece newPiece = new Piece(tileString);
@@ -405,8 +413,8 @@ public class GameRoom extends Room implements Runnable {
      * First, check if it is the player's move.
      * Then, checks if the player has to skip.
      * If so, we go to the next turn and send out the appropriate command.
-     * @param peer The peer to check the move for
      *
+     * @param peer The peer to check the move for
      */
     public void checkSkip(Peer peer) {
         if (peer.equals(this.currentPlayer)) {
@@ -428,9 +436,9 @@ public class GameRoom extends Room implements Runnable {
      * Then checks if the player really has the tile.
      * Then exchange the tile for one in the bag if the bag is not empty
      * If so, we go to the next turn and send out the appropriate command
-     * @param peer The peer to check the move for
-     * @param tileArg The tile the player wishes to exchange
      *
+     * @param peer    The peer to check the move for
+     * @param tileArg The tile the player wishes to exchange
      */
     public void checkExchange(Peer peer, String tileArg) {
         if (peer.equals(this.currentPlayer)) {
@@ -464,7 +472,6 @@ public class GameRoom extends Room implements Runnable {
                         serverObject.getPrinter().println(e.getMessage());
                         peer.sendMessage("invalid move");
                     }
-
 
 
                 }
