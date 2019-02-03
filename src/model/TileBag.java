@@ -11,13 +11,14 @@ import java.util.List;
 
 public class TileBag {
 
-    private final ArrayList<Piece> pieces;
+    private final /*@spec_public*/ ArrayList<Piece> pieces;
 
     /**
      * TileBag This class generates a bag of size with 36 tiles according to the
      * rules of Spectrangle
      */
 
+    //@ requires sizeInput >= 0;
     public TileBag(int sizeInput) {
         this.pieces = new ArrayList<>(sizeInput);
     }
@@ -27,6 +28,7 @@ public class TileBag {
      * @param stringList List of strings of tiles
      * @return a new TileBag that contains these tiles as Piece objects
      */
+    //@ requires stringList != null;
     public static TileBag generateBag(List<String> stringList) {
         TileBag result = new TileBag(4);
         for (String s : stringList) {
@@ -40,6 +42,7 @@ public class TileBag {
      *
      * @return A random Piece
      */
+    //@ ensures \result != null;
     public Piece takeRandomPiece() throws EmptyBagException {
         if (pieces.size() != 0) {
             int random = (int) (Math.random() * this.pieces.size() - 1);
@@ -56,6 +59,9 @@ public class TileBag {
      * @param i Index to be used to view a Piece from the TileBag
      * @return Piece object to be viewed from TileBag
      */
+    //@ requires i >= 0 && i <= 36;
+    //@ ensures \result != null;
+    //@ pure
     public Piece viewPiece(int i) {
         return pieces.get(i);
     }
@@ -65,6 +71,8 @@ public class TileBag {
      * @param index Index to be used to fetch a Piece from the TileBag
      * @return Piece object fetched from TileBag
      */
+    //@ requires index >= 0 && index <= 36;
+    //@ ensures \result != null;
     public Piece takePiece(int index) throws EmptyBagException {
         if (pieces.size() != 0) {
             Piece p = pieces.get(index);
@@ -80,6 +88,10 @@ public class TileBag {
      * @param inputPiece Piece to be checked against existing pieces in TileBag
      * @return The location of the match in the TileBag
      */
+
+    //@ requires inputPiece != null;
+    //@ ensures \result >= 0 && \result < 35;
+    //@ pure
     public int findPiece(Piece inputPiece) {
         for (Piece piece : pieces) {
             if (piece.equalsRotated(inputPiece) >= 0) {
@@ -94,6 +106,9 @@ public class TileBag {
      * Adds a piece in the TileBag
      * @param p
      */
+    
+    //@ requires p != null;
+    //@ ensures \old(this.pieces.size() + 1) == this.pieces.size();
     public void addPiece(Piece p) {
         pieces.add(p);
     }
@@ -104,6 +119,7 @@ public class TileBag {
      * @param obj The other object (usuall a TileBag) to compare to
      * @return boolean that specifies whether they are equal
      */
+   //@ also requires obj != null;
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof TileBag) {
@@ -117,6 +133,8 @@ public class TileBag {
      * This function will be called in the constructor and it will populate the bag
      * according to the rules of Spectrangle and includes Joker
      */
+    //@ requires this.pieces == null;
+    //@ ensures this.pieces.size() == 36;
     public void populateBag() {
 
         // 6 Points
@@ -203,6 +221,9 @@ public class TileBag {
      *
      * @return An ArrayList of Piece objects (the TileBag)
      */
+    //@ requires this.pieces != null;
+    //@ ensures \result == this.pieces;
+    //@ pure
     public ArrayList<Piece> getBag() {
         return this.pieces;
     }
@@ -212,6 +233,8 @@ public class TileBag {
      *
      * @return An integer that indicates the number of pieces left in this TileBag
      */
+    //@ requires this.pieces != null;
+    //@ ensures \result >= 0 && \result <= 35;
     public int getNumberOfPieces() {
         return getBag().size();
     }
