@@ -41,9 +41,10 @@ class BoardTest {
 	 */
 	@Test
 	void testIsEmptyLocation() throws EmptyBagException {
-		assertTrue(b.isEmptyLocation(0));
-		b.movePiece(0,  tilebag.takeRandomPiece());
-		assertFalse(b.isEmptyLocation(0));
+		b = new Board();
+		assertTrue(b.isEmptyLocation(2));
+		b.movePiece(2,  tilebag.takeRandomPiece());
+		assertFalse(b.isEmptyLocation(2));
 	}
 
 	/**
@@ -78,18 +79,20 @@ class BoardTest {
 	 */
 	@Test
 	void testMovePiece() throws EmptyBagException {
-		assertTrue(b.isEmptyLocation(1));
-		b.movePiece(1,  tilebag.getBag().get(0));
-		assertEquals(b.getPiece(1), b.getBoardLocation(1).getPiece());
-		assertFalse(b.isEmptyLocation(1));
+		b= new Board();
+		assertTrue(b.isEmptyLocation(2));
+		b.movePiece(2,  tilebag.getBag().get(0));
+		assertEquals(b.getPiece(2), b.getBoardLocation(2).getPiece());
+		assertFalse(b.isEmptyLocation(2));
 	}
 
 	@Test
 	void testGetPotentialMoveScore() throws EmptyBagException {
+		b = new Board();
 		Piece a =  tilebag.takeRandomPiece();
-		assertEquals(b.getPotentialMoveScore(0, (Piece) a), ((Piece) a).getValue());
+		assertEquals(b.getPotentialMoveScore(2, a), a.getValue()*3);
 		Object b2 = tilebag.takeRandomPiece();
-		assertEquals(b.getPotentialMoveScore(0, (Piece) b2), ((Piece) b2).getValue());
+		assertEquals(b.getPotentialMoveScore(20, (Piece) b2), ((Piece) b2).getValue()*4);
 		assertEquals(0, b.getPotentialMoveScore(100, (Piece) a));
 	}
 
@@ -120,7 +123,6 @@ class BoardTest {
 		b.movePiece(3, p4);
 		assertTrue(b.isValidMove(7, p4));
 		assertTrue(b.isValidMove(1, p2));
-		assertTrue(b.isValidMove(3, p3));
 
 	}
 
@@ -259,15 +261,15 @@ class BoardTest {
 	
 	@Test
 	void testTopPiece() {
-		
+		b = new Board();
 		Piece p1 = new Piece(ColorDefinition.WHITE, ColorDefinition.WHITE, ColorDefinition.WHITE, 1);
 		Piece p2 = new Piece(ColorDefinition.RED, ColorDefinition.RED, ColorDefinition.RED, 6);
 		Piece p3 = new Piece(ColorDefinition.GREEN, ColorDefinition.RED, ColorDefinition.PURPLE, 1);
 
 
+		b.movePiece(2, p2);
+		b.movePiece(3, p3);
 		b.movePiece(0, p2);
-		b.movePiece(2, p3);
-		b.movePiece(1, p3);
 		b.movePiece(3, p3);
 		b.movePiece(7, p1);
 		
