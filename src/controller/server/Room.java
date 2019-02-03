@@ -39,6 +39,7 @@ public class Room {
     /**
      * Returns the peers in the room as a list
      *
+     * @return peerList field
      * @author Bit 4 - Group 4
      */
     public List<Peer> getPeerList() {
@@ -48,6 +49,7 @@ public class Room {
     /**
      * Adds a peer to the room's list of peers
      *
+     * @return true if list was changed because of this
      * @param p Peer object to be added to the room
      * @author Bit 4 - Group 4
      */
@@ -57,7 +59,7 @@ public class Room {
 
     /**
      * Removes a peer from the room, if it exists. Returns a boolean on whether it succeeded
-     *
+     * @return true if list was changed because of this
      * @param p Peer object to be removed form the room.
      * @author Bit 4 - Group 4
      */
@@ -67,7 +69,7 @@ public class Room {
 
     /**
      * Returns the room's number (a getter function)
-     *
+     * @return the roomNumber field content
      * @author Bit 4 - Group 4
      */
     public int getRoomNumber() {

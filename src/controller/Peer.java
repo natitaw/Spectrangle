@@ -187,8 +187,8 @@ public class Peer implements Runnable, Comparable<Peer> {
     }
 
     /**
-     *
-     * @param i
+     * Increment score by i
+     * @param i Value to be added to score
      */
     public void incScore(int i) {
         this.score += i;

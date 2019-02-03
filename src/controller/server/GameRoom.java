@@ -405,6 +405,7 @@ public class GameRoom extends Room implements Runnable {
      * First, check if it is the player's move.
      * Then, checks if the player has to skip.
      * If so, we go to the next turn and send out the appropriate command.
+     * @param peer The peer to check the move for
      *
      */
     public void checkSkip(Peer peer) {
@@ -426,7 +427,9 @@ public class GameRoom extends Room implements Runnable {
      * Then, checks if the player has to skip.
      * Then checks if the player really has the tile.
      * Then exchange the tile for one in the bag if the bag is not empty
-     * If so, we go to the next turn and send out the appropriate command.
+     * If so, we go to the next turn and send out the appropriate command
+     * @param peer The peer to check the move for
+     * @param tileArg The tile the player wishes to exchange
      *
      */
     public void checkExchange(Peer peer, String tileArg) {
