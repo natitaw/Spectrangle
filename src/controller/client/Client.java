@@ -20,9 +20,9 @@ import java.util.regex.Pattern;
  * @author Bit 4 - Group 4
  */
 public class Client implements ClientOrServer {
-    private static final Type type = ClientOrServer.Type.CLIENT;
-    private static List<String> clientTiles;
-    private static List<List<String>> otherTileList; // intend to use this for complicated AI
+    private  final Type type = ClientOrServer.Type.CLIENT;
+    private List<String> clientTiles;
+    private List<List<String>> otherTileList; // intend to use this for complicated AI
     private final boolean isSilent;
     private final TerminalInputHandler terminalInputHandler;
     private final boolean isAI;
@@ -88,7 +88,7 @@ public class Client implements ClientOrServer {
      *
      * @return value of clientTiles
      */
-    public static List<String> getClientTiles() {
+    public List<String> getClientTiles() {
         return clientTiles;
     }
 
@@ -97,8 +97,8 @@ public class Client implements ClientOrServer {
      *
      * @param clientTiles new value of clientTiles
      */
-    public static void setClientTiles(List<String> clientTiles) {
-        Client.clientTiles = clientTiles;
+    public void setClientTiles(List<String> clientTiles) {
+        this.clientTiles = clientTiles;
     }
 
     /**
@@ -106,7 +106,7 @@ public class Client implements ClientOrServer {
      *
      * @return value of otherTileList
      */
-    public static List<List<String>> getOtherTileList() {
+    public List<List<String>> getOtherTileList() {
         return otherTileList;
     }
 
@@ -115,8 +115,8 @@ public class Client implements ClientOrServer {
      *
      * @param otherTileList new value of otherTileList
      */
-    public static void setOtherTileList(List<List<String>> otherTileList) {
-        Client.otherTileList = otherTileList;
+    public void setOtherTileList(List<List<String>> otherTileList) {
+        this.otherTileList = otherTileList;
     }
 
     /**

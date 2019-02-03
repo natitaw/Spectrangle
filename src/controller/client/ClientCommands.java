@@ -95,6 +95,7 @@ public class ClientCommands {
      *
      * @param clientObject Client to generate this move for
      * @param tileBag Client's tiles to generate this move for
+     * @return the best move possible in string representation i.e. "place RRR6 on 20"
      */
     public static String bestMove(TileBag tileBag, Client clientObject) {
         int result = 0;
@@ -136,6 +137,7 @@ public class ClientCommands {
      *
      * @param clientObject Client to generate this move for
      * @param tileBag Client's tiles to generate this move for
+     * @return the first move found in string representation i.e. "place RRR6 on 20"
      */
     private static String randomMove(TileBag tileBag, Client clientObject) {
         Iterator itr = tileBag.getBag().iterator();
