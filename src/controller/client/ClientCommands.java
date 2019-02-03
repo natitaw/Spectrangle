@@ -177,9 +177,6 @@ public class ClientCommands {
         } else if (clientObject.getDifficulty() < 2) {
             clientObject.sendMessageToAll(bestMove(TileBag.generateBag(clientObject.getClientTiles()), clientObject));
         }
-
-        // TODO add calculation based on enemy tiles and future board states
-        // TODO cap off this calculation after difficulty in seconds has passed
     }
 
     /**
