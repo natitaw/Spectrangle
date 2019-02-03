@@ -159,7 +159,7 @@ public class Board {
 		}
 	}
 
-	// TODO: Check Implementation
+
 	/**
 	 * This function checks the validity of a move based on its location
 	 * 
@@ -209,6 +209,8 @@ public class Board {
 		}
 
 		ArrayList<Piece> neighbors = new ArrayList<>();
+		ColorDefinition c;
+		ColorDefinition d;
 
 		Piece left = null;
 		try {
@@ -235,47 +237,46 @@ public class Board {
 
 		}
 
+
 		if (left != null) {
-			for (ColorDefinition c : left.getColors()) {
-				for (ColorDefinition d : piece.getColors()) {
-					if (d.equals(c)) {
-						return true;
-					}
-				}
+			c=left.getColors().get(2);
+			d=piece.getColors().get(1);
+			if (!d.equals(c)) {
+				return false;
 			}
+
+
 		}
 
 		if (right != null) {
-			for (ColorDefinition c : right.getColors()) {
-				for (ColorDefinition d : piece.getColors()) {
-					if (d.equals(c)) {
-						return true;
-					}
-				}
+			c=right.getColors().get(1);
+			d=piece.getColors().get(2);
+			if (!d.equals(c)) {
+				return false;
 			}
+
+
 		}
 
 		if (top != null) {
-			for (ColorDefinition c : top.getColors()) {
-				for (ColorDefinition d : piece.getColors()) {
-					if (d.equals(c)) {
-						return true;
-					}
-				}
+			c=top.getColors().get(0);
+			d=piece.getColors().get(0);
+			if (!d.equals(c)) {
+				return false;
 			}
+
 		}
 
 		if (bottom != null) {
-			for (ColorDefinition c : bottom.getColors()) {
-				for (ColorDefinition d : piece.getColors()) {
-					if (d.equals(c)) {
-						return true;
-					}
-				}
+			c=bottom.getColors().get(0);
+			d=piece.getColors().get(0);
+			if (!d.equals(c)) {
+				return false;
 			}
+
 		}
 
-		return false;
+		return true;
 	}
 
 
