@@ -1,6 +1,7 @@
 package controller.client;
 
 import model.Board;
+import model.BoardLocation;
 import model.Piece;
 import model.TileBag;
 
@@ -184,7 +185,10 @@ public class ClientCommands {
      * Method executes when an AI client is given the turn but must skip
      * Usually called from TerminalInputHandler, in the AI_SKIP state.
      * Generates some random numbers using which it determines to skip or exchange
-     * And then another random number to determine which tile to exchange
+     * Also checks nr of tiles in player's hands and in the room bag
+     * Always skips if player or room bag has no tiles
+     * If going to exchange:
+     * generate nother random number to determine which tile to exchange
      *
      * @param clientObject Client to generate this move for
      */
@@ -192,8 +196,24 @@ public class ClientCommands {
         double random = Math.random();
         TileBag tiles = TileBag.generateBag(clientObject.getClientTiles());
 
-        // if tilebag is empty, or if random value <= 0.5, skip turn
-        if (random <= 0.5 || tiles.equals(TileBag.generateBag(Arrays.asList("null", "null", "null", "null")))) {
+        // check if server tilebag is empty, start by taking nr of tiles 36
+        int totalTilesOnBoardAndPlayers = 36;
+
+        // for every empty location on board, subtract a tile from it
+        for (int i =0; i<36; i++){
+            if (clientObject.getBoard().isEmptyLocation(i)){
+                totalTilesOnBoardAndPlayers-=1;
+            }
+        }
+
+        // for every tile in all players' bags, add 1
+        totalTilesOnBoardAndPlayers += clientObject.getOtherTileList().size();
+        totalTilesOnBoardAndPlayers += clientObject.getClientTiles().size();
+
+        // or if random value <= 0.5, or room tilebag must be empty,
+        // or player tilebag empty, skip turn
+        if (random <= 0.5 || totalTilesOnBoardAndPlayers >=36 ||
+            tiles.equals(TileBag.generateBag(Arrays.asList("null", "null", "null", "null")))) {
             clientObject.sendMessageToAll("skip");
         } else {
 

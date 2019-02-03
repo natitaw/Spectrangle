@@ -131,9 +131,10 @@ public class CommandInterpreter {
                         TerminalInputHandler.clearScreen(parent);
                         parent.getPrinter().println("Game finished");
                         parent.getPrinter().println("Scoreboard:");
-                        for (int i = 1; i < ((args.length - 1) / 2); i++) {
+                        for (int i = 2; i < ((args.length - 2) / 2); i++) {
                             parent.getPrinter().println(args[i] + ": " + args[i + 1]);
                         }
+                        parent.getPrinter().println("Going back to lobby");
                     }
 
                     break;
