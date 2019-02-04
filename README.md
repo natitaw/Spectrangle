@@ -6,6 +6,8 @@ The game is implemented by using the principles of object oriented programming k
 
 The implementation makes use of a client/server functionality and allows one to play the board game of Spectrangle as a singleplayer, multiplayer or against an artificial intelligence.
 
+Note for correctors: /out folder contains compiled .class files, which can be used to play the game without compiling it yourself using java from command line.
+
 
 # Getting Started
 
